@@ -56,15 +56,17 @@ public class BillAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.name.setText(billCommodities.get(i).getGoodsName());
-        holder.quantityText.setText("x"+billCommodities.get(i).getGoodsnum());
-        holder.priceText.setText(billCommodities.get(i).getGoodsPrice()+"");
+        holder.specificationTv.setText(billCommodities.get(i).getGoodsName());
+        holder.quantityText.setText("x" + billCommodities.get(i).getGoodsnum());
+        holder.priceText.setText(billCommodities.get(i).getGoodsPrice() + "");
         return view;
     }
 
     static class ViewHolder {
-
         @BindView(R.id.name)
         TextView name;
+        @BindView(R.id.specification_tv)
+        TextView specificationTv;
         @BindView(R.id.quantity_text)
         TextView quantityText;
         @BindView(R.id.price_text)
@@ -74,6 +76,4 @@ public class BillAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
-
-
 }

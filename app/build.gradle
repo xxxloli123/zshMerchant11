@@ -5,7 +5,7 @@ android {
         shop {
             keyAlias 'zsh'
             keyPassword 'zsh123'
-            storeFile file('E:/android/pro/zshMerchant_backup/zshMerchant3/shop.jks')
+            storeFile file('D:/android/pro/zshMerchant_backup/zshMerchant3/shop.jks')
             storePassword 'zsh123'
         }
     }
@@ -14,14 +14,11 @@ android {
     dexOptions {
         jumboMode true
     }
-
     repositories {
         flatDir {
             dirs 'modules'
         }
     }
-
-
     defaultConfig {
         multiDexEnabled true
         applicationId "com.example.xxxloli.zshmerchant"
@@ -30,15 +27,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
-
         ndk {
             //根据需要 自行选择添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
-
+        signingConfig signingConfigs.shop
     }
     buildTypes {
         release {
@@ -49,6 +44,8 @@ android {
         debug {
             signingConfig signingConfigs.shop
         }
+    }
+    productFlavors {
     }
 }
 

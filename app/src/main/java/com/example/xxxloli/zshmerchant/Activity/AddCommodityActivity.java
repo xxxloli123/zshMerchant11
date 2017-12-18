@@ -359,7 +359,8 @@ public class AddCommodityActivity extends BaseActivity {
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (classifies2!=null)classify = classifies2.get(0);
+                if (classifies2!=null&&classify2Text.getText().equals(classifies2.get(0).getProductClassName()))
+                    classify = classifies2.get(0);
                 if (classify2Text.getText().equals("二级分类")) {
                     Toast.makeText(AddCommodityActivity.this, "请选择二级分类", Toast.LENGTH_SHORT).show();
                     return;

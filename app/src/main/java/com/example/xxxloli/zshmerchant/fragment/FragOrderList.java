@@ -416,9 +416,10 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 else orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,false);
                 listview.setAdapter(orderListAdapter1);
                 break;
+            case Config.Edit_Price:
+                loadData();
             case Config.Receive_Reject:
                 Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
-
                 break;
         }
     }

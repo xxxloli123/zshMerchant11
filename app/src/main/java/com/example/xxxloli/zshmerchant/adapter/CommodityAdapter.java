@@ -98,7 +98,6 @@ public class CommodityAdapter extends BaseAdapter implements View.OnClickListene
         public void click(View v);
     }
 
-
     public static class ViewHolder {
         @BindView(R.id.commodity_img)
         ImageView commodityImg;
