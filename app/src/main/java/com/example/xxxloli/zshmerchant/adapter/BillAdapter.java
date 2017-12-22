@@ -29,7 +29,6 @@ public class BillAdapter extends BaseAdapter {
         this.context = context;
     }
 
-
     @Override
     public int getCount() {
         return billCommodities == null ? 0 : billCommodities.size();
@@ -56,7 +55,7 @@ public class BillAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.name.setText(billCommodities.get(i).getGoodsName());
-        holder.specificationTv.setText(billCommodities.get(i).getGoodsName());
+        holder.specificationTv.setText(billCommodities.get(i).getStandardName()+"　 "+billCommodities.get(i).getProductcategory());
         holder.quantityText.setText("x" + billCommodities.get(i).getGoodsnum());
         holder.priceText.setText(billCommodities.get(i).getGoodsPrice() + "");
         return view;

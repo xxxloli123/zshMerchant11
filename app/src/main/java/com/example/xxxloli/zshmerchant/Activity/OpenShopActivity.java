@@ -207,7 +207,6 @@ public class OpenShopActivity extends BaseActivity implements
                 break;
             case R.id.shop_type:
                 selectType();
-                loadData();
                 break;
         }
     }

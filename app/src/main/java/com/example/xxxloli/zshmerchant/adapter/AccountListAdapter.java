@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.greendao.Account;
-import com.example.xxxloli.zshmerchant.objectmodel.Info;
 import com.interfaceconfig.Config;
 import com.squareup.picasso.Picasso;
 
@@ -19,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Administrator on 2017/9/15.
@@ -28,12 +28,13 @@ public class AccountListAdapter extends BaseAdapter {
 
     private List<Account> accounts;
     private Context context;
+    private String mPhone;
 
-    public AccountListAdapter(Context context, List<Account> accounts) {
+    public AccountListAdapter(Context context, List<Account> accounts, String phone) {
         this.accounts = accounts;
         this.context = context;
+        mPhone = phone;
     }
-
 
     @Override
     public int getCount() {
@@ -60,24 +61,28 @@ public class AccountListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        Picasso.with(context).load(Config.Url.getUrl(Config.IMG_Hear)+accounts.get(i).getHead()).into(holder.headImg);
+        Picasso.with(context).load(Config.Url.getUrl(Config.IMG_Hear) + accounts.get(i).getHead()).into(holder.headImg);
         holder.name.setText(accounts.get(i).getName());
         holder.phone.setText(accounts.get(i).getPhone());
+        if (accounts.get(i).getPhone().equals(mPhone)) holder.identificationIv.setVisibility(View.VISIBLE);
+        else holder.identificationIv.setVisibility(View.GONE);
         return view;
     }
 
     static class ViewHolder {
         @BindView(R.id.head_img)
-        ImageView headImg;
+        CircleImageView headImg;
         @BindView(R.id.name)
         TextView name;
         @BindView(R.id.phone)
         TextView phone;
+        @BindView(R.id.identification_iv)
+        ImageView identificationIv;
         @BindView(R.id.add_registerLL)
         LinearLayout addRegisterLL;
+
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
-
 }

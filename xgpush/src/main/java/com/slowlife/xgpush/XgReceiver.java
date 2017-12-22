@@ -52,7 +52,6 @@ public class XgReceiver extends XGPushBaseReceiver {
         build.setSound(
                 RingtoneManager.getActualDefaultRingtoneUri(
                         context, RingtoneManager.TYPE_ALARM)) // 设置声音
-
                 .setDefaults(Notification.DEFAULT_VIBRATE) // 振动
                 .setFlags(Notification.FLAG_NO_CLEAR); // 是否可清除
     }
@@ -74,7 +73,6 @@ public class XgReceiver extends XGPushBaseReceiver {
     public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
         System.out.println(xgPushShowedResult);
     }
-
 
     public static interface PushCallback {
 

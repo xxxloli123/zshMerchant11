@@ -2,4 +2,12 @@
 <resource xmlns:android="http://schemas.android.com/apk/res/android">
     <external-path
         path="meta"  name="images" />
+    <!--升级-->
+    <external-cache-path
+        name="mn_update_external_cache"
+        path="" />
+
+    <cache-path
+        name="mn_update_cache"
+        path="" />
 </resource>

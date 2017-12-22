@@ -14,8 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.mobileim.channel.event.IWxCallback;
+import com.alibaba.mobileim.channel.util.YWLog;
+import com.alibaba.mobileim.login.YWLoginCode;
+import com.alibaba.mobileim.utility.IMNotificationUtils;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
 import com.example.xxxloli.zshmerchant.MainActivity;
+import com.example.xxxloli.zshmerchant.OpenIM.LoginSampleHelper;
+import com.example.xxxloli.zshmerchant.OpenIM.NotificationInitSampleHelper;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.greendao.Account;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
@@ -162,6 +168,7 @@ public class FragLoginPwd extends BaseFragment {
             user.put("token", token);
             map.put("userStr", user);
             newCall(Config.Url.getUrl(Config.LOGIN), map);
+            Log.e("token","丢了个雷姆"+token);
         } catch (JSONException e) {
             Toast.makeText(getContext(), "解析数据失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -186,14 +193,8 @@ public class FragLoginPwd extends BaseFragment {
                     dbManagerUser.insertUser(user);
                     dbManagerShop.insertShop(shop);
 
-                    Account account=new Account();
-                    if (!dbManagerAccount.queryById((long) 2333).isEmpty()) {
-                        account=dbManagerAccount.queryById((long) 2333).get(0);
-                        account.setWritId(null);
-                        dbManagerAccount.insertAccount(account);
-                        dbManagerAccount.deleteById((long) 2333);
-                    }
                     if (dbManagerAccount.queryByPhone(phone).isEmpty()) {
+                        Account account=new Account();
                         account.setHead(shop.getShopImage());
                         account.setName(shop.getShopName());
                         account.setPhone(phone);
@@ -201,45 +202,43 @@ public class FragLoginPwd extends BaseFragment {
                         account.setWritId((long) 2333);
                         dbManagerAccount.insertAccount(account);
                     }else {
-                        account=dbManagerAccount.queryByPhone(phone).get(0);
-                        account.setWritId((long) 2333);
-                        account.setPwd(pwd);
-                        dbManagerAccount.updateUser(account);
+                        Account account=dbManagerAccount.queryByPhone(phone).get(0);
+                        if (!account.getPwd().equals(pwd))account.setPwd(pwd);
                     }
-//                    //OpenIM 开始登录
-//                    String userid = shop.getShopkeeperId();
-//                    String password = shop.getShopkeeperId();
-//                    //初始化imkit
-//                    LoginSampleHelper.getInstance().initIMKit(userid, "24663803");
-//                    //通知栏相关的初始化
-//                    NotificationInitSampleHelper.init();
-//                    LoginSampleHelper loginHelper = LoginSampleHelper.getInstance();
-//                    loginHelper.login_Sample(userid, password, "24663803", new IWxCallback() {
-//
-//                        @Override
-//                        public void onSuccess(Object... arg0) {
+                    //OpenIM 开始登录
+                    String userid = shop.getShopkeeperId();
+                    String password = shop.getShopkeeperId();
+                    //初始化imkit
+                    LoginSampleHelper.getInstance().initIMKit(userid, "24663803");
+                    //通知栏相关的初始化
+                    NotificationInitSampleHelper.init();
+                    LoginSampleHelper loginHelper = LoginSampleHelper.getInstance();
+                    loginHelper.login_Sample(userid, password, "24663803", new IWxCallback() {
+
+                        @Override
+                        public void onSuccess(Object... arg0) {
 //                            ToastUtil.showToast(getActivity(),"openIM login success");
-////						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
-////						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
-////						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
-////                        mockConversationForDemo();
-//                        }
-//
-//                        @Override
-//                        public void onProgress(int arg0) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(int errorCode, String errorMessage) {
-//                            if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
-//                                IMNotificationUtils.getInstance().showToast(getContext(), "游客");
-//                            } else {
-//                                YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
-//                                IMNotificationUtils.getInstance().showToast(getContext(), errorMessage);
-//                            }
-//                        }
-//                    });
+//						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
+//						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
+//						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
+//                        mockConversationForDemo();
+                        }
+
+                        @Override
+                        public void onProgress(int arg0) {
+
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String errorMessage) {
+                            if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
+                                IMNotificationUtils.getInstance().showToast(getContext(), "游客");
+                            } else {
+                                YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
+                                IMNotificationUtils.getInstance().showToast(getContext(), errorMessage);
+                            }
+                        }
+                    });
                     startActivity(new Intent(getContext(), MainActivity.class));
                     if (getActivity() != null) getActivity().finish();
                 }

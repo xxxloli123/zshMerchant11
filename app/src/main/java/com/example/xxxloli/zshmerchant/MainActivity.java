@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -23,6 +24,7 @@ import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderInquireFragment;
 import com.example.xxxloli.zshmerchant.fragment.ShopFragment;
 import com.example.xxxloli.zshmerchant.util.CacheActivity;
+import com.example.xxxloli.zshmerchant.util.InstallUtils;
 import com.interfaceconfig.Config;
 
 import org.json.JSONException;
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        update(this,getVersionCode(this));
+        update(getVersionCode(this));
         init(savedInstanceState);
     }
 
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
-    public static void update(final Context context, final int versionCode) {
+    public  void update(final int versionCode) {
         Request req = new Request.Builder()
                 .tag("")
                 .url(Config.Url.getUrl(Config.UPDATE)).build();
@@ -117,34 +119,10 @@ public class MainActivity extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context, "检测到新的版本，自动为您下载。。。", Toast.LENGTH_SHORT).show();
-                                //创建下载任务,downloadUrl就是下载链接
-                                DownloadManager.Request request = new DownloadManager.Request(
-                                        Uri.parse(Config.Url.getUrl("/slowlife/share/appdownload?type=android_zsh_shop")));
-                                //指定下载路径和下载文件名
-                                request.setDestinationInExternalPublicDir("/sdcard/Android/" + context.getPackageName(), "掌升活(商家端).apk");
-                                request.setDescription("掌升活(商家端)新版本下载");
-                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                request.setMimeType("application/vnd.android.package-archive");
-                                // 设置为可被媒体扫描器找到
-                                request.allowScanningByMediaScanner();
-                                // 设置为可见和可管理
-                                request.setVisibleInDownloadsUi(true);
-                                //获取下载管理器
-                                DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                                //将下载任务加入下载队列，否则不会进行下载
-                                downloadManager.enqueue(request);
+                               upData2();
                             }
                         });
                     }
-//                    else {
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(context, "已安装最新版", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -153,6 +131,46 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private static Handler handler = new Handler();
+
+    public void upData2(){
+        Toast.makeText(this, "检测到新的版本，自动为您下载。。。", Toast.LENGTH_SHORT).show();
+        new InstallUtils(this, Config.Url.getUrl("/slowlife/share/appdownload?type=android"), "惠递",
+                new InstallUtils.DownloadCallBack() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onComplete(String path) {
+                        if (orderHandle!=null)orderHandle.setText("订单处理");
+                        InstallUtils.installAPK(MainActivity.this, path, getPackageName() + ".provider", new InstallUtils.InstallCallBack() {
+                            @Override
+                            public void onSuccess() {
+
+                                Toast.makeText(MainActivity.this, "正在安装程序", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFail(Exception e) {
+                                Toast.makeText(MainActivity.this, "安装失败:" + e.toString(), Toast.LENGTH_SHORT).show();
+                                Log.e("onFail","安装失败:" + e.toString());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoading(long total, long current) {
+                        if (orderHandle!=null)orderHandle.setText((int) (current * 100 / total)+"%");
+                    }
+
+                    @Override
+                    public void onFail(Exception e) {
+                        Toast.makeText(MainActivity.this, "下载失败:" + e.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e("onFail","下载失败:" + e.toString());
+                    }
+
+                }).downloadAPK();
+    }
 
     /*
      * onSaveInstanceState方法会在什么时候被执行，有这么几种情况：

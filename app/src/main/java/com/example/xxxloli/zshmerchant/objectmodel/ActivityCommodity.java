@@ -52,8 +52,8 @@ public class ActivityCommodity {
     private int seckillTime;
     private Object startTime;
     private Object usermessage;
-    private int bargainPrice;
-    private int originalPrice;
+    private double bargainPrice;
+    private double originalPrice;
     private int inventory;
     private String details;
     private String pictureLibraryId;
@@ -211,19 +211,19 @@ public class ActivityCommodity {
         this.usermessage = usermessage;
     }
 
-    public int getBargainPrice() {
+    public double getBargainPrice() {
         return bargainPrice;
     }
 
-    public void setBargainPrice(int bargainPrice) {
+    public void setBargainPrice(double bargainPrice) {
         this.bargainPrice = bargainPrice;
     }
 
-    public int getOriginalPrice() {
+    public double getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(int originalPrice) {
+    public void setOriginalPrice(double originalPrice) {
         this.originalPrice = originalPrice;
     }
 

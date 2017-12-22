@@ -14,6 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.mobileim.channel.event.IWxCallback;
+import com.alibaba.mobileim.channel.util.YWLog;
+import com.alibaba.mobileim.login.YWLoginCode;
+import com.example.xxxloli.zshmerchant.OpenIM.LoginSampleHelper;
+import com.example.xxxloli.zshmerchant.OpenIM.NotificationInitSampleHelper;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.AccountListAdapter;
 import com.example.xxxloli.zshmerchant.fragment.FragLoginPwd;
@@ -64,7 +69,7 @@ public class AccountManageActivity extends BaseActivity {
     private DBManagerShop dbManagerShop;
     private DBManagerUser dbManagerUser;
     private AccountListAdapter accountListAdapter;
-    private String token;
+    private String token,phone;
     private Account account, switchoverEd;
     private static final String TAG = FragLoginPwd.class.getSimpleName();
 
@@ -77,7 +82,7 @@ public class AccountManageActivity extends BaseActivity {
         dbManagerShop = DBManagerShop.getInstance(this);
         dbManagerUser = DBManagerUser.getInstance(this);
         accounts = dbManagerAccount.queryAccountList();
-
+        phone=dbManagerUser.queryById((long) 2333).get(0).getPhone();
 /**
  *         //开启信鸽日志输出
  */
@@ -111,18 +116,16 @@ public class AccountManageActivity extends BaseActivity {
 
     private void initView() {
         if (accounts == null) return;
-        accountListAdapter = new AccountListAdapter(this, accounts);
+        accountListAdapter = new AccountListAdapter(this, accounts,phone);
         accountList.setAdapter(accountListAdapter);
         accountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (accounts.get(position).getWritId() != 2333) {
+                if (!accounts.get(position).getPhone() .equals(phone)) {
                     if (accounts.get(position).getPwd() == null) {
                         switchover();
                         return;
                     }
-                    switchoverEd = accounts.get(position);
-                    account = dbManagerAccount.queryById((long) 2333).get(0);
                     Map<String, Object> map = new HashMap<>();
                     JSONObject user = new JSONObject();
                     try {
@@ -223,60 +226,55 @@ public class AccountManageActivity extends BaseActivity {
         if (json.getInt("statusCode") == 200) {
             OrderHandleFragment.stopTimer();
             Log.e("LOGIN","丢了个雷姆"+json);
-            account.setWritId(null);
-            dbManagerAccount.insertAccount(account);
-            dbManagerAccount.deleteById((long) 2333);
+
             dbManagerShop.deleteById((long) 2333);
             dbManagerUser.deleteById((long) 2333);
-            dbManagerAccount.deleteById(switchoverEd.getWritId());
             User user = new Gson().fromJson(json.getString("user"), User.class);
             user.setWritId((long) 2333);
             Shop shop = new Gson().fromJson(json.getString("shop"), Shop.class);
             shop.setWritId((long) 2333);
             dbManagerUser.insertUser(user);
             dbManagerShop.insertShop(shop);
-            switchoverEd.setWritId((long) 2333);
-            dbManagerAccount.insertAccount(switchoverEd);
-//            //OpenIM 开始登录
-//            String userid = shop.getShopkeeperId();
-//            LoginSampleHelper loginHelper=LoginSampleHelper.getInstance();
-//            init2(userid,"24663803");
-//            loginHelper.login_Sample(userid, userid, "24663803", new IWxCallback() {
-//
-//                @Override
-//                public void onSuccess(Object... arg0) {
-//                    ToastUtil.showToast(AccountManageActivity.this,"login success");
-//                    YWLog.i(TAG, "login success!");
-//
-////						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
-////						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
-////						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
-////                        mockConversationForDemo();
-//                }
-//
-//                @Override
-//                public void onProgress(int arg0) {
-//
-//                }
-//
-//                @Override
-//                public void onError(int errorCode, String errorMessage) {
-//                    if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
-//                        ToastUtil.showToast(AccountManageActivity.this,"则提示使用游客方式登陆");
-//                    } else {
-//                        YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
-//                        ToastUtil.showToast(AccountManageActivity.this,errorMessage);
-//                    }
-//                }
-//            });
+            //OpenIM 开始登录
+            String userid = shop.getShopkeeperId();
+            LoginSampleHelper loginHelper=LoginSampleHelper.getInstance();
+            init2(userid,"24663803");
+            loginHelper.login_Sample(userid, userid, "24663803", new IWxCallback() {
+
+                @Override
+                public void onSuccess(Object... arg0) {
+                    ToastUtil.showToast(AccountManageActivity.this,"login success");
+                    YWLog.i(TAG, "login success!");
+
+//						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
+//						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
+//						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
+//                        mockConversationForDemo();
+                }
+
+                @Override
+                public void onProgress(int arg0) {
+
+                }
+
+                @Override
+                public void onError(int errorCode, String errorMessage) {
+                    if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
+                        ToastUtil.showToast(AccountManageActivity.this,"则提示使用游客方式登陆");
+                    } else {
+                        YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
+                        ToastUtil.showToast(AccountManageActivity.this,errorMessage);
+                    }
+                }
+            });
 //            finish();
         }
     }
 
-//    private void init2(String userId, String appKey){
-//        //初始化imkit
-//        LoginSampleHelper.getInstance().initIMKit(userId, appKey);
-//        //通知栏相关的初始化
-//        NotificationInitSampleHelper.init();
-//    }
+    private void init2(String userId, String appKey){
+        //初始化imkit
+        LoginSampleHelper.getInstance().initIMKit(userId, appKey);
+        //通知栏相关的初始化
+        NotificationInitSampleHelper.init();
+    }
 }

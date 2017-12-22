@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    useLibrary 'org.apache.http.legacy'
     signingConfigs {
         shop {
             keyAlias 'zsh'
@@ -24,8 +25,8 @@ android {
         applicationId "com.example.xxxloli.zshmerchant"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName '1.1.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         ndk {
@@ -52,11 +53,10 @@ android {
 apply plugin: 'org.greenrobot.greendao'
 //数据库版本以及Dao的相关设置
 greendao {
-    schemaVersion 1 //数据库schema版本
+    schemaVersion 2 //数据库schema版本
     daoPackage 'com.example.xxxloli.zshmerchant.greendao.gen'
     targetGenDir 'src/main/java'
 }
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -83,4 +83,11 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile project(path: ':zxing')
     compile 'com.android.support:design:26.0.0-alpha1'
+    //Optional compile for GCM (Google Cloud Messaging).
+    //    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+    //    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
+    //必选
+    compile 'com.alibaba.mobileim:IMCore:2.0.2.1@aar'
+    //可选，如果使用SDK的UI必须添加该依赖，如果不使用SDK的UI，完全自己开发UI则无需添加该依赖
+    compile 'com.alibaba.mobileim:IMKit:2.0.2.1@aar'
 }

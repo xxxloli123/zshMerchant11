@@ -29,17 +29,25 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
-        <View
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"></View>
-
-        <TextView
+            <TextView
+                android:layout_marginLeft="6dp"
             android:id="@+id/phone"
             android:text="23333333333"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <View
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"></View>
+
+        <ImageView
+            android:id="@+id/identification_iv"
+            android:visibility="gone"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/tick1"
+            android:layout_width="16dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <View
