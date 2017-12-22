@@ -52,10 +52,10 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.helpLL:
-                final String target = "2c9ad8435d40a6e5015d43d951d200b7"; //消息接收者ID
-                final String appkey = "24663803"; //消息接收者appKey
-                 intent =new LoginSampleHelper().getIMKit().getChattingActivityIntent(target, appkey);
-                startActivity(intent);
+//                final String target = "2c9ad8435d40a6e5015d43d951d200b7"; //消息接收者ID
+//                final String appkey = "24663803"; //消息接收者appKey
+//                 intent =new LoginSampleHelper().getIMKit().getChattingActivityIntent(target, appkey);
+//                startActivity(intent);
                 break;
             case R.id.printerLL:
                 startActivity(new Intent(this, SearchBluetoothActivity.class));

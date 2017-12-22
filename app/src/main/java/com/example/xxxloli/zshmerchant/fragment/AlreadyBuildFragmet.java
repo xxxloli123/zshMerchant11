@@ -126,9 +126,9 @@ public class AlreadyBuildFragmet extends BaseFragment implements ActivitesAdapte
                     public void onClick(View view) {
                         Map<String, Object> params = new HashMap<>();
 //                productClassId 分类ID， userId 用户id
-                        params.put("productClassId", activitess.get((Integer) v.getTag()).getId());
+                        params.put("shopactivityId", activitess.get((Integer) v.getTag()).getId());
                         params.put("userId", shop.getShopkeeperId());
-                        newCall(Config.Url.getUrl(Config.DELETE_Classify), params);
+                        newCall(Config.Url.getUrl(Config.DELETE_Activitess), params);
                         //List移除某Item
                         activitess.remove(activitess.get((Integer) v.getTag()));
                         activitesAdapter.refresh(activitess);

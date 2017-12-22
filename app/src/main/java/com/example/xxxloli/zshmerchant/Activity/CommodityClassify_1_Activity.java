@@ -94,7 +94,7 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
             TextView title=view.findViewById(R.id.title);
             title.setText("编辑分类");
             classify_name.setText(classifies.get(p).getProductClassName());
-            number_ET.setText(classifies.get(p).getSort()+"");
+            number_ET.setText(classifies.get(p).getSort());
         }
         sure.setOnClickListener(new View.OnClickListener() {
             @Override

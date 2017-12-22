@@ -52,7 +52,8 @@ public class Shop {
     private String shopUserDistance;
     private String shopNotices;
     private String shopTransportArea;
-    @Generated(hash = 1467800111)
+    private String floorPrice;
+    @Generated(hash = 147791051)
     public Shop(Long writId, String id, String special, String shopCode,
             String collectMoneyCode, String shopName, String shopkeeperId,
             String shopkeeperName, String shopkeeperPhone, String othershopnum,
@@ -64,7 +65,7 @@ public class Shop {
             String packingprice, String pro, String city, String district,
             String street, String houseNumber, double lng, double lat,
             String registerDate, String shopUserDistance, String shopNotices,
-            String shopTransportArea) {
+            String shopTransportArea, String floorPrice) {
         this.writId = writId;
         this.id = id;
         this.special = special;
@@ -105,6 +106,7 @@ public class Shop {
         this.shopUserDistance = shopUserDistance;
         this.shopNotices = shopNotices;
         this.shopTransportArea = shopTransportArea;
+        this.floorPrice = floorPrice;
     }
     @Generated(hash = 633476670)
     public Shop() {
@@ -349,5 +351,10 @@ public class Shop {
     public void setShopTransportArea(String shopTransportArea) {
         this.shopTransportArea = shopTransportArea;
     }
-
+    public String getFloorPrice() {
+        return this.floorPrice;
+    }
+    public void setFloorPrice(String floorPrice) {
+        this.floorPrice = floorPrice;
+    }
 }

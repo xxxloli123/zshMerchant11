@@ -40,7 +40,7 @@ public class Bill {
     private String payType_value;
     private Object payRecordsId;
     private String createDate;
-    private int longtime;
+    private String longtime;
     private String type;
     private String type_value;
     private String status;
@@ -138,11 +138,11 @@ public class Bill {
         this.createDate = createDate;
     }
 
-    public int getLongtime() {
+    public String getLongtime() {
         return longtime;
     }
 
-    public void setLongtime(int longtime) {
+    public void setLongtime(String longtime) {
         this.longtime = longtime;
     }
 

@@ -55,6 +55,7 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
     private AMapLocationClientOption mLocationOption;
     private DBManagerShop dbManagerShop;
     private Shop shop;
+    private String price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
         initLocation();
         dbManagerShop = DBManagerShop.getInstance(this);
         shop = dbManagerShop.queryById((long) 2333).get(0);
+        price=shop.getFloorPrice();
     }
 
     private void initLocation() {
@@ -90,7 +92,7 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
         return R.layout.activity_distribution;
     }
 
-    @OnClick({R.id.back_rl, R.id.distribution_service, R.id.selective_dissemination,R.id.community_tv})
+    @OnClick({R.id.back_rl, R.id.distribution_service, R.id.selective_dissemination, R.id.community_tv,R.id.price_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_rl:
@@ -105,7 +107,47 @@ public class DistributionActivity extends BaseActivity implements AMapLocationLi
             case R.id.community_tv:
                 startActivity(new Intent(this, CommunityActivity.class));
                 break;
+            case R.id.price_tv:
+                editPrice();
+                break;
         }
+    }
+
+    private void editPrice() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_ordering_phone, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog).create();
+        TextView save = view.findViewById(R.id.save);
+        final EditText text = view.findViewById(R.id.edit);
+        TextView hint=view.findViewById(R.id.hint_text);
+        hint.setVisibility(View.GONE);
+        if (price != null) {
+            text.setText(price);
+        }
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isEmpty(text.getText().toString().trim())) {
+                    return;
+                }
+                price=text.getText().toString().trim();
+                shop.setFloorPrice(text.getText().toString().trim());
+                Map<String, Object> params = new HashMap<>();
+                JSONObject shopStr = new JSONObject();
+                try {
+                    shopStr.put("id", shop.getId());
+                    shopStr.put("floorPrice", text.getText().toString().trim());
+
+                    params.put("shopStr", shopStr);
+                    params.put("userId", shop.getShopkeeperId());
+                    newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(view);
+        alertDialog.show();
     }
 
     private void SelectiveDissemination() {

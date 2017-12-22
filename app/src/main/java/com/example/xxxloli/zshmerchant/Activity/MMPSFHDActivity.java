@@ -59,9 +59,9 @@ public class MMPSFHDActivity extends BaseActivity {
         ButterKnife.bind(this);
         dbManagerShop = DBManagerShop.getInstance(this);
         shop = dbManagerShop.queryById((long) 2333).get(0);
-        Intent intent = getIntent();
-        if (intent.getSerializableExtra(AlreadyBuildFragmet.EDIT_Activites) != null) {
-            Activites activites = (Activites) intent.getSerializableExtra(AlreadyBuildFragmet.EDIT_Activites);
+
+        if (getIntent().getSerializableExtra(AlreadyBuildFragmet.EDIT_Activites) != null) {
+            Activites activites = (Activites) getIntent().getSerializableExtra(AlreadyBuildFragmet.EDIT_Activites);
             id=activites.getId();
             initView(activites);
         }

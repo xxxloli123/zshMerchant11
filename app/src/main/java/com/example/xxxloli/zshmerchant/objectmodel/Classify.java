@@ -23,7 +23,7 @@ public class Classify {
     private String shopId;
     private String shopkeeperId;
     private String shopkeeperName;
-    private int sort;
+    private String sort;
     private String productClassName;
     private String fatherId;
 
@@ -67,11 +67,11 @@ public class Classify {
         this.shopkeeperName = shopkeeperName;
     }
 
-    public int getSort() {
+    public String getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(String sort) {
         this.sort = sort;
     }
 

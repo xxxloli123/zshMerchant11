@@ -247,6 +247,11 @@ public interface Config {
     String DELETE_Classify = "slowlife/appshop/delproductclass";
 
     /**
+     描述 删除商家自己 活动
+     */
+    String DELETE_Activitess = "slowlife/appshop/shopdeleteshopactivity";
+
+    /**
         上传商品图片
      */
     String Upload_Imgs = "slowlife/appshop/shopuntreatedpicture\n";
