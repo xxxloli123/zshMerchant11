@@ -65,6 +65,20 @@
             android:textSize="12sp" />
 
         <RadioButton
+            android:id="@+id/chat"
+            style="@style/RadioStyleDef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="4dp"
+            android:drawableTop="@drawable/manage_selectes"
+            android:gravity="center"
+            android:text="聊天"
+            android:textColor="@drawable/select_textcolor"
+            android:textSize="12sp" />
+
+        <RadioButton
             android:id="@+id/manage"
             style="@style/RadioStyleDef"
             android:layout_width="wrap_content"

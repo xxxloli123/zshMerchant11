@@ -3,7 +3,6 @@ package com.example.xxxloli.zshmerchant.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -69,7 +68,7 @@ public class OrderListAdapter extends BaseAdapter<OrderEntity> {
         holder.packagingMoney.setText(order.getPackingprice() + "");
         holder.dispatchingMoney.setText(order.getDeliveryFee() + "");
 
-        BillAdapter billAdapter = new BillAdapter(context, order.getGoods());
+        BillAdapter billAdapter = new BillAdapter(context, order.getGoods(), "");
         holder.billList.setAdapter(billAdapter);
         holder.remark.setText("备注: " + order.getComment());
         holder.orderMoney.setText(order.getUserPayFee() + "");

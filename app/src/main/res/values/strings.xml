@@ -1,4 +1,4 @@
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="title">title</string>
     <string name="app_name">掌升活(商家端)</string>
     <string name="feedbackRecird">反馈记录</string>

@@ -1,10 +1,8 @@
 package com.example.xxxloli.zshmerchant;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -19,12 +17,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.fragment.ConversationListFragment;
 import com.example.xxxloli.zshmerchant.fragment.ManageFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderInquireFragment;
 import com.example.xxxloli.zshmerchant.fragment.ShopFragment;
 import com.example.xxxloli.zshmerchant.util.CacheActivity;
 import com.example.xxxloli.zshmerchant.util.InstallUtils;
+import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.interfaceconfig.Config;
 
 import org.json.JSONException;
@@ -34,7 +34,6 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -54,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     RadioButton manage;
     @BindView(R.id.group)
     RadioGroup group;
+    @BindView(R.id.chat)
+    RadioButton chat;
 
 
     private Button selectButton;
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
     private OrderHandleFragment orderHandleFragment;
     private OrderInquireFragment orderInquireFragment;
     private ManageFragment manageFragment;
-    private ShopFragment shopFragment;
+//    private ShopFragment shopFragment;
+    private ConversationListFragment shopFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
-    public  void update(final int versionCode) {
+    public void update(final int versionCode) {
         Request req = new Request.Builder()
                 .tag("")
                 .url(Config.Url.getUrl(Config.UPDATE)).build();
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                               upData2();
+                                upData2();
                             }
                         });
                     }
@@ -130,9 +132,10 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
     private static Handler handler = new Handler();
 
-    public void upData2(){
+    public void upData2() {
         Toast.makeText(this, "检测到新的版本，自动为您下载。。。", Toast.LENGTH_SHORT).show();
         new InstallUtils(this, Config.Url.getUrl("/slowlife/share/appdownload?type=android"), "惠递",
                 new InstallUtils.DownloadCallBack() {
@@ -142,33 +145,32 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete(String path) {
-                        if (orderHandle!=null)orderHandle.setText("订单处理");
+                        if (orderHandle != null) orderHandle.setText("订单处理");
                         InstallUtils.installAPK(MainActivity.this, path, getPackageName() + ".provider", new InstallUtils.InstallCallBack() {
                             @Override
                             public void onSuccess() {
-
                                 Toast.makeText(MainActivity.this, "正在安装程序", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFail(Exception e) {
                                 Toast.makeText(MainActivity.this, "安装失败:" + e.toString(), Toast.LENGTH_SHORT).show();
-                                Log.e("onFail","安装失败:" + e.toString());
+                                Log.e("onFail", "安装失败:" + e.toString());
                             }
                         });
                     }
 
                     @Override
                     public void onLoading(long total, long current) {
-                        if (orderHandle!=null)orderHandle.setText((int) (current * 100 / total)+"%");
+                        if (orderHandle != null)
+                            orderHandle.setText((int) (current * 100 / total) + "%");
                     }
 
                     @Override
                     public void onFail(Exception e) {
                         Toast.makeText(MainActivity.this, "下载失败:" + e.toString(), Toast.LENGTH_SHORT).show();
-                        Log.e("onFail","下载失败:" + e.toString());
+                        Log.e("onFail", "下载失败:" + e.toString());
                     }
-
                 }).downloadAPK();
     }
 
@@ -206,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
         orderHandle.setOnClickListener(onClickListener);
         orderInquire.setOnClickListener(onClickListener);
         manage.setOnClickListener(onClickListener);
-        rButton = new RadioButton[]{orderHandle, orderInquire,manage};
+        chat.setOnClickListener(onClickListener);
+        rButton = new RadioButton[]{orderHandle, orderInquire, manage,chat};
 
         int index = 0;
         if (savedInstanceState != null) {
@@ -240,33 +243,28 @@ public class MainActivity extends AppCompatActivity {
                 orderHandleFragment = addFragment(OrderHandleFragment.class, HANDLE, bundle);
             }
             changeFragment(orderHandleFragment);
-        }
-
-        else if (selectButton == orderInquire) {
+        } else if (selectButton == orderInquire) {
             if (orderInquireFragment == null) {
                 orderInquireFragment = addFragment(OrderInquireFragment.class, INQUIRE, bundle);
             }
             changeFragment(orderInquireFragment);
-        }
-
-        else if (selectButton == manage) {
+        } else if (selectButton == manage) {
             if (manageFragment == null) {
                 manageFragment = addFragment(ManageFragment.class, MANAGE, bundle);
             }
             changeFragment(manageFragment);
         }
 
-//        else if (selectButton == shop) {
-//            if (shopFragment == null) {
-//                shopFragment = addFragment(ShopFragment.class, SHOP, bundle);
-//            }
-//            changeFragment(shopFragment);
-//        }
+        else if (selectButton == chat) {
+            if (shopFragment == null) {
+                shopFragment = addFragment(ConversationListFragment.class, SHOP, bundle);
+            }
+            changeFragment(shopFragment);
+        }
     }
 
     /**
      * 添加管理fragment 并返回
-     *
      * @param fragmentClass 传入的fragment类
      * @param tag           fragment标识
      * @param bundle
@@ -292,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 切换fragment
-     *
      * @param fragment 传入当前切换的fragment
      */
     private void changeFragment(Fragment fragment) {
@@ -315,6 +312,12 @@ public class MainActivity extends AppCompatActivity {
         if (orderFragment != null && orderFragment != fragment) {
             transaction.detach(orderFragment);
             orderFragment.setUserVisibleHint(false);
+        }
+
+        Fragment orderFragment1 = manager.findFragmentByTag(SHOP);
+        if (orderFragment1 != null && orderFragment1 != fragment) {
+            transaction.detach(orderFragment1);
+            orderFragment1.setUserVisibleHint(false);
         }
 
         if (fragment != null) {

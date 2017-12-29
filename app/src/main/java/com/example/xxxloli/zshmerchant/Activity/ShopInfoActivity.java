@@ -744,4 +744,33 @@ public class ShopInfoActivity extends BaseActivity {
         alertDialog.setView(view);
         alertDialog.show();
     }
+
+    public void isInvoice(View view) {
+        View view1 = LayoutInflater.from(this).inflate(R.layout.dialog_sure, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_DayNight_Dialog).create();
+        TextView title = view1.findViewById(R.id.title);
+        Button sure = view1.findViewById(R.id.sure_bt);
+        Button cancel = view1.findViewById(R.id.cancel_bt);
+        title.setText("是否支持发票");
+        cancel.setText("不支持");
+        sure.setText("支持");
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitInfo("invoice", "yes");
+                synchronization();
+                alertDialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitInfo("invoice", "no");
+                synchronization();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(view1);
+        alertDialog.show();
+    }
 }

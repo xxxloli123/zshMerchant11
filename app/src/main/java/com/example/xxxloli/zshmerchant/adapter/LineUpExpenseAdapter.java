@@ -45,7 +45,7 @@ public class LineUpExpenseAdapter extends BaseAdapter<OrderEntity> {
         holder.packagingMoney.setText(order.getPackingprice() + "");
         holder.dispatchingMoney.setText(order.getDeliveryFee() + "");
 
-        BillAdapter billAdapter = new BillAdapter(context, order.getGoods());
+        BillAdapter billAdapter = new BillAdapter(context, order.getGoods(), "");
         holder.billList.setAdapter(billAdapter);
         holder.orderMoney.setText(order.getUserPayFee() + "");
         if (order.getPayStatus_value().equals("已付款")) holder.isPayment.setVisibility(View.VISIBLE);

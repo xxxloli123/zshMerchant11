@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="com.huawei.android.hms:base-2.5.2.300">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/d5a0941f599c03752b0ace1451932a4ae6cd19b0/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/d5a0941f599c03752b0ace1451932a4ae6cd19b0/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/d5a0941f599c03752b0ace1451932a4ae6cd19b0/output/jars/libs/hianalytics_v2.9.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

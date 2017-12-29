@@ -71,7 +71,7 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
     private Classify classifyE;
     public static final String EDIT_Commodity = "commodity";
     private int p=0;
-
+    private int p2=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +229,7 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 }else putawayORsoldOut((Integer) v.getTag(),"Normal");
                 break;
             case R.id.classify_name:
+                p=(Integer) v.getTag();
                 classify2Adapter.changeSelected((Integer) v.getTag());
                 initCommodity(classifies2.get((Integer) v.getTag()).getId());
                 break;
@@ -237,7 +238,9 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
 
     @Override
     protected void onRestart() {
-        initCommodity(classifies2.get(p).getId());
+        if (classifies2.isEmpty()){
+            initView();
+        } else initCommodity(classifies2.get(p).getId());
         super.onRestart();
     }
 

@@ -90,7 +90,7 @@ public class LineDownExpenseAdapter1 extends BaseAdapter implements View.OnClick
         holder.peopleNumber.setText(orderEntities.get(i).getMealnumber() + "");
         holder.downOrderTime.setText(orderEntities.get(i).getCreateDate() + "");
         holder.orderNumber.setText(orderEntities.get(i).getOrderNumber() + "");
-        BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods());
+        BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods(), orderEntities.get(i).getId());
         holder.billList.setAdapter(billAdapter);
         final ViewHolder finalHolder1 = holder;
         holder.LL.setOnClickListener(new View.OnClickListener() {

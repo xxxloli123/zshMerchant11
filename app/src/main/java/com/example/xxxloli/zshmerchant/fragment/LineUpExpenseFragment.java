@@ -204,7 +204,7 @@ public class  LineUpExpenseFragment extends BaseFragment implements LineUpExpens
                     return;
                 }
                 lineUpExpenseAdapter1=new LineUpExpenseAdapter1(getActivity(),orders,this);
-                listview.setAdapter(lineUpExpenseAdapter1);
+                if (listview!=null)listview.setAdapter(lineUpExpenseAdapter1);
                 break;
         }
     }

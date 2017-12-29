@@ -376,6 +376,71 @@
                 android:layout_marginLeft="10dp"
                 android:background="@color/line"></View>
 
+            <LinearLayout
+                android:id="@+id/weight_ll"
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="重量"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:textSize="13dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="（非必填，单位为克）"
+                    android:textColor="@color/hint1_text_color" />
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"></View>
+
+                <EditText
+                    android:inputType="number|numberDecimal"
+                    android:id="@+id/weight_et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="2dp"
+                    android:layout_toLeftOf="@+id/im3"
+                    android:background="@null"
+                    android:hint=""
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/hint_text_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:textColor="@color/text_color"
+                    android:text="克"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="6dp"
+                    android:src="@drawable/right" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/line"></View>
+
             <RelativeLayout
                 android:id="@+id/priceRL"
                 android:layout_width="match_parent"

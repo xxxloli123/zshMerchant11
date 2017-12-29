@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="com.android.support:support-compat-25.0.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/4c63382bd89964227de64a2a85cb77ba7422f5da/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/4c63382bd89964227de64a2a85cb77ba7422f5da/output/jars/libs/internal_impl-25.0.1.jar!/" />
-      <root url="jar://$USER_HOME$/.android/build-cache/4c63382bd89964227de64a2a85cb77ba7422f5da/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/94e0880f895025924d75d6c73e0e4533e74651e0/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/94e0880f895025924d75d6c73e0e4533e74651e0/output/jars/libs/internal_impl-25.0.1.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/94e0880f895025924d75d6c73e0e4533e74651e0/output/res" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../../sdk/extras/android/m2repository/com/android/support/support-compat/25.0.1/support-compat-25.0.1-javadoc.jar!/" />
+      <root url="jar://G:/android/sdk/extras/android/m2repository/com/android/support/support-compat/25.0.1/support-compat-25.0.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../../sdk/extras/android/m2repository/com/android/support/support-compat/25.0.1/support-compat-25.0.1-sources.jar!/" />
+      <root url="jar://G:/android/sdk/extras/android/m2repository/com/android/support/support-compat/25.0.1/support-compat-25.0.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

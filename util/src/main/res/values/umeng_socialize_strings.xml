@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
 
     <dimen name="alphabet_size">12dip</dimen>
     <dimen name="umeng_socialize_pad_window_height">350dip</dimen>

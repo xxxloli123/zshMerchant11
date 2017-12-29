@@ -102,7 +102,7 @@ public class LineUpExpenseAdapter1 extends BaseAdapter implements View.OnClickLi
         holder.packagingMoney.setText(orderEntities.get(i).getPackingprice() + "");
         holder.dispatchingMoney.setText(orderEntities.get(i).getDeliveryFee() + "");
 
-        BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods());
+        BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods(), orderEntities.get(i).getId());
         holder.billList.setAdapter(billAdapter);
         holder.orderMoney.setText(orderEntities.get(i).getUserActualFee() + "");
         if (orderEntities.get(i).getPayStatus_value().equals("已付款")) holder.isPayment.setVisibility(View.VISIBLE);

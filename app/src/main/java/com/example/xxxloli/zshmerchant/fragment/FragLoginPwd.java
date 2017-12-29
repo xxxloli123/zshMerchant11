@@ -14,14 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.mobileim.channel.event.IWxCallback;
-import com.alibaba.mobileim.channel.util.YWLog;
-import com.alibaba.mobileim.login.YWLoginCode;
-import com.alibaba.mobileim.utility.IMNotificationUtils;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
 import com.example.xxxloli.zshmerchant.MainActivity;
-import com.example.xxxloli.zshmerchant.OpenIM.LoginSampleHelper;
-import com.example.xxxloli.zshmerchant.OpenIM.NotificationInitSampleHelper;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.greendao.Account;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerAccount;
@@ -33,6 +27,10 @@ import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.ShSwitchView;
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
 import com.slowlife.lib.MD5;
@@ -194,56 +192,127 @@ public class FragLoginPwd extends BaseFragment {
                     dbManagerShop.insertShop(shop);
 
                     if (dbManagerAccount.queryByPhone(phone).isEmpty()) {
+                        EMClient.getInstance().logout(true);
                         Account account=new Account();
                         account.setHead(shop.getShopImage());
                         account.setName(shop.getShopName());
                         account.setPhone(phone);
                         account.setPwd(pwd);
-                        account.setWritId((long) 2333);
                         dbManagerAccount.insertAccount(account);
                     }else {
                         Account account=dbManagerAccount.queryByPhone(phone).get(0);
                         if (!account.getPwd().equals(pwd))account.setPwd(pwd);
                     }
-                    //OpenIM 开始登录
-                    String userid = shop.getShopkeeperId();
-                    String password = shop.getShopkeeperId();
-                    //初始化imkit
-                    LoginSampleHelper.getInstance().initIMKit(userid, "24663803");
-                    //通知栏相关的初始化
-                    NotificationInitSampleHelper.init();
-                    LoginSampleHelper loginHelper = LoginSampleHelper.getInstance();
-                    loginHelper.login_Sample(userid, password, "24663803", new IWxCallback() {
+                    EMClient.getInstance().logout(true);
 
-                        @Override
-                        public void onSuccess(Object... arg0) {
-//                            ToastUtil.showToast(getActivity(),"openIM login success");
-//						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
-//						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
-//						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
-//                        mockConversationForDemo();
-                        }
+                    loginEase(user.getId(),user.getId());
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    EMClient.getInstance().groupManager().loadAllGroups();
+//                    //OpenIM 开始登录
+//                    String userid = shop.getShopkeeperId();
+//                    String password = shop.getShopkeeperId();
+//                    //初始化imkit
+//                    LoginSampleHelper.getInstance().initIMKit(userid, "24663803");
+//                    //通知栏相关的初始化
+//                    NotificationInitSampleHelper.init();
+//                    LoginSampleHelper loginHelper = LoginSampleHelper.getInstance();
+//                    loginHelper.login_Sample(userid, password, "24663803", new IWxCallback() {
+//
+//                        @Override
+//                        public void onSuccess(Object... arg0) {
+////                            ToastUtil.showToast(getActivity(),"openIM login success");
+////						YWIMKit mKit = LoginSampleHelper.getInstance().getIMKit();
+////						EServiceContact contact = new EServiceContact("qn店铺测试账号001:找鱼");
+////						LoginActivity.this.startActivity(mKit.getChattingActivityIntent(contact));
+////                        mockConversationForDemo();
+//                        }
+//
+//                        @Override
+//                        public void onProgress(int arg0) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(int errorCode, String errorMessage) {
+//                            if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
+//                                IMNotificationUtils.getInstance().showToast(getContext(), "游客");
+//                            } else {
+//                                YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
+//                                IMNotificationUtils.getInstance().showToast(getContext(), errorMessage);
+//                            }
+//                        }
+//                    });
 
-                        @Override
-                        public void onProgress(int arg0) {
-
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String errorMessage) {
-                            if (errorCode == YWLoginCode.LOGON_FAIL_INVALIDUSER) { //若用户不存在，则提示使用游客方式登陆
-                                IMNotificationUtils.getInstance().showToast(getContext(), "游客");
-                            } else {
-                                YWLog.w(TAG, "登录失败，错误码：" + errorCode + "  错误信息：" + errorMessage);
-                                IMNotificationUtils.getInstance().showToast(getContext(), errorMessage);
-                            }
-                        }
-                    });
-                    startActivity(new Intent(getContext(), MainActivity.class));
+                    startActivity(new Intent(getActivity(), MainActivity.class));
                     if (getActivity() != null) getActivity().finish();
                 }
                 break;
         }
+    }
+
+    private void loginEase(String userName, String password) {
+        EMClient.getInstance().login(userName,password,new EMCallBack() {//回调
+            @Override
+            public void onSuccess() {
+                EMClient.getInstance().groupManager().loadAllGroups();
+                EMClient.getInstance().chatManager().loadAllConversations();
+                Log.d("main", "登录聊天服务器成功！");
+            }
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(final int i, final String s) {
+                Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (i) {
+                            // 网络异常 2
+                            case EMError.NETWORK_ERROR:
+                                Toast.makeText(getActivity(), "网络错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无效的用户名 101
+                            case EMError.INVALID_USER_NAME:
+                                Toast.makeText(getActivity(), "无效的用户名 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无效的密码 102
+                            case EMError.INVALID_PASSWORD:
+                                Toast.makeText(getActivity(), "无效的密码 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 用户认证失败，用户名或密码错误 202
+                            case EMError.USER_AUTHENTICATION_FAILED:
+                                Toast.makeText(getActivity(), "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 用户不存在 204
+                            case EMError.USER_NOT_FOUND:
+                                Toast.makeText(getActivity(), "用户不存在 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无法访问到服务器 300
+                            case EMError.SERVER_NOT_REACHABLE:
+                                Toast.makeText(getActivity(), "无法访问到服务器 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 等待服务器响应超时 301
+                            case EMError.SERVER_TIMEOUT:
+                                Toast.makeText(getActivity(), "等待服务器响应超时 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 服务器繁忙 302
+                            case EMError.SERVER_BUSY:
+                                Toast.makeText(getActivity(), "服务器繁忙 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            // 未知 Server 异常 303 一般断网会出现这个错误
+                            case EMError.SERVER_UNKNOWN_ERROR:
+                                Toast.makeText(getActivity(), "未知的服务器异常 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override

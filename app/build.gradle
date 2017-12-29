@@ -53,7 +53,7 @@ android {
 apply plugin: 'org.greenrobot.greendao'
 //数据库版本以及Dao的相关设置
 greendao {
-    schemaVersion 2 //数据库schema版本
+    schemaVersion 4 //数据库schema版本
     daoPackage 'com.example.xxxloli.zshmerchant.greendao.gen'
     targetGenDir 'src/main/java'
 }
@@ -84,10 +84,12 @@ dependencies {
     compile project(path: ':zxing')
     compile 'com.android.support:design:26.0.0-alpha1'
     //Optional compile for GCM (Google Cloud Messaging).
-    //    compile 'com.google.android.gms:play-services-gcm:9.4.0'
-    //    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
+//    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+//    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
     //必选
-    compile 'com.alibaba.mobileim:IMCore:2.0.2.1@aar'
-    //可选，如果使用SDK的UI必须添加该依赖，如果不使用SDK的UI，完全自己开发UI则无需添加该依赖
-    compile 'com.alibaba.mobileim:IMKit:2.0.2.1@aar'
+//    compile 'com.alibaba.mobileim:IMCore:2.0.2.1@aar'
+//    //可选，如果使用SDK的UI必须添加该依赖，如果不使用SDK的UI，完全自己开发UI则无需添加该依赖
+//    compile 'com.alibaba.mobileim:IMKit:2.0.2.1@aar'
+    compile project(path: ':easeui')
+    compile project(path: ':interfaceconfig')
 }

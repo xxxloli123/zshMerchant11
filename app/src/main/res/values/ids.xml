@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="billCommodityId" type="id" />
+    <item name="orderId" type="id" />
+    <item name="billCommodityName" type="id" />
+</resources>

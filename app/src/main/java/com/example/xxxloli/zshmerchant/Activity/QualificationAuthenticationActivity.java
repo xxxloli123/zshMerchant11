@@ -36,6 +36,7 @@ import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.BitmapCompressUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.interfaceconfig.Config;
+import com.sgrape.dialog.LoadDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -85,6 +86,7 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
     private User user;
     private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
     private String imagePath;
+    private LoadDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,8 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
                 return;
             }
             else {
+                dialog = new LoadDialog(QualificationAuthenticationActivity.this);
+                dialog.show();
     //            Info info = ((MyApplication) getApplication()).getInfo();
                 try {
                     JSONObject userStr = new JSONObject();
@@ -158,6 +162,7 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    dialog.dismiss();
                                     Toast.makeText(QualificationAuthenticationActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -171,10 +176,12 @@ public class QualificationAuthenticationActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     if (responseCode != 200) {
+                                        dialog.dismiss();
                                         Toast.makeText(QualificationAuthenticationActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                                         return;
                                     }
                                     try {
+                                        dialog.dismiss();
                                         JSONObject result = new JSONObject(responseResult);
                                         System.out.println(result.toString());
                                         if (result.getInt("statusCode") != 200) {

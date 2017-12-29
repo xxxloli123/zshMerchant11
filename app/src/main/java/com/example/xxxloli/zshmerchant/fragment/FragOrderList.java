@@ -16,10 +16,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.Activity.EditCommodityActivity;
 import com.example.xxxloli.zshmerchant.R;
+import com.example.xxxloli.zshmerchant.adapter.BillAdapter;
 import com.example.xxxloli.zshmerchant.adapter.Classify2Adapter;
 import com.example.xxxloli.zshmerchant.adapter.OrderListAdapter;
 import com.example.xxxloli.zshmerchant.adapter.OrderListAdapter1;
@@ -31,6 +33,8 @@ import com.example.xxxloli.zshmerchant.print.PrintQueue;
 import com.example.xxxloli.zshmerchant.printutil.PrintOrderDataMaker;
 import com.example.xxxloli.zshmerchant.printutil.PrinterWriter;
 import com.example.xxxloli.zshmerchant.printutil.PrinterWriter58mm;
+import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
+import com.example.xxxloli.zshmerchant.util.OkHttp;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.MyListView;
 import com.google.gson.Gson;
@@ -63,7 +67,7 @@ import in.srain.cube.views.ptr.PtrHandler2;
  * e-mail: sgrape1153@gmail.com
  */
 @SuppressLint("ValidFragment")
-public class FragOrderList extends BaseFragment implements OrderListAdapter1.Callback{
+public class FragOrderList extends BaseFragment implements OrderListAdapter1.Callback,BillAdapter.Callback{
 
     @BindView(R.id.no_order)
     LinearLayout noOrder;
@@ -97,7 +101,6 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     public FragOrderList(String lineOrderType, boolean enable) {
         super();
         this.lineOrderType = lineOrderType;
-
     }
 
     @Override
@@ -133,7 +136,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     }
 
     @Override
-    protected void loadData() {
+    public void loadData() {
         //订单处理 lineOrderType： 所有新订单All，ReserveOrder(预定单),NormalOrder(配送到家)
         // UnPayed(待付款),ShopConsumption(到店消费单)
 //        if (!firstLoad && srl != null && !srl.isRefreshing()) return;
@@ -226,10 +229,11 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     }
 
     @Override
-    public void click(View v) {
+    public void click(final View v) {
         switch (v.getId()) {
             case R.id.reject:
-                    reject(orders.get((Integer) v.getTag()));
+                if (lineOrderType.equals("NormalOrder"))confirmShip(orders.get((Integer) v.getTag()));
+                else reject(orders.get((Integer) v.getTag()));
                 break;
             case R.id.receiving_order:
                 //订单处理 lineOrderType： 所有新订单 All，ReserveOrder(预定单),NormalOrder(配送到家)
@@ -255,7 +259,78 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     orderListAdapter1.notifyDataSetChanged();
                 }
                 break;
+            case R.id.weight_tv:
+                if (!lineOrderType.equals("NormalOrder")){
+                    return;
+                }
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_receive_or_reject, null);
+                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog).create();
+                Button sure = view.findViewById(R.id.sure_bt);
+                Button cancel = view.findViewById(R.id.cancel_bt);
+                TextView nameTv = view.findViewById(R.id.name_tv);
+                nameTv.setVisibility(View.VISIBLE);
+                nameTv.setText(v.getTag(R.id.billCommodityName)+"");
+                final EditText causeEdit = view.findViewById(R.id.cause_edit);
+                causeEdit.setHint("输入修改重量,不能为 0");
+                causeEdit.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                sure.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (causeEdit.getText().toString().isEmpty()) {
+                            return;
+                        }
+                        if (Double.parseDouble(causeEdit.getText().toString())==0){
+                            ToastUtil.showToast(getActivity(),"不能为 0");
+                            return;
+                        }
+//       参数：[orderId, userId, goodsId, goodsnum]
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("orderId", v.getTag(R.id.orderId));
+                        map.put("userId", shop.getShopkeeperId());
+                        map.put("goodsId", v.getTag(R.id.billCommodityId));
+                        map.put("goodsnum", causeEdit.getText().toString());
+                        newCall(Config.Url.getUrl(Config.Edit_OrderQuantity), map);
+                        alertDialog.dismiss();
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.setView(view);
+                alertDialog.show();
+                break;
         }
+    }
+
+    private void confirmShip(final OrderEntity orderEntity) {
+        View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_sure, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog).create();
+        TextView title = view1.findViewById(R.id.title);
+        Button sure = view1.findViewById(R.id.sure_bt);
+        Button cancel = view1.findViewById(R.id.cancel_bt);
+        title.setText("确认发货吗");
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, Object> params = new HashMap<>();
+//                [orderId, userId]
+                params.put("orderId", orderEntity.getId());
+                params.put("userId", shop.getShopkeeperId());
+                newCall(Config.Url.getUrl(Config.Confirm_Ship), params);
+                alertDialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(view1);
+        alertDialog.show();
     }
 
     private void editPrice(final OrderEntity orderEntity) {
@@ -412,13 +487,17 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     return;
                 }
                 if (lineOrderType.equals("All"))
-                orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,true);
-                else orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,false);
+                orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,true,this);
+                else orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,
+                        false,this);
                 listview.setAdapter(orderListAdapter1);
                 break;
             case Config.Edit_Price:
-                loadData();
+            case Config.Edit_OrderQuantity:
+            case Config.Confirm_Ship:
             case Config.Receive_Reject:
+                page = 0;
+                loadData();
                 Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 break;
         }

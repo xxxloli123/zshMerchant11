@@ -297,5 +297,4 @@ public class ManageFragment extends BaseFragment {
     public void onViewClicked() {
         startActivity(new Intent(getActivity(), ShopInfoActivity.class));
     }
-
 }

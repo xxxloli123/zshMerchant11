@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.example.xxxloli.zshmerchant.OpenIM.LoginSampleHelper;
 import com.example.xxxloli.zshmerchant.R;
 
 import butterknife.BindView;
@@ -47,9 +46,9 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MyAccountActivity.class));
                 break;
             case R.id.notificationLL:
-//                startActivity(new Intent(this, NewMessageActivity.class));
-                 intent = LoginSampleHelper.getInstance().getIMKit().getConversationActivityIntent();
-                startActivity(intent);
+                startActivity(new Intent(this, NewMessageActivity.class));
+//                 intent = LoginSampleHelper.getInstance().getIMKit().getConversationActivityIntent();
+//                startActivity(intent);
                 break;
             case R.id.helpLL:
 //                final String target = "2c9ad8435d40a6e5015d43d951d200b7"; //消息接收者ID

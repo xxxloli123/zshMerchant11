@@ -75,6 +75,7 @@ public class Commodity  implements Serializable {
     private Object effect;
     private double sales;
     private double commentCount;
+    private String weight;
 
     public String getId() {
         return id;
@@ -330,5 +331,13 @@ public class Commodity  implements Serializable {
 
     public void setCommentCount(double commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 }

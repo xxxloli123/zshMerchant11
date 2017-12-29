@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -23,17 +24,23 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/9/15.
  */
 
-public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListener {
+public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ArrayList<OrderEntity> orderEntities;
     private Context mContext;
     private Callback mCallback;
     private boolean isNew;
+    private BillAdapter.Callback callback2;
 
     //响应按钮点击事件,调用子定义接口，并传入View
     @Override
     public void onClick(View v) {
         mCallback.click(v);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
     }
 
     /**
@@ -46,11 +53,13 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         public void click(View v);
     }
 
-    public OrderListAdapter1(Context mContext, ArrayList<OrderEntity> orderEntities, Callback callback,boolean isNew ) {
+    public OrderListAdapter1(Context mContext, ArrayList<OrderEntity> orderEntities, Callback callback,
+                             boolean isNew,BillAdapter.Callback callback2 ) {
         this.orderEntities = orderEntities;
         this.mContext = mContext;
         mCallback = callback;
         this.isNew=isNew;
+        this.callback2=callback2;
     }
 
     //刷新Adapter
@@ -84,7 +93,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.money.setText(orderEntities.get(i).getUserActualFee() + "");
+        holder.money.setText(intercept(orderEntities.get(i).getUserActualFee()+""));
         holder.orderMoney.setText(orderEntities.get(i).getUserActualFee() + "");
         holder.downOrderTime.setText(orderEntities.get(i).getCreateDate());
         holder.orderNumber.setText(orderEntities.get(i).getOrderNumber());
@@ -95,7 +104,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         } else if (orderEntities.get(i).getLineOrder().equals("ShopConsumption")) {
             holder.psdjText.setText("到店消费");
             holder.psdjText.setBackgroundResource(R.drawable.round_red_background);
-            holder.money.setText(orderEntities.get(i).getTableNumber() + "");
+            holder.money.setText(orderEntities.get(i).getTableNumber() + " 桌");
             holder.identifyingMoneyTv.setVisibility(View.GONE);
             holder.address.setVisibility(View.GONE);
         } else if (orderEntities.get(i).getStatus().equals("UnPayed")) {
@@ -104,7 +113,9 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.reject.setVisibility(View.GONE);
             holder.receivingOrder.setText("修改价格");
         } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&!isNew) {
-            holder.reject.setVisibility(View.GONE);
+            if (orderEntities.get(i).getStatus().equals("UnDeliverGoods"))
+            holder.reject.setText("确认发货");
+            else holder.reject.setVisibility(View.GONE);
             holder.receivingOrder.setText("打印订单");
             holder.infoLl.setVisibility(View.VISIBLE);
             holder.infoTv.setText(orderEntities.get(i).getStatus_value());
@@ -132,8 +143,10 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         holder.packagingMoney.setText(orderEntities.get(i).getPackingprice() + "");
         holder.dispatchingMoney.setText(orderEntities.get(i).getDeliveryFee() + "");
 
-        BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods());
+        BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods(),
+                orderEntities.get(i).getId(),callback2);
         holder.billList.setAdapter(billAdapter);
+//        holder.billList.setOnItemClickListener(this);
         holder.remark.setText("备注: " + orderEntities.get(i).getComment());
         if (orderEntities.get(i).getPayStatus_value().equals("已付款"))
             holder.isPayment.setVisibility(View.VISIBLE);
@@ -170,6 +183,11 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             finalHolder.line.setVisibility(View.VISIBLE);
         }
         return view;
+    }
+
+    private String intercept(String s) {
+        int p = s.lastIndexOf(".")+3;
+        return (s.length()>p)? s.substring(0,p)+"...":s;
     }
 
     static class ViewHolder {

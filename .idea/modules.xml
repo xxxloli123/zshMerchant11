@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easeui/easeui.iml" filepath="$PROJECT_DIR$/easeui/easeui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hms/hms.iml" filepath="$PROJECT_DIR$/hms/hms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hyphenatechatsdk/hyphenatechatsdk.iml" filepath="$PROJECT_DIR$/hyphenatechatsdk/hyphenatechatsdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/interfaceconfig/interfaceconfig.iml" filepath="$PROJECT_DIR$/interfaceconfig/interfaceconfig.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />

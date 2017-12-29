@@ -96,7 +96,6 @@ public class OkHttpCallback implements Callback {
         }
     }
 
-
     public static interface Impl {
         void onSuccess(Object tag, JSONObject json) throws JSONException;
 

@@ -68,9 +68,13 @@ public class CommodityAdapter extends BaseAdapter implements View.OnClickListene
             holder = (ViewHolder) view.getTag();
         }
         //   status 取值：：：{Wait_audit(未发布 ), Normal(已发布), Stop(已下架)};]
-        if (commodities.get(i).getStatus().equals("Stop"))
+        if (commodities.get(i).getStatus().equals("Stop")) {
+            holder.suspensionOfSale.setText("上架");
             holder.backgroundLL.setBackgroundResource(R.color.hint1_text_color);
-        else holder.backgroundLL.setBackgroundResource(R.color.white1);
+        } else{
+            holder.backgroundLL.setBackgroundResource(R.color.white1);
+            holder.suspensionOfSale.setText("停售");
+        }
         holder.commodityName.setText(commodities.get(i).getProductName() + "");
         Picasso.with(context).load(Config.Url.getUrl(Config.IMG_Commodity) + commodities.get(i).getSmallImg())
                 .into(holder.commodityImg);

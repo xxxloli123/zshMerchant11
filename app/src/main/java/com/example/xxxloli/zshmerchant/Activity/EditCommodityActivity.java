@@ -21,10 +21,8 @@ import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.SelectClassifyAdapter;
-import com.example.xxxloli.zshmerchant.fragment.AlreadyBuildFragmet;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
-import com.example.xxxloli.zshmerchant.objectmodel.ActivityCommodity;
 import com.example.xxxloli.zshmerchant.objectmodel.Classify;
 import com.example.xxxloli.zshmerchant.objectmodel.Commodity;
 import com.google.gson.Gson;
@@ -121,6 +119,8 @@ public class EditCommodityActivity extends BaseActivity {
     Button deleteBt;
     @BindView(R.id.operationLL)
     LinearLayout operationLL;
+    @BindView(R.id.weight_et)
+    EditText weightEt;
 
     private ArrayList<Classify> classifies1, classifies2;
     private Classify classify;
@@ -149,16 +149,17 @@ public class EditCommodityActivity extends BaseActivity {
     }
 
     private void initView() {
-        Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity)+
+        Picasso.with(this).load(Config.Url.getUrl(Config.IMG_Commodity) +
                 commodity.getSmallImg()).into(commodityImg);
         sequenceTV.setText(commodity.getShopsort() + "");
         nameET.setText(commodity.getProductName());
         describeET.setText(commodity.getDetails());
         classifyTV.setText(commodity.getShopClassName());
-        classify=new Classify();
+        classify = new Classify();
         classify.setProductClassName(commodity.getShopClassName());
         classify.setId(commodity.getShopClassId());
-        priceET.setText(commodity.getSinglePrice()+"");
+        priceET.setText(commodity.getSinglePrice() + "");
+        weightEt.setText(commodity.getWeight());
         firstText.setText(commodity.getGenericClassName());
         if (commodity.getStatus().equals("Normal")) putawayORsoldOutBt.setText("下架");
     }
@@ -170,9 +171,15 @@ public class EditCommodityActivity extends BaseActivity {
 
     @OnClick({R.id.back_rl, R.id.show1, R.id.show2, R.id.show3, R.id.show4, R.id.show5, R.id.show6,
             R.id.classifyRL, R.id.priceRL, R.id.specificationRL, R.id.save_bt, R.id.commodity_img,
-            R.id.sequenceRL,R.id.putawayORsold_out_bt, R.id.delete_bt})
+            R.id.sequenceRL, R.id.putawayORsold_out_bt, R.id.delete_bt,R.id.weight_ll})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.weight_ll:
+                weightEt.setFocusable(true);
+                weightEt.setFocusableInTouchMode(true);
+                weightEt.requestFocus();
+                hideKeyBoard();
+                break;
             case R.id.back_rl:
                 finish();
                 break;
@@ -201,11 +208,10 @@ public class EditCommodityActivity extends BaseActivity {
                 break;
             case R.id.putawayORsold_out_bt:
 //                status 取值：：：{Wait_audit(未发布 ), Normal(已发布), Stop(已下架)};]
-                if (putawayORsoldOutBt.getText().toString().equals("下架")){
+                if (putawayORsoldOutBt.getText().toString().equals("下架")) {
                     putawayORsoldOut("Stop");
                     putawayORsoldOutBt.setText("上架");
-                }
-                else {
+                } else {
                     putawayORsoldOut("Normal");
                     putawayORsoldOutBt.setText("下架");
                 }

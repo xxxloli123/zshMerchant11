@@ -71,8 +71,6 @@ public class Classify2Adapter extends RecyclerView.Adapter<Classify2Adapter.View
         TextView classifyName;
     }
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_classify2, parent, false);

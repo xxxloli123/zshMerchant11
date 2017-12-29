@@ -1,1 +1,1 @@
-include ':app', ':util', ':library', ':interfaceconfig', ':tabstrip', ':map', ':xgpush', ':zxing'
+include ':app', ':util', ':library', ':interfaceconfig', ':tabstrip', ':map', ':xgpush', ':zxing', ':hyphenatechatsdk', ':easeui', ':hms'

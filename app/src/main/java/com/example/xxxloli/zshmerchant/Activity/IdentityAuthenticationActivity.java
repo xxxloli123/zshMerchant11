@@ -36,6 +36,7 @@ import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
 import com.example.xxxloli.zshmerchant.util.BitmapCompressUtils;
 import com.interfaceconfig.Config;
+import com.sgrape.dialog.LoadDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -99,6 +100,7 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
     private User user;
     private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
     private String imagePath;
+    private LoadDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,11 +282,12 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
         }else try {
             if (getFileSize(file1)<20||getFileSize(file2)<20) {
                 Toast.makeText(this, "请添加身份证图片", Toast.LENGTH_SHORT).show();
-                return;
             }
             else {
     //            Info info = ((MyApplication) getApplication()).getInfo();
                 try {
+                    dialog = new LoadDialog(IdentityAuthenticationActivity.this);
+                    dialog.show();
                     JSONObject userStr = new JSONObject();
     //                userStr.put("id", info.getId());
                     userStr.put("id", user.getId());
@@ -326,7 +329,8 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(IdentityAuthenticationActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    Toast.makeText(IdentityAuthenticationActivity.this, "onFailure上传失败", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -339,10 +343,12 @@ public class IdentityAuthenticationActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     if (responseCode != 200) {
-                                        Toast.makeText(IdentityAuthenticationActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                        Toast.makeText(IdentityAuthenticationActivity.this, "responseCode != 200 上传失败", Toast.LENGTH_SHORT).show();
                                         return;
                                     }
                                     try {
+                                        dialog.dismiss();
                                         JSONObject result = new JSONObject(responseResult);
                                         System.out.println(result.toString());
                                         if (result.getInt("statusCode") != 200) {

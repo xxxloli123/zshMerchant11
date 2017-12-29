@@ -126,6 +126,9 @@ public class AddCommodityActivity extends BaseActivity {
     @BindView(R.id.img_name)
     TextView imgName;
 
+    @BindView(R.id.weight_et)
+    EditText weightEt;
+
     private ListPopupWindow listPopupWindow;
     private ArrayList<UniversalClassify> universalClassifies1, universalClassifies2, universalClassifies3,
             universalClassifies4, universalClassifies5, universalClassifies6;
@@ -171,10 +174,16 @@ public class AddCommodityActivity extends BaseActivity {
 
     @OnClick({R.id.back_rl, R.id.show1, R.id.show2, R.id.show3, R.id.show4, R.id.show5, R.id.show6,
             R.id.classifyRL, R.id.priceRL, R.id.specificationRL, R.id.save_bt, R.id.commodity_img, R.id.sequenceRL
-    ,R.id.inquireRL})
+            , R.id.inquireRL, R.id.weight_ll})
     public void onViewClicked(View view) {
         Intent intent = null;
         switch (view.getId()) {
+            case R.id.weight_ll:
+                weightEt.setFocusable(true);
+                weightEt.setFocusableInTouchMode(true);
+                weightEt.requestFocus();
+                hideKeyBoard();
+                break;
             case R.id.back_rl:
                 finish();
                 break;
@@ -359,7 +368,7 @@ public class AddCommodityActivity extends BaseActivity {
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (classifies2!=null&&classify2Text.getText().equals(classifies2.get(0).getProductClassName()))
+                if (classifies2 != null && classify2Text.getText().equals(classifies2.get(0).getProductClassName()))
                     classify = classifies2.get(0);
                 if (classify2Text.getText().equals("二级分类")) {
                     Toast.makeText(AddCommodityActivity.this, "请选择二级分类", Toast.LENGTH_SHORT).show();
@@ -622,6 +631,8 @@ public class AddCommodityActivity extends BaseActivity {
                 productStr.put("shopsort", sequence);
                 productStr.put("details", describe);
                 productStr.put("singlePrice", price);
+                productStr.put("weight",
+                        (weightEt.getText().toString().isEmpty())?1:weightEt.getText().toString());
                 productStr.put("genericClassId", selectCommodityImg.getGenericClassId());
                 productStr.put("genericClassName", selectCommodityImg.getGenericClassName());
 
@@ -693,14 +704,15 @@ public class AddCommodityActivity extends BaseActivity {
         // 得到InputMethodManager的实例
         if (imm.isActive()) {
             // 如果开启
-            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
-                    InputMethodManager.HIDE_NOT_ALWAYS);
             // 关闭软键盘，开启方法相同，这个方法是切换开启与关闭状态的
         }
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @OnClick(R.id.scan_rl)
     public void onViewClicked() {
         startActivityForResult(new Intent(this, CaptureActivity.class), 99);
     }
+
 }

@@ -1,4 +1,4 @@
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Utils</string>
     <string name="errcode_success">发送成功</string>
     <string name="errcode_cancel">发送取消</string>

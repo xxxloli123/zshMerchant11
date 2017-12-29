@@ -6,11 +6,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-
-import com.alibaba.mobileim.YWAPI;
-import com.alibaba.wxlib.util.SysUtil;
-import com.example.xxxloli.zshmerchant.OpenIM.LoginSampleHelper;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.EaseUI;
 import com.slowlife.xgpush.XgReceiver;
 import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushManager;
@@ -39,6 +38,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mContext=this;
+        // 初始化环信SDK
+        initEasemob();
 
         if (isMainProcess()) {
             // 为保证弹出通知前一定调用本方法，需要在application的onCreate注册
@@ -64,44 +66,62 @@ public class MyApplication extends Application {
             });
         }
 
-//        // 初始化环信SDK
-//        initEasemob();
         //todo Application.onCreate中，首先执行这部分代码，以下代码固定在此处，不要改动，这里return是为了退出Application.onCreate！！！
-        if(mustRunFirstInsideApplicationOnCreate()){
-            //todo 如果在":TCMSSevice"进程中，无需进行openIM和app业务的初始化，以节省内存
-            return;
-        }
-        initYWSDK(this);
+//        if(mustRunFirstInsideApplicationOnCreate()){
+//            //todo 如果在":TCMSSevice"进程中，无需进行openIM和app业务的初始化，以节省内存
+//            return;
+//        }
+//        initYWSDK(this);
     }
 
-    public static void initYWSDK(Application application){
-        //todo 只在主进程进行云旺SDK的初始化!!!
-        if(SysUtil.isMainProcess()){
-            //TODO 注意：--------------------------------------
-            //  以下步骤调用顺序有严格要求，请按照示例的步骤（todo step）
-            // 的顺序调用！
-            //TODO --------------------------------------------
-
-            // ------[todo step1]-------------
-            //［IM定制初始化］，如果不需要定制化，可以去掉此方法的调用
-            //todo 注意：由于增加全局初始化，该配置需最先执行！
-
-
-            // ------[todo step2]-------------
-            //SDK初始化
-            LoginSampleHelper.getInstance().initSDK_Sample(application);
-
-            //后期将使用Override的方式进行集中配置，请参照YWSDKGlobalConfigSample
-            YWAPI.enableSDKLogOutput(true);
-        }
+    /**
+     *
+     */
+    private void initEasemob() {
+        EMOptions options = new EMOptions();
+// 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+// 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
+//        options.setAutoTransferMessageAttachments(true);
+// 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
+//        options.setAutoDownloadThumbnail(true);
+//...
+//初始化
+        EMClient.getInstance().init(this, options);
+//在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
+        EaseUI.getInstance().init(this, options);
     }
 
-    private boolean mustRunFirstInsideApplicationOnCreate() {
-        //必须的初始化
-        SysUtil.setApplication(this);
-        sContext = getApplicationContext();
-        return SysUtil.isTCMSServiceProcess(sContext);
-    }
+//
+//    public static void initYWSDK(Application application){
+//        //todo 只在主进程进行云旺SDK的初始化!!!
+//        if(SysUtil.isMainProcess()){
+//            //TODO 注意：--------------------------------------
+//            //  以下步骤调用顺序有严格要求，请按照示例的步骤（todo step）
+//            // 的顺序调用！
+//            //TODO --------------------------------------------
+//
+//            // ------[todo step1]-------------
+//            //［IM定制初始化］，如果不需要定制化，可以去掉此方法的调用
+//            //todo 注意：由于增加全局初始化，该配置需最先执行！
+//
+//
+//            // ------[todo step2]-------------
+//            //SDK初始化
+//            LoginSampleHelper.getInstance().initSDK_Sample(application);
+//
+//            //后期将使用Override的方式进行集中配置，请参照YWSDKGlobalConfigSample
+//            YWAPI.enableSDKLogOutput(true);
+//        }
+//    }
+//
+//    private boolean mustRunFirstInsideApplicationOnCreate() {
+//        //必须的初始化
+//        SysUtil.setApplication(this);
+//        sContext = getApplicationContext();
+//        return SysUtil.isTCMSServiceProcess(sContext);
+//    }
 
 //    /**
 //     *
@@ -165,7 +185,7 @@ public class MyApplication extends Application {
 //        // options.setGCMNumber(MLConstants.ML_GCM_NUMBER);
 //        // 设置集成小米推送的appid和appkey
 //        // options.setMipushConfig(MLConstants.ML_MI_APP_ID, MLConstants.ML_MI_APP_KEY);
-//
+
 //        return options;
 //    }
 //
@@ -209,4 +229,5 @@ public class MyApplication extends Application {
         }
         return false;
     }
+
 }
