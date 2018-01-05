@@ -209,6 +209,17 @@ public class FragEvaluateList extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void click(View v) {
-
+//        参数：[evaluateId, replycomment]
+        Map<String, Object> map = new HashMap<>();
+        map.put("evaluateId", v.getTag(R.id.reply_id));
+        map.put("replycomment", v.getTag(R.id.reply_content));
+        newCall(Config.Url.getUrl(Config.Reply_Evaluate), map);
+        if (type.equals("NotReply")){
+            //List移除某Item
+            evaluates.remove(evaluates.get((Integer) v.getTag()));
+            evaluateListAdapter1.notifyDataSetChanged();
+        }else {
+            loadData();
+        }
     }
 }

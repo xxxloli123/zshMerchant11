@@ -199,7 +199,7 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 Gson gson3 = new Gson();
 //                Log.e("commodities","丢了个雷姆"+json);
                 for (int i = 0; i < arr3.length(); i++) {
-                    commodities.add(gson3.fromJson(arr3.getString(arr3.length() - i - 1), Commodity.class));
+                    commodities.add(gson3.fromJson(arr3.getString(i), Commodity.class));
                 }
                 if (commodityAdapter!=null){
                     commodityAdapter.refresh(commodities);
@@ -238,9 +238,11 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
 
     @Override
     protected void onRestart() {
-        if (classifies2.isEmpty()){
-            initView();
-        } else initCommodity(classifies2.get(p).getId());
+        if (classifies2!=null){
+            if (classifies2.isEmpty()){
+                initView();
+            } else initCommodity(classifies2.get(p).getId());
+        }else initView();
         super.onRestart();
     }
 

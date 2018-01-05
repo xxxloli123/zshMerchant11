@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.peng.library:one-push-huawei-hms-1.2.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/bdd8afdaa0ba224f4c8e065dd760ae1129b1fcd7/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/bdd8afdaa0ba224f4c8e065dd760ae1129b1fcd7/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.peng.library/one-push-huawei-hms/1.2.1/6587a94945c028bc51d1c11e3a613bb8be0a025b/one-push-huawei-hms-1.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

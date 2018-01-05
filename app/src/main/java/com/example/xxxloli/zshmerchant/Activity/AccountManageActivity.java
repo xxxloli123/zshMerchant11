@@ -42,6 +42,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +71,7 @@ public class AccountManageActivity extends BaseActivity {
     private String token,phone;
     private Account account, switchoverEd;
     private static final String TAG = FragLoginPwd.class.getSimpleName();
+    private String hint="\n可能会影响聊天功能\n如聊天功能异常请重新登录";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,7 +222,6 @@ public class AccountManageActivity extends BaseActivity {
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
-        Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
         if (json.getInt("statusCode") == 200) {
             OrderHandleFragment.stopTimer();
             Log.e("LOGIN","丢了个雷姆"+json);
@@ -265,7 +267,13 @@ public class AccountManageActivity extends BaseActivity {
 //                    }
 //                }
 //            });
-            initView();
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            },1000);
         }
     }
 
@@ -276,6 +284,12 @@ public class AccountManageActivity extends BaseActivity {
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EMClient.getInstance().chatManager().loadAllConversations();
                 Log.d("main", "登录聊天服务器成功！");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(AccountManageActivity.this,"登录成功");
+                    }
+                });
             }
             @Override
             public void onProgress(int progress, String status) {
@@ -284,52 +298,56 @@ public class AccountManageActivity extends BaseActivity {
             @Override
             public void onError(final int i, final String s) {
                 Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        switch (i) {
-//                            // 网络异常 2
-//                            case EMError.NETWORK_ERROR:
-//                                Toast.makeText(AccountManageActivity.this, "网络错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 无效的用户名 101
-//                            case EMError.INVALID_USER_NAME:
-//                                Toast.makeText(AccountManageActivity.this, "无效的用户名 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 无效的密码 102
-//                            case EMError.INVALID_PASSWORD:
-//                                Toast.makeText(AccountManageActivity.this, "无效的密码 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 用户认证失败，用户名或密码错误 202
-//                            case EMError.USER_AUTHENTICATION_FAILED:
-//                                Toast.makeText(AccountManageActivity.this, "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 用户不存在 204
-//                            case EMError.USER_NOT_FOUND:
-//                                Toast.makeText(AccountManageActivity.this, "用户不存在 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 无法访问到服务器 300
-//                            case EMError.SERVER_NOT_REACHABLE:
-//                                Toast.makeText(AccountManageActivity.this, "无法访问到服务器 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 等待服务器响应超时 301
-//                            case EMError.SERVER_TIMEOUT:
-//                                Toast.makeText(this, "等待服务器响应超时 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 服务器繁忙 302
-//                            case EMError.SERVER_BUSY:
-//                                Toast.makeText(this, "服务器繁忙 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            // 未知 Server 异常 303 一般断网会出现这个错误
-//                            case EMError.SERVER_UNKNOWN_ERROR:
-//                                Toast.makeText(this, "未知的服务器异常 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                            default:
-//                                Toast.makeText(this, "ml_sign_in_failed code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-//                                break;
-//                        }
-//                    }
-//                });
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (i) {
+                            //用户已登录 200
+                            case EMError.USER_ALREADY_LOGIN:
+                                Toast.makeText(AccountManageActivity.this, "用户已登录", Toast.LENGTH_LONG).show();
+                                break;
+                            // 网络异常 2
+                            case EMError.NETWORK_ERROR:
+                                Toast.makeText(AccountManageActivity.this, "网络错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无效的用户名 101
+                            case EMError.INVALID_USER_NAME:
+                                Toast.makeText(AccountManageActivity.this, "无效的用户名 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无效的密码 102
+                            case EMError.INVALID_PASSWORD:
+                                Toast.makeText(AccountManageActivity.this, "无效的密码 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 用户认证失败，用户名或密码错误 202
+                            case EMError.USER_AUTHENTICATION_FAILED:
+                                Toast.makeText(AccountManageActivity.this, "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 用户不存在 204
+                            case EMError.USER_NOT_FOUND:
+                                Toast.makeText(AccountManageActivity.this, "用户不存在 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无法访问到服务器 300
+                            case EMError.SERVER_NOT_REACHABLE:
+                                Toast.makeText(AccountManageActivity.this, "无法访问到服务器 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 等待服务器响应超时 301
+                            case EMError.SERVER_TIMEOUT:
+                                Toast.makeText(AccountManageActivity.this, "等待服务器响应超时 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 服务器繁忙 302
+                            case EMError.SERVER_BUSY:
+                                Toast.makeText(AccountManageActivity.this, "服务器繁忙 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 未知 Server 异常 303 一般断网会出现这个错误
+                            case EMError.SERVER_UNKNOWN_ERROR:
+                                Toast.makeText(AccountManageActivity.this, "未知的服务器异常 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                Toast.makeText(AccountManageActivity.this, "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                    }
+                });
             }
         });
     }

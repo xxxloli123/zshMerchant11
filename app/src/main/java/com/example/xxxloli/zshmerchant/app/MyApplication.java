@@ -4,12 +4,16 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Process;
 import android.util.Log;
 
+import com.example.xxxloli.zshmerchant.BuildConfig;
+import com.example.xxxloli.zshmerchant.util.RomUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
+import com.peng.one.push.OnePush;
 import com.slowlife.xgpush.XgReceiver;
 import com.tencent.android.tpush.XGNotifaction;
 import com.tencent.android.tpush.XGPushManager;
@@ -23,7 +27,7 @@ import java.util.List;
  */
 
 public class MyApplication extends Application {
-
+    // 此TAG在adb logcat中检索自己所需要的信息， 只需在命令行终端输入 adb logcat | grep
     private static final String TAG = MyApplication.class.getSimpleName();
     public static Context mContext;
     //云旺OpenIM的DEMO用到的Application上下文实例
@@ -35,12 +39,19 @@ public class MyApplication extends Application {
     // 记录是否已经初始化
     private boolean isInit = false;
 
+    // user your appid the key.
+    private static final String APP_ID = "2882303761517645572";
+    // user your appid the key.
+    private static final String APP_KEY = "5321764599572";
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext=this;
         // 初始化环信SDK
         initEasemob();
+//        startXm();
+//        startOnePush();
 
         if (isMainProcess()) {
             // 为保证弹出通知前一定调用本方法，需要在application的onCreate注册
@@ -74,6 +85,114 @@ public class MyApplication extends Application {
 //        initYWSDK(this);
     }
 
+//    private void startXm() {
+//        // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
+//        // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
+//        if (shouldInit()) {
+//            MiPushClient.registerPush(this, APP_ID, APP_KEY);
+//        }
+//
+//        LoggerInterface newLogger = new LoggerInterface() {
+//
+//            @Override
+//            public void setTag(String tag) {
+//                // ignore
+//            }
+//
+//            @Override
+//            public void log(String content, Throwable t) {
+//                Log.d(TAG, content, t);
+//            }
+//
+//            @Override
+//            public void log(String content) {
+//                Log.d(TAG, content);
+//            }
+//        };
+//        Logger.setLogger(this, newLogger);
+//    }
+
+    //获取当前进程名称
+    private void startOnePush() {
+        String currentProcessName = getCurrentProcessName();
+        //只在主进程中注册(注意：umeng推送，除了在主进程中注册，还需要在channel中注册)
+        if (BuildConfig.APPLICATION_ID.equals(currentProcessName) || BuildConfig.APPLICATION_ID.concat(":channel").equals(currentProcessName)) {
+            //platformCode和platformName就是在<meta/>标签中，对应的"平台标识码"和平台名称
+            OnePush.init(this, ((platformCode, platformName) -> {
+                boolean result = false;
+                if (RomUtils.isMiuiRom()) {
+                    result=  platformCode == 101;
+                } //RomUtils.isHuaweiRom()
+                else
+                    if (RomUtils.isHuaweiRom()) {
+//                    result= platformCode == 107;
+                    result=true;
+                } else if(RomUtils.isFlymeRom()){
+                    result = platformCode == 103;
+                } else {
+                    result= platformCode == 106;
+                }
+                Log.i(TAG, "Register-> code: "+platformCode+" name: "+platformName+" result: "+result);
+                return result;
+//                return platformCode == 101;
+            }));
+            OnePush.register();
+        }
+        Log.i(TAG, "onCreate: isFlymeRom:"+RomUtils.isFlymeRom());
+    }
+
+    public String getCurrentProcessName() {
+        int currentProcessId = Process.myPid();
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
+            if (runningAppProcess.pid == currentProcessId) {
+                return runningAppProcess.processName;
+            }
+        }
+        return null;
+    }
+
+//    private void startXm() {
+//        // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
+//        // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
+//        if (shouldInit()) {
+//            MiPushClient.registerPush(this, APP_ID, APP_KEY);
+//        }
+//
+//        LoggerInterface newLogger = new LoggerInterface() {
+//
+//            @Override
+//            public void setTag(String tag) {
+//                // ignore
+//            }
+//
+//            @Override
+//            public void log(String content, Throwable t) {
+//                Log.d(TAG, content, t);
+//            }
+//
+//            @Override
+//            public void log(String content) {
+//                Log.d(TAG, content);
+//            }
+//        };
+//        Logger.setLogger(this, newLogger);
+//    }
+
+    private boolean shouldInit() {
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+        int myPid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      *
      */
@@ -85,12 +204,16 @@ public class MyApplication extends Application {
 //        options.setAutoTransferMessageAttachments(true);
 // 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
 //        options.setAutoDownloadThumbnail(true);
+        // 设置小米推送 appID 和 appKey
+//        options.setMipushConfig(APP_ID, APP_KEY);
 //...
 //初始化
-        EMClient.getInstance().init(this, options);
-//在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        EMClient.getInstance().setDebugMode(true);
         EaseUI.getInstance().init(this, options);
+        EMClient.getInstance().init(this, options);
+        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
+        // 设置通话过程中对方如果离线是否发送离线推送通知，默认 false
+        EMClient.getInstance().callManager().getCallOptions().setIsSendPushIfOffline(true);
     }
 
 //

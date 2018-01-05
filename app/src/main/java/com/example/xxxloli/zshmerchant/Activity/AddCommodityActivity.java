@@ -130,8 +130,9 @@ public class AddCommodityActivity extends BaseActivity {
     EditText weightEt;
 
     private ListPopupWindow listPopupWindow;
-    private ArrayList<UniversalClassify> universalClassifies1, universalClassifies2, universalClassifies3,
-            universalClassifies4, universalClassifies5, universalClassifies6;
+    private ArrayList<UniversalClassify> universalClassifies1=new ArrayList<>(), universalClassifies2=new ArrayList<>(),
+            universalClassifies3=new ArrayList<>(), universalClassifies4=new ArrayList<>()
+            , universalClassifies5=new ArrayList<>(), universalClassifies6=new ArrayList<>();
     private UniversalClassify universalClassify;
     private boolean isShow1 = true, isShow2 = true, isShow3 = true, isShow4 = true, isShow5 = true,
             isShow6 = true, isSpecification = false;
@@ -191,31 +192,31 @@ public class AddCommodityActivity extends BaseActivity {
                 if (isShow1) {
                     selectType(firstText, show1, firstImg, secondText, show2, universalClassifies1, universalClassifies2);
                     isShow1 = false;
-                } else isShow1 = true;
+                }
                 break;
             case R.id.show2:
                 if (isShow2) {
                     selectType(secondText, show2, secondImg, thirdlyText, show3, universalClassifies2, universalClassifies3);
                     isShow2 = false;
-                } else isShow2 = true;
+                }
                 break;
             case R.id.show3:
                 if (isShow3) {
                     selectType(thirdlyText, show3, thirdlyImg, fourthlyText, show4, universalClassifies3, universalClassifies4);
                     isShow3 = false;
-                } else isShow3 = true;
+                }
                 break;
             case R.id.show4:
                 if (isShow4) {
                     selectType(fourthlyText, show4, fifthImg, fifthText, show5, universalClassifies4, universalClassifies5);
                     isShow4 = false;
-                } else isShow4 = true;
+                }
                 break;
             case R.id.show5:
                 if (isShow5) {
                     selectType(fifthText, show5, fifthImg, sixthText, show6, universalClassifies5, universalClassifies6);
                     isShow5 = false;
-                } else isShow5 = true;
+                }
                 break;
             case R.id.show6:
                 break;
@@ -480,23 +481,28 @@ public class AddCommodityActivity extends BaseActivity {
     private void selectType(final TextView thisTV, final RelativeLayout thisRL, final ImageView thisImg,
                             final TextView nextTV, final RelativeLayout nextRL, final ArrayList<UniversalClassify> thisUniversalClassify,
                             final ArrayList<UniversalClassify> nextUniversalClassify) {
+        listPopupWindow = new ListPopupWindow(this);
         switch (thisRL.getId()) {
             case R.id.show1:
+                if (show2.getVisibility() == View.VISIBLE) show2.setVisibility(View.GONE);
                 if (show3.getVisibility() == View.VISIBLE) show3.setVisibility(View.GONE);
                 if (show4.getVisibility() == View.VISIBLE) show4.setVisibility(View.GONE);
                 if (show5.getVisibility() == View.VISIBLE) show5.setVisibility(View.GONE);
                 if (show6.getVisibility() == View.VISIBLE) show6.setVisibility(View.GONE);
                 break;
             case R.id.show2:
+                if (show3.getVisibility() == View.VISIBLE) show3.setVisibility(View.GONE);
                 if (show4.getVisibility() == View.VISIBLE) show4.setVisibility(View.GONE);
                 if (show5.getVisibility() == View.VISIBLE) show5.setVisibility(View.GONE);
                 if (show6.getVisibility() == View.VISIBLE) show6.setVisibility(View.GONE);
                 break;
             case R.id.show3:
+                if (show4.getVisibility() == View.VISIBLE) show4.setVisibility(View.GONE);
                 if (show5.getVisibility() == View.VISIBLE) show5.setVisibility(View.GONE);
                 if (show6.getVisibility() == View.VISIBLE) show6.setVisibility(View.GONE);
                 break;
             case R.id.show4:
+                if (show5.getVisibility() == View.VISIBLE) show5.setVisibility(View.GONE);
                 if (show6.getVisibility() == View.VISIBLE) show6.setVisibility(View.GONE);
                 break;
         }
@@ -521,23 +527,23 @@ public class AddCommodityActivity extends BaseActivity {
                 switch (thisRL.getId()) {
                     case R.id.show1:
                         isShow1 = true;
-                        universalClassifies2 = init;
+//                        universalClassifies2 .addAll(init) ;
                         break;
                     case R.id.show2:
                         isShow2 = true;
-                        universalClassifies3 = init;
+//                        universalClassifies3 .addAll(init);
                         break;
                     case R.id.show3:
                         isShow3 = true;
-                        universalClassifies4 = init;
+//                        universalClassifies4 .addAll(init);
                         break;
                     case R.id.show4:
                         isShow4 = true;
-                        universalClassifies5 = init;
+//                        universalClassifies5 .addAll(init);
                         break;
                     case R.id.show5:
                         isShow5 = true;
-                        universalClassifies6 = init;
+//                        universalClassifies6 .addAll(init);
                         break;
                     case R.id.show6:
                         isShow6 = true;
@@ -571,6 +577,8 @@ public class AddCommodityActivity extends BaseActivity {
                         for (int i = 0; i < arr.length(); i++) {
                             init.add(gson.fromJson(arr.getString(i), UniversalClassify.class));
                         }
+                        nextUniversalClassify.clear();
+                        nextUniversalClassify.addAll(init);
                         universalClassify = init.get(0);
                         nextRL.setVisibility(View.VISIBLE);
                         nextTV.setText(init.get(0).getGenericClassName() + "");

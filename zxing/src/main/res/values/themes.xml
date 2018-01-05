@@ -22,7 +22,7 @@
         <item name="android:windowActionModeOverlay">true</item>
     </style>
 
-    <style name="CaptureTheme" parent="android:Theme.Light.NoTitleBar">
+    <style name="CaptureTheme" parent="android:Theme.Light">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBarOverlay">true</item>

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/easeui/easeui.iml" filepath="$PROJECT_DIR$/easeui/easeui.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hms/hms.iml" filepath="$PROJECT_DIR$/hms/hms.iml" />
       <module fileurl="file://$PROJECT_DIR$/hyphenatechatsdk/hyphenatechatsdk.iml" filepath="$PROJECT_DIR$/hyphenatechatsdk/hyphenatechatsdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/interfaceconfig/interfaceconfig.iml" filepath="$PROJECT_DIR$/interfaceconfig/interfaceconfig.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
@@ -12,7 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/tabstrip/tabstrip.iml" filepath="$PROJECT_DIR$/tabstrip/tabstrip.iml" />
       <module fileurl="file://$PROJECT_DIR$/util/util.iml" filepath="$PROJECT_DIR$/util/util.iml" />
       <module fileurl="file://$PROJECT_DIR$/xgpush/xgpush.iml" filepath="$PROJECT_DIR$/xgpush/xgpush.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zshMerchant3.iml" filepath="$PROJECT_DIR$/zshMerchant3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaomipush/xiaomipush.iml" filepath="$PROJECT_DIR$/xiaomipush/xiaomipush.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zshMerchant11.iml" filepath="$PROJECT_DIR$/zshMerchant11.iml" />
+      <module fileurl="file://E:\android\dome\zshMerchant11\zshMerchant3.iml" filepath="E:\android\dome\zshMerchant11\zshMerchant3.iml" />
       <module fileurl="file://$PROJECT_DIR$/zxing/zxing.iml" filepath="$PROJECT_DIR$/zxing/zxing.iml" />
     </modules>
   </component>

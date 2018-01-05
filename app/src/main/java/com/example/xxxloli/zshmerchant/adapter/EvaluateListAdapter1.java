@@ -115,6 +115,9 @@ public class EvaluateListAdapter1 extends RecyclerView.Adapter<EvaluateListAdapt
             holder.sure.setVisibility(View.GONE);
             holder.replyTv.setVisibility(View.VISIBLE);
         }
+        holder.sure.setOnClickListener(this);
+        holder.sure.setTag(R.id.reply_content,holder.evaluate.getText().toString());
+        holder.sure.setTag(R.id.reply_id,evaluates.get(position).getId());
         holder.replyTv.setText(evaluates.get(position).getReplycomment()+"");
         holder.reply.addTextChangedListener(new TextWatcher() {
             @Override

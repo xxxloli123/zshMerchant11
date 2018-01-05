@@ -253,8 +253,8 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     map.put("userId", shop.getShopkeeperId());
                     map.put("cause", "");
                     newCall(Config.Url.getUrl(Config.Receive_Reject), map);
-                    //List移除某Item
                     PrintOrder( orders.get((Integer) v.getTag()));
+                    //List移除某Item
                     orders.remove(orders.get((Integer) v.getTag()));
                     orderListAdapter1.notifyDataSetChanged();
                 }

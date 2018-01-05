@@ -169,6 +169,14 @@ public class MyBillActivity extends BaseActivity {
                 Log.e("GET_Bills", "丢了个雷姆" + json);
                 JSONArray arr = json.getJSONObject("accountInfo").getJSONArray("aaData");
                 ptrFrameLayout.refreshComplete();
+                if (json.getString("alipayBinding").equals("yes")){
+                    alipayBt.setText("已绑定支付宝");
+                    alipayBt.setClickable(false);
+                }
+                if (json.getString("weixinBingding").equals("yes")){
+                    weixinBt.setText("已绑定微信");
+                    weixinBt.setClickable(false);
+                }
                 if (checkBills == null) checkBills = new ArrayList<>();
                 if (page == 1 && !checkBills.isEmpty()) checkBills.clear();
                 Gson gson = new Gson();
@@ -310,7 +318,6 @@ public class MyBillActivity extends BaseActivity {
                 });
             }
         });
-
     }
 
     //获取当前日期

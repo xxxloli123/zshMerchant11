@@ -6,7 +6,7 @@ android {
         shop {
             keyAlias 'zsh'
             keyPassword 'zsh123'
-            storeFile file('D:/android/pro/zshMerchant_backup/zshMerchant3/shop.jks')
+            storeFile file('E:/android/pro/zshMerchant_backup/zshMerchant3/shop.jks')
             storePassword 'zsh123'
         }
     }
@@ -48,7 +48,12 @@ android {
     }
     productFlavors {
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
+apply plugin: 'me.tatarka.retrolambda'
 
 apply plugin: 'org.greenrobot.greendao'
 //数据库版本以及Dao的相关设置
@@ -84,12 +89,13 @@ dependencies {
     compile project(path: ':zxing')
     compile 'com.android.support:design:26.0.0-alpha1'
     //Optional compile for GCM (Google Cloud Messaging).
-//    compile 'com.google.android.gms:play-services-gcm:9.4.0'
-//    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
+    //    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+    //    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
     //必选
-//    compile 'com.alibaba.mobileim:IMCore:2.0.2.1@aar'
-//    //可选，如果使用SDK的UI必须添加该依赖，如果不使用SDK的UI，完全自己开发UI则无需添加该依赖
-//    compile 'com.alibaba.mobileim:IMKit:2.0.2.1@aar'
-    compile project(path: ':easeui')
+    //    compile 'com.alibaba.mobileim:IMCore:2.0.2.1@aar'
+    //    //可选，如果使用SDK的UI必须添加该依赖，如果不使用SDK的UI，完全自己开发UI则无需添加该依赖
+    //    compile 'com.alibaba.mobileim:IMKit:2.0.2.1@aar'
     compile project(path: ':interfaceconfig')
+    compile project(':xiaomipush')
+    compile project(':easeui')
 }

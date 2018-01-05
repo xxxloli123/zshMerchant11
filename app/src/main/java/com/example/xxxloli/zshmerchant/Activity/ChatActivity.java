@@ -15,7 +15,6 @@ public class ChatActivity extends AppCompatActivity {
     private EaseChatFragment chatFragment;
     String toChatUsername;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -328,6 +328,7 @@ public class ShopInfoActivity extends BaseActivity {
                     params.put("shopStr", shopStr);
                     params.put("userId", shop.getShopkeeperId());
                     newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
+                    Log.e("EDIT_SHOP_INFO","丢了个雷姆"+params);
                     synchronization();
                     shop.setBookingOrder(bookingOrder);
                     shop.setLineConsume(lineConsume);

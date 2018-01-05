@@ -43,6 +43,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,7 +77,7 @@ public class FragLoginPwd extends BaseFragment {
     private DBManagerAccount dbManagerAccount;
     private DBManagerShop dbManagerShop;
     private String phone,pwd;
-
+    private String hint="\n可能会影响聊天功能\n如聊天功能异常请重新登录";
 
     public FragLoginPwd() {
         super();
@@ -242,9 +244,14 @@ public class FragLoginPwd extends BaseFragment {
 //                            }
 //                        }
 //                    });
-
-                    startActivity(new Intent(getActivity(), MainActivity.class));
-                    if (getActivity() != null) getActivity().finish();
+                    Timer timer=new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            if (getActivity() != null) getActivity().finish();
+                        }
+                    },1500);
                 }
                 break;
         }
@@ -261,7 +268,6 @@ public class FragLoginPwd extends BaseFragment {
             @Override
             public void onProgress(int progress, String status) {
             }
-
             @Override
             public void onError(final int i, final String s) {
                 Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
@@ -269,48 +275,53 @@ public class FragLoginPwd extends BaseFragment {
                     @Override
                     public void run() {
                         switch (i) {
+                            //用户已登录 200
+                            case EMError.USER_ALREADY_LOGIN:
+                                Toast.makeText(getActivity(), "用户已登录", Toast.LENGTH_LONG).show();
+                                break;
                             // 网络异常 2
                             case EMError.NETWORK_ERROR:
-                                Toast.makeText(getActivity(), "网络错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "网络错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 无效的用户名 101
                             case EMError.INVALID_USER_NAME:
-                                Toast.makeText(getActivity(), "无效的用户名 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "无效的用户名 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 无效的密码 102
                             case EMError.INVALID_PASSWORD:
-                                Toast.makeText(getActivity(), "无效的密码 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "无效的密码 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 用户认证失败，用户名或密码错误 202
                             case EMError.USER_AUTHENTICATION_FAILED:
-                                Toast.makeText(getActivity(), "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 用户不存在 204
                             case EMError.USER_NOT_FOUND:
-                                Toast.makeText(getActivity(), "用户不存在 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "用户不存在 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 无法访问到服务器 300
                             case EMError.SERVER_NOT_REACHABLE:
-                                Toast.makeText(getActivity(), "无法访问到服务器 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "无法访问到服务器 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 等待服务器响应超时 301
                             case EMError.SERVER_TIMEOUT:
-                                Toast.makeText(getActivity(), "等待服务器响应超时 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "等待服务器响应超时 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 服务器繁忙 302
                             case EMError.SERVER_BUSY:
-                                Toast.makeText(getActivity(), "服务器繁忙 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "服务器繁忙 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 未知 Server 异常 303 一般断网会出现这个错误
                             case EMError.SERVER_UNKNOWN_ERROR:
-                                Toast.makeText(getActivity(), "未知的服务器异常 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "未知的服务器异常 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                             default:
-                                Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                         }
                     }
                 });
+
             }
         });
     }

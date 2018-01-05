@@ -3,4 +3,6 @@
     <item name="billCommodityId" type="id" />
     <item name="orderId" type="id" />
     <item name="billCommodityName" type="id" />
+    <item name="reply_content" type="id" />
+    <item name="reply_id" type="id" />
 </resources>
