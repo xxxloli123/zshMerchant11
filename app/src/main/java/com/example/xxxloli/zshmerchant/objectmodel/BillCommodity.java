@@ -26,11 +26,11 @@ public class BillCommodity {
     private String goodsName;
     private String smallImg;
     private double goodsPrice;
-    private String goodsnum;
+    private double goodsnum;
     private String isStandard;
     private String productcategory;
     private String standardName;
-    private String goodsweight;
+    private double goodsweight;
     private double goodsrealweight;
 
     public String getId() {
@@ -89,11 +89,11 @@ public class BillCommodity {
         this.goodsPrice = goodsPrice;
     }
 
-    public String getGoodsnum() {
+    public double getGoodsnum() {
         return goodsnum;
     }
 
-    public void setGoodsnum(String goodsnum) {
+    public void setGoodsnum(double goodsnum) {
         this.goodsnum = goodsnum;
     }
 
@@ -122,11 +122,11 @@ public class BillCommodity {
     }
 
 
-    public String getGoodsweight() {
+    public double getGoodsweight() {
         return goodsweight;
     }
 
-    public void setGoodsweight(String goodsweight) {
+    public void setGoodsweight(double goodsweight) {
         this.goodsweight = goodsweight;
     }
 

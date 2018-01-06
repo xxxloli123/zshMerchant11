@@ -5,4 +5,5 @@
     <item name="billCommodityName" type="id" />
     <item name="reply_content" type="id" />
     <item name="reply_id" type="id" />
+    <item name="billCommodityPosition" type="id" />
 </resources>

@@ -85,6 +85,8 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     private ArrayList<OrderEntity> orders;
     private OrderListAdapter1 orderListAdapter1;
     private BluetoothAdapter bluetoothAdapter;
+    private int quantityP,priceP;
+    private String edit;
 
     /**
      * bluetooth adapter
@@ -145,7 +147,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
         map.put("shopId", shop.getId());
         map.put("userId", shop.getShopkeeperId());
         map.put("startPage", ++page);
-        map.put("pageSize", "20");
+        map.put("pageSize", "15");
         map.put("lineOrderType", lineOrderType);
         newCall(Config.Url.getUrl(Config.GET_HandleOrder), map);
     }
@@ -231,8 +233,9 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     @Override
     public void click(final View v) {
         switch (v.getId()) {
-            case R.id.reject:
-                if (lineOrderType.equals("NormalOrder"))confirmShip(orders.get((Integer) v.getTag()));
+            case R.id.reject://confirmShip(orders.get((Integer) v.getTag()));
+                if (lineOrderType.equals("NormalOrder")&&orders.get(0).getLineOrder().equals("NormalOrder"))
+                    PrintOrder(orders.get((Integer) v.getTag()));
                 else reject(orders.get((Integer) v.getTag()));
                 break;
             case R.id.receiving_order:
@@ -242,8 +245,9 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     receive(orders.get((Integer) v.getTag()));
                 else if (orders.get(0).getStatus().equals("UnPayed")){
                     editPrice(orders.get((Integer) v.getTag()));
-                }else if (lineOrderType.equals("NormalOrder")&&orders.get(0).getLineOrder().equals("NormalOrder")){
-                    PrintOrder(orders.get((Integer) v.getTag()));
+                    priceP= (int) v.getTag();
+                }else if (lineOrderType.equals("NormalOrder")){
+                    confirmShip(orders.get((Integer) v.getTag()));
                 }
                 else {
                     Map<String, Object> map = new HashMap<>();
@@ -283,13 +287,15 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                             ToastUtil.showToast(getActivity(),"不能为 0");
                             return;
                         }
-//       参数：[orderId, userId, goodsId, goodsnum]
+//                      参数：[orderId, userId, goodsId, goodsnum]
                         Map<String, Object> map = new HashMap<>();
                         map.put("orderId", v.getTag(R.id.orderId));
                         map.put("userId", shop.getShopkeeperId());
                         map.put("goodsId", v.getTag(R.id.billCommodityId));
                         map.put("goodsnum", causeEdit.getText().toString());
                         newCall(Config.Url.getUrl(Config.Edit_OrderQuantity), map);
+                        edit=causeEdit.getText().toString();
+                        quantityP= (int) v.getTag(R.id.billCommodityPosition);
                         alertDialog.dismiss();
                     }
                 });
@@ -354,6 +360,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 map.put("userId", shop.getShopkeeperId());
                 map.put("cost", causeEdit.getText());
                 newCall(Config.Url.getUrl(Config.Edit_Price), map);
+                edit=causeEdit.getText().toString();
                 alertDialog.dismiss();
             }
         });
@@ -502,6 +509,18 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 break;
         }
     }
+
+//    //    getChildAt(position)方法获取到的是当前可见的第position项，获取的时候还需要做一个位置计算
+//    public  void updataItem(int position){
+//        int firstvisible = listview.getFirstVisiblePosition();
+//        int lastvisibale = listview.getLastVisiblePosition();
+//        if(position>=firstvisible&&position<=lastvisibale){
+//            View view = listview.getChildAt(position - firstvisible);
+//            OrderListAdapter1.ViewHolder viewHolder = (OrderListAdapter1.ViewHolder) view.getTag();
+//            viewHolder.remark.setVisibility(View.VISIBLE);
+//            //然后使用viewholder去更新需要更新的view。
+//        }
+//    }
 
     @Override
     public void onDestroyView() {

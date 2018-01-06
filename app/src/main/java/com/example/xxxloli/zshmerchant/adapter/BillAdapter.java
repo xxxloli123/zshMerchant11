@@ -88,13 +88,14 @@ public class BillAdapter extends BaseAdapter implements OkHttpCallback.Impl, Vie
         if (billCommodities.get(i).getGoodsrealweight()>0)
             holder.weightTv.setText(billCommodities.get(i).getGoodsrealweight() + " 克"+"(重量)");
         else {
-            double quantity= Double.parseDouble(billCommodities.get(i).getGoodsnum());
-            double weight= Double.parseDouble(billCommodities.get(i).getGoodsweight());
+            double quantity= billCommodities.get(i).getGoodsnum();
+            double weight= billCommodities.get(i).getGoodsweight();
             holder.weightTv.setText((quantity *weight) + " 克"+"(重量)");
         }
         holder.weightTv.setOnClickListener(this);
         holder.weightTv.setTag(R.id.billCommodityId, billCommodities.get(i).getId());
         holder.weightTv.setTag(R.id.orderId, orderId);
+        holder.weightTv.setTag(R.id.billCommodityPosition, i);
         holder.weightTv.setTag(R.id.billCommodityName, billCommodities.get(i).getGoodsName());
         return view;
     }

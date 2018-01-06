@@ -31,6 +31,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     private Callback mCallback;
     private boolean isNew;
     private BillAdapter.Callback callback2;
+    private boolean isRefresh=false;
 
     //响应按钮点击事件,调用子定义接口，并传入View
     @Override
@@ -65,6 +66,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     //刷新Adapter
     public void refresh(ArrayList<OrderEntity> orderEntities) {
         this.orderEntities = orderEntities;//传入list，然后调用notifyDataSetChanged方法
+        isRefresh=true;
         notifyDataSetChanged();
     }
 
@@ -114,9 +116,9 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.receivingOrder.setText("修改价格");
         } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&!isNew) {
             if (orderEntities.get(i).getStatus().equals("UnDeliverGoods"))
-            holder.reject.setText("确认发货");
-            else holder.reject.setVisibility(View.GONE);
-            holder.receivingOrder.setText("打印订单");
+            holder.receivingOrder.setText("确认发货");
+            else holder.receivingOrder.setVisibility(View.GONE);
+            holder.reject.setText("打印订单");
             holder.infoLl.setVisibility(View.VISIBLE);
             holder.infoTv.setText(orderEntities.get(i).getStatus_value());
         }
@@ -126,18 +128,20 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         holder.address.setText(orderEntities.get(i).getEndHouseNumber() + "");
         holder.distance.setText(orderEntities.get(i).getShopUserDistance() + "km");
 
-        if (orderEntities.size() < 4) {
-            holder.remark.setVisibility(View.VISIBLE);
-            holder.billList.setVisibility(View.VISIBLE);
-            holder.packagingDispatchingRL.setVisibility(View.VISIBLE);
-            holder.orderMoneyRL.setVisibility(View.VISIBLE);
-            holder.line.setVisibility(View.VISIBLE);
-        } else {
-            holder.packagingDispatchingRL.setVisibility(View.GONE);
-            holder.remark.setVisibility(View.GONE);
-            holder.billList.setVisibility(View.GONE);
-            holder.orderMoneyRL.setVisibility(View.GONE);
-            holder.line.setVisibility(View.GONE);
+        if (!isRefresh){
+            if (orderEntities.size() < 4) {
+                holder.remark.setVisibility(View.VISIBLE);
+                holder.billList.setVisibility(View.VISIBLE);
+                holder.packagingDispatchingRL.setVisibility(View.VISIBLE);
+                holder.orderMoneyRL.setVisibility(View.VISIBLE);
+                holder.line.setVisibility(View.VISIBLE);
+            } else {
+                holder.packagingDispatchingRL.setVisibility(View.GONE);
+                holder.remark.setVisibility(View.GONE);
+                holder.billList.setVisibility(View.GONE);
+                holder.orderMoneyRL.setVisibility(View.GONE);
+                holder.line.setVisibility(View.GONE);
+            }
         }
 
         holder.packagingMoney.setText(orderEntities.get(i).getPackingprice() + "");
@@ -190,11 +194,11 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         return (s.length()>p)? s.substring(0,p)+"...":s;
     }
 
-    static class ViewHolder {
+    public static class ViewHolder {
         @BindView(R.id.identifying_money_tv)
         TextView identifyingMoneyTv;
         @BindView(R.id.money)
-        TextView money;
+        public TextView money;
         @BindView(R.id.down_order_time)
         TextView downOrderTime;
         @BindView(R.id.order_number)
@@ -208,7 +212,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         @BindView(R.id.distance)
         TextView distance;
         @BindView(R.id.remark)
-        TextView remark;
+        public  TextView remark;
         @BindView(R.id.line)
         View line;
         @BindView(R.id.bill_list)
@@ -228,7 +232,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         @BindView(R.id.isPayment)
         TextView isPayment;
         @BindView(R.id.order_money)
-        TextView orderMoney;
+        public TextView orderMoney;
         @BindView(R.id.order_moneyRL)
         RelativeLayout orderMoneyRL;
         @BindView(R.id.info_tv)
