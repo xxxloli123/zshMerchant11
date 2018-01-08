@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.xxxloli.zshmerchant.Activity.SearchBluetoothActivity;
 import com.example.xxxloli.zshmerchant.Activity.ShopInfoActivity;
+import com.example.xxxloli.zshmerchant.PrintService;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.OrdersHandleFragmentAdapter;
 import com.example.xxxloli.zshmerchant.base.AppInfo;
@@ -120,7 +121,6 @@ public class OrderHandleFragment extends BaseFragment {
                     editAuto("yes");
                 } else {
                     editAuto("no");
-
                 }
             }
         });
@@ -169,20 +169,21 @@ public class OrderHandleFragment extends BaseFragment {
     }
 
     private void autoOrderReceiving() {
-        timer=new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-//                商家自动打印：获取待打印订单
-//                参数：[shopId]
-                Map<String, Object> params = new HashMap<>();
-                params.put("shopId", shop.getId());
-                newCall(Config.Url.getUrl(Config.GET_AutoOrder), params);
-//                Message message = new Message( );
-//                message.what = 1;
-//                handler.sendMessage(message);
-            }
-        },0,1000*30);
+//        timer=new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+////                商家自动打印：获取待打印订单
+////                参数：[shopId]
+//                Map<String, Object> params = new HashMap<>();
+//                params.put("shopId", shop.getId());
+//                newCall(Config.Url.getUrl(Config.GET_AutoOrder), params);
+////                Message message = new Message( );
+////                message.what = 1;
+////                handler.sendMessage(message);
+//            }
+//        },0,1000*30);
+        getActivity().startService(new Intent(getActivity(), PrintService.class));
     }
 
     @Override
@@ -223,10 +224,10 @@ public class OrderHandleFragment extends BaseFragment {
                         shop.setAutoOrder("yes");
                         dbManagerShop.updateShop(shop);
                         autoOrderReceiving();
-                    }else {
+                      }else {
                         shop.setAutoOrder("no");
                         dbManagerShop.updateShop(shop);
-                        stopTimer();
+                        getActivity().stopService(new Intent(getActivity(), PrintService.class));
                     }
                 }
                 Log.e("EDIT_SHOP_INFO", "丢了个雷姆" + json);

@@ -29,7 +29,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     private ArrayList<OrderEntity> orderEntities;
     private Context mContext;
     private Callback mCallback;
-    private boolean isNew;
+    private String lineOrderType;
     private BillAdapter.Callback callback2;
     private boolean isRefresh=false;
 
@@ -55,11 +55,11 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     }
 
     public OrderListAdapter1(Context mContext, ArrayList<OrderEntity> orderEntities, Callback callback,
-                             boolean isNew,BillAdapter.Callback callback2 ) {
+                             String lineOrderType, BillAdapter.Callback callback2 ) {
         this.orderEntities = orderEntities;
         this.mContext = mContext;
         mCallback = callback;
-        this.isNew=isNew;
+        this.lineOrderType=lineOrderType;
         this.callback2=callback2;
     }
 
@@ -114,9 +114,11 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.psdjText.setBackgroundResource(R.drawable.round_red_background);
             holder.reject.setVisibility(View.GONE);
             holder.receivingOrder.setText("修改价格");
-        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&!isNew) {
-            if (orderEntities.get(i).getStatus().equals("UnDeliverGoods"))
-            holder.receivingOrder.setText("确认发货");
+        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&lineOrderType.equals("NormalOrder")) {
+            if (orderEntities.get(i).getStatus().equals("UnDeliverGoods")){
+                holder.receivingOrder.setText("确认发货");
+                holder.receivingOrder.setVisibility(View.VISIBLE);
+            }
             else holder.receivingOrder.setVisibility(View.GONE);
             holder.reject.setText("打印订单");
             holder.infoLl.setVisibility(View.VISIBLE);

@@ -393,43 +393,53 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
 
     //                接单
     private void receive(final OrderEntity orderEntity) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_receive_or_reject, null);
-        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog).create();
-        Button sure = view.findViewById(R.id.sure_bt);
-        Button cancel = view.findViewById(R.id.cancel_bt);
-        final RadioButton huidi = view.findViewById(R.id.huidi);
-        final RadioButton shopRb = view.findViewById(R.id.shop);
-        EditText causeEdit = view.findViewById(R.id.cause_edit);
-        causeEdit.setVisibility(View.GONE);
-        shopRb.setVisibility(View.VISIBLE);
-        huidi.setVisibility(View.VISIBLE);
-        sure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//        商家接单 或拒单 receivedorder yes 接单 no 拒单 ；cause拒单原因;huidi配送yes no
-                Map<String, Object> map = new HashMap<>();
-                map.put("receivedorder", "yes");
-                if (huidi.isChecked()) map.put("huidi", "yes");
-                else map.put("huidi", "no");
-                map.put("orderId", orderEntity.getId());
-                map.put("userId", shop.getShopkeeperId());
-                map.put("cause", "");
-                newCall(Config.Url.getUrl(Config.Receive_Reject), map);
-                //List移除某Item
-                orders.remove(orderEntity);
-                orderListAdapter1.notifyDataSetChanged();
-                alertDialog.dismiss();
-                PrintOrder(orderEntity);
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-        alertDialog.setView(view);
-        alertDialog.show();
+//        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_receive_or_reject, null);
+//        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog).create();
+//        Button sure = view.findViewById(R.id.sure_bt);
+//        Button cancel = view.findViewById(R.id.cancel_bt);
+//        final RadioButton huidi = view.findViewById(R.id.huidi);
+//        final RadioButton shopRb = view.findViewById(R.id.shop);
+//        EditText causeEdit = view.findViewById(R.id.cause_edit);
+//        causeEdit.setVisibility(View.GONE);
+//        shopRb.setVisibility(View.VISIBLE);
+//        huidi.setVisibility(View.VISIBLE);
+//        sure.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////        商家接单 或拒单 receivedorder yes 接单 no 拒单 ；cause拒单原因;huidi配送yes no
+//                Map<String, Object> map = new HashMap<>();
+//                map.put("receivedorder", "yes");
+//                if (huidi.isChecked()) map.put("huidi", "yes");
+//                else map.put("huidi", "no");
+//                map.put("orderId", orderEntity.getId());
+//                map.put("userId", shop.getShopkeeperId());
+//                map.put("cause", "");
+//                newCall(Config.Url.getUrl(Config.Receive_Reject), map);
+//                //List移除某Item
+//                orders.remove(orderEntity);
+//                orderListAdapter1.notifyDataSetChanged();
+//                alertDialog.dismiss();
+//                PrintOrder(orderEntity);
+//            }
+//        });
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                alertDialog.dismiss();
+//            }
+//        });
+//        alertDialog.setView(view);
+//        alertDialog.show();
+        Map<String, Object> map = new HashMap<>();
+        map.put("receivedorder", "yes");
+
+        map.put("orderId", orderEntity.getId());
+        map.put("userId", shop.getShopkeeperId());
+        map.put("cause", "");
+        newCall(Config.Url.getUrl(Config.Receive_Reject), map);
+        //List移除某Item
+        orders.remove(orderEntity);
+        orderListAdapter1.notifyDataSetChanged();
     }
 
     //                    接毛线单啊
@@ -478,9 +488,9 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 if (orders==null)orders = new ArrayList<>();
                 Log.e("page", "丢了个雷姆" + lineOrderType);
                 if (ptrFrameLayout!=null) ptrFrameLayout.refreshComplete();
-
                 if (page == 1 && !orders.isEmpty()) orders.clear();
                 JSONArray arr = json.getJSONObject("ordersInfo").getJSONArray("aaData");
+                Log.e("GET_HandleOrder", "丢了个雷姆" + arr);
                 Gson gson = new Gson();
                 for (int i = 0; i < arr.length(); i++) {
                     final JSONObject cache = arr.getJSONObject(i);
@@ -493,10 +503,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                     orderListAdapter1.refresh(orders);
                     return;
                 }
-                if (lineOrderType.equals("All"))
-                orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,true,this);
-                else orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,
-                        false,this);
+                orderListAdapter1=new OrderListAdapter1(getActivity(),orders,this,lineOrderType,this);
                 listview.setAdapter(orderListAdapter1);
                 break;
             case Config.Edit_Price:

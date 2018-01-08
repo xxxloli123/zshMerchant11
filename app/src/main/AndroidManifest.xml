@@ -34,15 +34,14 @@
     <!-- 向SD卡中创建或者删除的权限。 -->
     <uses-permission android:name="andorid.permission.MONUN_UNMOUNT_FILESYSTEMS" />
 
-
-    <!--注意下面的必须修改   -->
+    <!-- 注意下面的必须修改 -->
     <permission
         android:name="com.example.xxxloli.zshmerchant.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
-    <!--这里com.peng.one.push改成你的app的包名，以build.gralde中的applicationId为准-->
+    <!-- 这里com.peng.one.push改成你的app的包名，以build.gralde中的applicationId为准 -->
     <uses-permission android:name="com.example.xxxloli.zshmerchant.permission.MIPUSH_RECEIVE" />
-    <!--这里com.peng.one.push改成你的app的包名，以build.gralde中的applicationId为准-->
 
+    <!-- 这里com.peng.one.push改成你的app的包名，以build.gralde中的applicationId为准 -->
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -54,38 +53,41 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:icon, android:theme">
 
-        <!--OnePush-->
-        <!--<receiver android:name="com.example.xxxloli.zshmerchant.onepush.HelloOnePushReceiver"-->
-            <!--android:exported="true">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.peng.one.push.ACTION_RECEIVE_NOTIFICATION" />-->
-                <!--<action android:name="com.peng.one.push.ACTION_RECEIVE_NOTIFICATION_CLICK" />-->
-                <!--<action android:name="com.peng.one.push.ACTION_RECEIVE_MESSAGE" />-->
-                <!--<action android:name="com.peng.one.push.ACTION_RECEIVE_COMMAND_RESULT" />-->
+        <!-- OnePush -->
+        <!-- <receiver android:name="com.example.xxxloli.zshmerchant.onepush.HelloOnePushReceiver" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.peng.one.push.ACTION_RECEIVE_NOTIFICATION" /> -->
+        <!-- <action android:name="com.peng.one.push.ACTION_RECEIVE_NOTIFICATION_CLICK" /> -->
+        <!-- <action android:name="com.peng.one.push.ACTION_RECEIVE_MESSAGE" /> -->
+        <!-- <action android:name="com.peng.one.push.ACTION_RECEIVE_COMMAND_RESULT" /> -->
 
-                <!--<category android:name="${applicationId}" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--&lt;!&ndash;如果引入了one-push-xiaomi库&ndash;&gt;-->
-        <!--<meta-data-->
-            <!--android:name="OnePush_XiaoMi_101"-->
-            <!--android:value="com.peng.one.push.xiaomi.XiaomiPushClient"/>-->
-        <!--&lt;!&ndash;小米推送静态注册&ndash;&gt;-->
-        <!--<meta-data-->
-            <!--android:name="MI_PUSH_APP_ID"-->
-            <!--android:value="\ 2882303761517645572"/>-->
-        <!--<meta-data-->
-            <!--android:name="MI_PUSH_APP_KEY"-->
-            <!--android:value="\ 5321764599572"/>-->
 
-        <!--&lt;!&ndash;&lt;!&ndash;如果引入了one-push-huawei-hms库&ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<meta-data&ndash;&gt;-->
-            <!--&lt;!&ndash;android:name="OnePush_HMSPush_107"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:value="com.peng.one.push.huawei.hms.HMSPushClient"/>&ndash;&gt;-->
-        <!--&lt;!&ndash;华为HMS推送静态注册&ndash;&gt;-->
-        <!--<meta-data-->
-            <!--android:name="com.huawei.hms.client.appid"-->
-            <!--android:value="100167255"/>-->
+        <!-- <category android:name="${applicationId}" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- &lt;!&ndash;如果引入了one-push-xiaomi库&ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="OnePush_XiaoMi_101" -->
+        <!-- android:value="com.peng.one.push.xiaomi.XiaomiPushClient"/> -->
+        <!-- &lt;!&ndash;小米推送静态注册&ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="MI_PUSH_APP_ID" -->
+        <!-- android:value="\ 2882303761517645572"/> -->
+        <!-- <meta-data -->
+        <!-- android:name="MI_PUSH_APP_KEY" -->
+        <!-- android:value="\ 5321764599572"/> -->
+
+
+        <!-- &lt;!&ndash;&lt;!&ndash;如果引入了one-push-huawei-hms库&ndash;&gt;&ndash;&gt; -->
+        <!-- &lt;!&ndash;<meta-data&ndash;&gt; -->
+        <!-- &lt;!&ndash;android:name="OnePush_HMSPush_107"&ndash;&gt; -->
+        <!-- &lt;!&ndash;android:value="com.peng.one.push.huawei.hms.HMSPushClient"/>&ndash;&gt; -->
+        <!-- &lt;!&ndash;华为HMS推送静态注册&ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="com.huawei.hms.client.appid" -->
+        <!-- android:value="100167255"/> -->
+
 
         <!-- 设置环信应用的AppKey -->
         <meta-data
@@ -221,7 +223,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.UploadIMGActivity" />
         <activity android:name=".Activity.CommunityActivity" />
-        <activity android:name=".Activity.ChatActivity"></activity>
+        <activity android:name=".Activity.ChatActivity" />
+
+        <service
+            android:name=".PrintService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
