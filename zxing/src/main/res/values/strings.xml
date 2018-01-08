@@ -14,7 +14,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  -->
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">条码扫描器</string>
   <string name="app_picker_name">应用</string>
   <string name="bookmark_picker_name">书签</string>

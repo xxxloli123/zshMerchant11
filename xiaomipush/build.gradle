@@ -3,24 +3,23 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 26
     buildToolsVersion '25.0.0'
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName '1.5'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -31,5 +30,4 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.peng.library:one-push-core:1.2.2'
-    compile 'com.peng.library:one-push-huawei-hms:1.2.1'
 }
