@@ -106,15 +106,32 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_marginTop="5dp"
-            android:id="@+id/name_phone"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:text="蕉迟但到  2333333333"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/name_phone"
+                android:textColor="@color/text_color"
+                android:textSize="14sp"
+                android:layout_marginLeft="10dp"
+                android:text="蕉迟但到  2333333333"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"></View>
+
+            <TextView
+                android:layout_marginRight="8dp"
+                android:id="@+id/delivery_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_marginBottom="10dp"
@@ -303,7 +320,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="订单金额"
+                android:text="订单总额"
                 android:textSize="12sp" />
 
             <TextView
@@ -339,13 +356,6 @@
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button
-                android:layout_marginRight="3dp"
-                android:background="@drawable/round_green_background"
-                android:layout_gravity="center_vertical"
-                android:textSize="40dp"
-                android:layout_width="8dp"
-                android:layout_height="8dp" />
 
             <TextView
                 android:layout_marginLeft="2dp"

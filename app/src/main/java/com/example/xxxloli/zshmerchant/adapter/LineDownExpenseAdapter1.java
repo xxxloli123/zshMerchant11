@@ -38,7 +38,6 @@ public class LineDownExpenseAdapter1 extends BaseAdapter implements View.OnClick
 
     /**
      * 自定义接口，用于回调按钮点击事件到Activity
-     *
      * @author Ivan Xu
      *         2014-11-26
      */

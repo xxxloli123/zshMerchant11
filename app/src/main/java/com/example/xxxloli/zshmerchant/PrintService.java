@@ -43,8 +43,7 @@ public class PrintService extends Service implements OkHttpCallback.Impl {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
+    public int onStartCommand(Intent intent, int flags, int startId) {
         timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -58,7 +57,8 @@ public class PrintService extends Service implements OkHttpCallback.Impl {
 //                message.what = 1;
 //                handler.sendMessage(message);
             }
-        },0,1000*30);
+        },0,1000*3);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override

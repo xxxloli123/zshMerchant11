@@ -26,7 +26,7 @@ public class BillCommodity {
     private String goodsName;
     private String smallImg;
     private double goodsPrice;
-    private double goodsnum;
+    private int goodsnum;
     private String isStandard;
     private String productcategory;
     private String standardName;
@@ -89,11 +89,11 @@ public class BillCommodity {
         this.goodsPrice = goodsPrice;
     }
 
-    public double getGoodsnum() {
+    public int getGoodsnum() {
         return goodsnum;
     }
 
-    public void setGoodsnum(double goodsnum) {
+    public void setGoodsnum(int goodsnum) {
         this.goodsnum = goodsnum;
     }
 

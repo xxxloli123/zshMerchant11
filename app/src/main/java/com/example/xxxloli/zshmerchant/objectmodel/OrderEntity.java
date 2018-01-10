@@ -212,6 +212,7 @@ public class OrderEntity {
     private String tableNumber;
     private String quick;
     private ArrayList<BillCommodity> goods;
+    private String shopTransport;
 
     public String getId() {
         return id;
@@ -1011,5 +1012,13 @@ public class OrderEntity {
 
     public void setGoods(ArrayList<BillCommodity> goods) {
         this.goods = goods;
+    }
+
+    public String getShopTransport() {
+        return shopTransport;
+    }
+
+    public void setShopTransport(String shopTransport) {
+        this.shopTransport = shopTransport;
     }
 }

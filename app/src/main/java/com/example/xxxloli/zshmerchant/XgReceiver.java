@@ -1,11 +1,10 @@
-package com.slowlife.xgpush;
+package com.example.xxxloli.zshmerchant;
 
 import android.app.Notification;
 import android.content.Context;
 import android.media.RingtoneManager;
-import android.net.Uri;
-import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.tencent.android.tpush.XGCustomPushNotificationBuilder;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -29,7 +28,6 @@ public class XgReceiver extends XGPushBaseReceiver {
 
     @Override
     public void onUnregisterResult(Context context, int i) {
-
     }
 
     @Override
@@ -72,7 +70,7 @@ public class XgReceiver extends XGPushBaseReceiver {
     @Override
     public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
         System.out.println(xgPushShowedResult);
-//        ToastUtil.showToast(context,xgPushShowedResult+"");
+        ToastUtil.showToast(context,xgPushShowedResult+"");
     }
 
     public static interface PushCallback {

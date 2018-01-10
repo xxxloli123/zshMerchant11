@@ -104,4 +104,10 @@
         android:id="@+id/pgbar"
         style="?android:attr/progressBarStyleHorizontal"/>
 
+    <EditText
+        android:visibility="gone"
+        android:id="@+id/to_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

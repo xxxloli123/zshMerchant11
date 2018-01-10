@@ -35,7 +35,6 @@ public class CodeAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-
     @Override
     public int getCount() {
         return codes == null ? 0 : codes.size();

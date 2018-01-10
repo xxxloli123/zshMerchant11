@@ -49,9 +49,9 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.setAlignCenter();
             data.add(printer.getDataAndReset());
 
-            ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.hear3);
-
-            data.addAll(image1);
+//            ArrayList<byte[]> image1 = printer.getImageByte(btService.getResources(), R.drawable.hear3);
+//
+//            data.addAll(image1);
 
             printer.setAlignLeft();
             printer.printLine();
@@ -80,17 +80,9 @@ public class PrintOrderDataMaker implements PrintDataMaker {
 
             printer.printLineFeed();
             printer.setAlignLeft();
-            printer.print("订单状态: " + "已接单");
-            printer.printLineFeed();
-            printer.print("用户昵称: " +"周末先生");
-            printer.printLineFeed();
-            printer.print("用餐人数: " + "10人");
-            printer.printLineFeed();
-            printer.print("用餐桌号: " + "A3" + "号桌");
-            printer.printLineFeed();
             printer.print("下单时间："+orderEntity.getCreateDate());
             printer.printLineFeed();
-            printer.print("联系方式：" + "18094111545454");
+            printer.print("联系方式：" + orderEntity.getReceiverPhone());
             printer.printLineFeed();
             printer.printLine();
             printer.printLineFeed();
@@ -103,7 +95,6 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.printLineFeed();
 
                 printer.setAlignCenter();
-                printer.print("菜品信息");
                 printer.printLineFeed();
                 printer.setAlignCenter();
                 printer.printInOneLine("商品", "数量", "单价", 0);
@@ -118,9 +109,11 @@ public class PrintOrderDataMaker implements PrintDataMaker {
                 printer.printLine();
                 printer.printLineFeed();
                 printer.setAlignLeft();
+                printer.printInOneLine("配送费：", "￥" + orderEntity.getPlatformDeliveryFee(), 0);
+                printer.printLineFeed();
                 printer.printInOneLine("总计：", "￥" + orderEntity.getUserActualFee(), 0);
 
-            printer.printLineFeed();
+                printer.printLineFeed();
 //            printer.setAlignLeft();
 //            printer.printInOneLine("优惠金额：", "￥" +"0.00"
 //                    , 0);

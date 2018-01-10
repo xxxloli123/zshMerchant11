@@ -88,7 +88,6 @@ public class ClassifyExamineAdapter extends BaseAdapter implements View.OnClickL
         return view;
     }
 
-
     static class ViewHolder {
         @BindView(R.id.classify_name)
         TextView classifyName;

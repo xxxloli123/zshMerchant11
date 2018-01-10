@@ -85,19 +85,24 @@ public class LineUpExpenseAdapter1 extends BaseAdapter implements View.OnClickLi
 
         holder.downOrderTime.setText(orderEntities.get(i).getCreateDate());
         holder.orderNumber.setText(orderEntities.get(i).getOrderNumber());
-        holder.namePhone.setText(orderEntities.get(i).getCreateUserName() + "  " + orderEntities.get(i).getCreateUserPhone());
-        holder.address.setText(orderEntities.get(i).getEndHouseNumber()+"");
+
+        holder.namePhone.setText(((orderEntities.get(i).getReceiverName() != null) ? orderEntities.get(i).getReceiverName() : "")
+                + "  " + ((orderEntities.get(i).getReceiverPhone() != null) ? orderEntities.get(i).getReceiverPhone() : ""));
+        holder.address.setText(orderEntities.get(i).getEndHouseNumber() + "");
         holder.distance.setText(orderEntities.get(i).getShopUserDistance() + "km");
 
-        if (orderEntities.size()<4){
+        if (orderEntities.size() < 4) {
             holder.packagingDispatchingRL.setVisibility(View.VISIBLE);
             holder.billList.setVisibility(View.VISIBLE);
             holder.orderMoneyRL.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.packagingDispatchingRL.setVisibility(View.GONE);
             holder.billList.setVisibility(View.GONE);
             holder.orderMoneyRL.setVisibility(View.GONE);
         }
+        if (orderEntities.get(i).getLineOrder().equals("NormalOrder"))
+            holder.deliveryTv.setText((orderEntities.get(i).getShopTransport().equals("no"))?"惠递配送":"商家配送");
+        else holder.deliveryTv.setVisibility(View.GONE);
 
         holder.packagingMoney.setText(orderEntities.get(i).getPackingprice() + "");
         holder.dispatchingMoney.setText(orderEntities.get(i).getDeliveryFee() + "");
@@ -105,11 +110,15 @@ public class LineUpExpenseAdapter1 extends BaseAdapter implements View.OnClickLi
         BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods(), orderEntities.get(i).getId());
         holder.billList.setAdapter(billAdapter);
         holder.orderMoney.setText(orderEntities.get(i).getUserActualFee() + "");
-        if (orderEntities.get(i).getPayStatus_value().equals("已付款")) holder.isPayment.setVisibility(View.VISIBLE);
+        if (orderEntities.get(i).getPayStatus_value().equals("已付款"))
+            holder.isPayment.setVisibility(View.VISIBLE);
         else holder.isPayment.setVisibility(View.GONE);
-        holder.serialNumber.setText((orderEntities.size()-i)+"");
+        holder.serialNumber.setText((orderEntities.size() - i) + "");
 
         final ViewHolder finalHolder = holder;
+        if (orderEntities.get(i).getShopTransport().equals("no")&&orderEntities.get(i).getDeliveryStatesExplain() != null)
+            holder.info.setText(orderEntities.get(i).getDeliveryStatesExplain() + "");
+        else holder.info.setVisibility(View.GONE);
         holder.LL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,8 +138,10 @@ public class LineUpExpenseAdapter1 extends BaseAdapter implements View.OnClickLi
         return view;
     }
 
-
     static class ViewHolder {
+
+        @BindView(R.id.delivery_tv)
+        TextView deliveryTv;
         @BindView(R.id.serial_number)
         TextView serialNumber;
         @BindView(R.id.down_order_time)

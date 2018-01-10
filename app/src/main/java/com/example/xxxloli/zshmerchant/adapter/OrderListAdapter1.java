@@ -31,7 +31,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     private Callback mCallback;
     private String lineOrderType;
     private BillAdapter.Callback callback2;
-    private boolean isRefresh=false;
+    private boolean isRefresh = false;
 
     //响应按钮点击事件,调用子定义接口，并传入View
     @Override
@@ -55,18 +55,18 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     }
 
     public OrderListAdapter1(Context mContext, ArrayList<OrderEntity> orderEntities, Callback callback,
-                             String lineOrderType, BillAdapter.Callback callback2 ) {
+                             String lineOrderType, BillAdapter.Callback callback2) {
         this.orderEntities = orderEntities;
         this.mContext = mContext;
         mCallback = callback;
-        this.lineOrderType=lineOrderType;
-        this.callback2=callback2;
+        this.lineOrderType = lineOrderType;
+        this.callback2 = callback2;
     }
 
     //刷新Adapter
     public void refresh(ArrayList<OrderEntity> orderEntities) {
         this.orderEntities = orderEntities;//传入list，然后调用notifyDataSetChanged方法
-        isRefresh=true;
+        isRefresh = true;
         notifyDataSetChanged();
     }
 
@@ -95,7 +95,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.money.setText(intercept(orderEntities.get(i).getUserActualFee()+""));
+        holder.money.setText(intercept(orderEntities.get(i).getUserActualFee() + ""));
         holder.orderMoney.setText(orderEntities.get(i).getUserActualFee() + "");
         holder.downOrderTime.setText(orderEntities.get(i).getCreateDate());
         holder.orderNumber.setText(orderEntities.get(i).getOrderNumber());
@@ -114,23 +114,24 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.psdjText.setBackgroundResource(R.drawable.round_red_background);
             holder.reject.setVisibility(View.GONE);
             holder.receivingOrder.setText("修改价格");
-        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder")&&lineOrderType.equals("NormalOrder")) {
-            if (orderEntities.get(i).getStatus().equals("UnDeliverGoods")){
+        } else if (orderEntities.get(i).getLineOrder().equals("NormalOrder") && lineOrderType.equals("NormalOrder")) {
+            if (orderEntities.get(i).getStatus().equals("UnDeliverGoods")) {
                 holder.receivingOrder.setText("确认发货");
                 holder.receivingOrder.setVisibility(View.VISIBLE);
-            }
-            else holder.receivingOrder.setVisibility(View.GONE);
+            } else holder.receivingOrder.setVisibility(View.GONE);
             holder.reject.setText("打印订单");
+            holder.deliveryTv.setText((orderEntities.get(i).getShopTransport().equals("no"))?"惠递配送":"商家配送");
             holder.infoLl.setVisibility(View.VISIBLE);
-            holder.infoTv.setText(orderEntities.get(i).getStatus_value());
+            if (orderEntities.get(i).getDeliveryStatesExplain() != null)
+                holder.infoTv.setText(orderEntities.get(i).getDeliveryStatesExplain() + "");
         }
-        String phone = (orderEntities.get(i).getPostmanPhone() != null) ? "" + orderEntities.get(i).getPostmanPhone() : " ";
-        holder.namePhone.setText(((orderEntities.get(i).getCreateUserName() != null) ?
-                "" + orderEntities.get(i).getCreateUserName() : " ") + phone);
-        holder.address.setText(orderEntities.get(i).getEndHouseNumber() + "");
+        String phone = (orderEntities.get(i).getReceiverPhone() != null) ? "" + orderEntities.get(i).getReceiverPhone() : " ";
+        holder.namePhone.setText(((orderEntities.get(i).getReceiverName() != null) ?
+                "" + orderEntities.get(i).getReceiverName() : " ") + phone);
+        holder.address.setText(orderEntities.get(i).getEndStreet() + ""+orderEntities.get(i).getEndHouseNumber());
         holder.distance.setText(orderEntities.get(i).getShopUserDistance() + "km");
 
-        if (!isRefresh){
+        if (!isRefresh) {
             if (orderEntities.size() < 4) {
                 holder.remark.setVisibility(View.VISIBLE);
                 holder.billList.setVisibility(View.VISIBLE);
@@ -150,7 +151,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         holder.dispatchingMoney.setText(orderEntities.get(i).getDeliveryFee() + "");
 
         BillAdapter billAdapter = new BillAdapter(mContext, orderEntities.get(i).getGoods(),
-                orderEntities.get(i).getId(),callback2);
+                orderEntities.get(i).getId(), callback2);
         holder.billList.setAdapter(billAdapter);
 //        holder.billList.setOnItemClickListener(this);
         holder.remark.setText("备注: " + orderEntities.get(i).getComment());
@@ -192,11 +193,13 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
     }
 
     private String intercept(String s) {
-        int p = s.lastIndexOf(".")+3;
-        return (s.length()>p)? s.substring(0,p)+"...":s;
+        int p = s.lastIndexOf(".") + 3;
+        return (s.length() > p) ? s.substring(0, p) + "..." : s;
     }
 
     public static class ViewHolder {
+        @BindView(R.id.delivery_tv)
+        TextView deliveryTv;
         @BindView(R.id.identifying_money_tv)
         TextView identifyingMoneyTv;
         @BindView(R.id.money)
@@ -214,7 +217,7 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
         @BindView(R.id.distance)
         TextView distance;
         @BindView(R.id.remark)
-        public  TextView remark;
+        public TextView remark;
         @BindView(R.id.line)
         View line;
         @BindView(R.id.bill_list)

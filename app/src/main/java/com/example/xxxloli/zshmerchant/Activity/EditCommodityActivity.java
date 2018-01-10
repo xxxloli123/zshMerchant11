@@ -28,6 +28,7 @@ import com.example.xxxloli.zshmerchant.objectmodel.Commodity;
 import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
+import com.sgrape.dialog.LoadDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -129,6 +130,7 @@ public class EditCommodityActivity extends BaseActivity {
     private DBManagerShop dbManagerShop;
     private Shop shop;
     private Commodity commodity;
+    private LoadDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,6 +406,8 @@ public class EditCommodityActivity extends BaseActivity {
             Toast.makeText(this, "请选择分类", Toast.LENGTH_SHORT).show();
             return;
         }
+        dialog = new LoadDialog(this);
+        dialog.show();
 //        修改商品基本属性::productStr[id:商品id;shopClassId 商家分类ID, shopClassName 商家分类名称,
 //          productName商品名称, shopsort 排序号, details 商品描述,singlePrice 单价	];
 //        参数：[productStr, userId]
@@ -412,6 +416,8 @@ public class EditCommodityActivity extends BaseActivity {
         try {
             productStr.put("id", commodity.getId());
             productStr.put("shopClassId", classify.getId());
+            productStr.put("weight",
+                    (weightEt.getText().toString().isEmpty())?1:weightEt.getText().toString());
             productStr.put("shopClassName", classify.getProductClassName());
             productStr.put("productName", name);
             productStr.put("shopsort", sequenceTV.getText().toString());
@@ -453,8 +459,8 @@ public class EditCommodityActivity extends BaseActivity {
                 }
                 break;
             case Config.EDIT_Commodity:
-
             case Config.DELETE_Commodity:
+                dialog.dismiss();
                 Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                 finish();
                 break;

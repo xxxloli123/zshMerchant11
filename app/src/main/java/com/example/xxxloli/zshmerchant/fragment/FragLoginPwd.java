@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.Activity.AccountManageActivity;
 import com.example.xxxloli.zshmerchant.Activity.ResetPasswordActivity;
 import com.example.xxxloli.zshmerchant.MainActivity;
 import com.example.xxxloli.zshmerchant.R;
@@ -33,6 +34,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
+import com.sgrape.dialog.LoadDialog;
 import com.slowlife.lib.MD5;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
@@ -78,6 +80,7 @@ public class FragLoginPwd extends BaseFragment {
     private DBManagerShop dbManagerShop;
     private String phone,pwd;
     private String hint="\n可能会影响聊天功能\n如聊天功能异常请重新登录";
+    private LoadDialog dialog;
 
     public FragLoginPwd() {
         super();
@@ -157,6 +160,8 @@ public class FragLoginPwd extends BaseFragment {
             Toast.makeText(getContext(), "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
+        dialog=new LoadDialog(getContext());
+        dialog.show();
         Map<String, Object> map = new HashMap<>();
         JSONObject user = new JSONObject();
         try {
@@ -244,17 +249,15 @@ public class FragLoginPwd extends BaseFragment {
 //                            }
 //                        }
 //                    });
-                    Timer timer=new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                            if (getActivity() != null) getActivity().finish();
-                        }
-                    },1500);
+                    start();
                 }
                 break;
         }
+    }
+
+    private void start() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
+        if (getActivity() != null) getActivity().finish();
     }
 
     private void loginEase(String userName, String password) {
@@ -264,6 +267,14 @@ public class FragLoginPwd extends BaseFragment {
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EMClient.getInstance().chatManager().loadAllConversations();
                 Log.d("main", "登录聊天服务器成功！");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(getContext(), "登录成功");
+                        dialog.dismiss();
+                        start();
+                    }
+                });
             }
             @Override
             public void onProgress(int progress, String status) {
@@ -319,6 +330,8 @@ public class FragLoginPwd extends BaseFragment {
                                 Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                         }
+                        dialog.dismiss();
+                        start();
                     }
                 });
 

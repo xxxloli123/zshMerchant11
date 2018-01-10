@@ -430,16 +430,40 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
 //        });
 //        alertDialog.setView(view);
 //        alertDialog.show();
-        Map<String, Object> map = new HashMap<>();
-        map.put("receivedorder", "yes");
-
-        map.put("orderId", orderEntity.getId());
-        map.put("userId", shop.getShopkeeperId());
-        map.put("cause", "");
-        newCall(Config.Url.getUrl(Config.Receive_Reject), map);
-        //List移除某Item
-        orders.remove(orderEntity);
-        orderListAdapter1.notifyDataSetChanged();
+        View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_sure, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog).create();
+        TextView title = view1.findViewById(R.id.title);
+        TextView messageTv = view1.findViewById(R.id.message_tv);
+        Button sure = view1.findViewById(R.id.sure_bt);
+        Button cancel = view1.findViewById(R.id.cancel_bt);
+        title.setText("确认接单吗");
+        messageTv.setVisibility(View.VISIBLE);
+        messageTv.setText((orderEntity.getShopTransport().equals("no"))?"惠递配送":"商家配送");
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("receivedorder", "yes");
+                if (orderEntity.getShopTransport().equals("no")) map.put("huidi", "yes");
+                else map.put("huidi", "no");
+                map.put("orderId", orderEntity.getId());
+                map.put("userId", shop.getShopkeeperId());
+                map.put("cause", "");
+                newCall(Config.Url.getUrl(Config.Receive_Reject), map);
+                //List移除某Item
+                orders.remove(orderEntity);
+                orderListAdapter1.notifyDataSetChanged();
+                alertDialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(view1);
+        alertDialog.show();
     }
 
     //                    接毛线单啊
@@ -481,6 +505,12 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        shop=GreenDaoHelp.GetShop(getActivity());
+    }
+
+    @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         switch (tag.toString()) {
             case Config.GET_HandleOrder:
@@ -490,7 +520,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 if (ptrFrameLayout!=null) ptrFrameLayout.refreshComplete();
                 if (page == 1 && !orders.isEmpty()) orders.clear();
                 JSONArray arr = json.getJSONObject("ordersInfo").getJSONArray("aaData");
-                Log.e("GET_HandleOrder", "丢了个雷姆" + arr);
+                Log.e("GET_HandleOrder", "丢了个雷姆" + arr.get(0));
                 Gson gson = new Gson();
                 for (int i = 0; i < arr.length(); i++) {
                     final JSONObject cache = arr.getJSONObject(i);

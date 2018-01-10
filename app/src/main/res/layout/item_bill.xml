@@ -5,57 +5,66 @@
 
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:textColor="@color/text_color"
-            android:text="霄张皮皮虾"
-            android:textSize="14sp"
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_below="@+id/name"
-            android:textColor="@color/text_color"
-            android:text="霄张皮皮虾"
-            android:textSize="14sp"
-            android:id="@+id/specification_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
-        <TextView
-            android:id="@+id/quantity_text"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            android:text="x666"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/text_color"
+                android:text="霄张皮皮虾"
+                android:textSize="14sp"
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_marginLeft="33dp"
-            android:layout_toRightOf="@+id/quantity_text"
-            android:layout_centerVertical="true"
-            android:id="@+id/weight_tv"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            android:text="666克"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
-        <TextView
-            android:id="@+id/price_text"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            android:text="6.66"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_below="@+id/name"
+                android:textColor="@color/text_color"
+                android:text="霄张皮皮虾"
+                android:textSize="14sp"
+                android:id="@+id/specification_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+            <TextView
+                android:layout_marginRight="22dp"
+                android:layout_toLeftOf="@+id/weight_tv"
+                android:id="@+id/quantity_text"
+                android:textColor="@color/text_color"
+                android:textSize="14sp"
+                android:text="x666"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/weight_tv"
+                android:layout_marginRight="22dp"
+                android:layout_toLeftOf="@+id/price_text"
+                android:layout_centerVertical="true"
+                android:textColor="@color/text_color"
+                android:textSize="14sp"
+                android:text="666克"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/price_text"
+                android:textColor="@color/text_color"
+                android:textSize="14sp"
+                android:text="6.66"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

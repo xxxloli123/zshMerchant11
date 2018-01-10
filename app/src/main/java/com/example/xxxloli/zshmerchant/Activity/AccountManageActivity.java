@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.adapter.AccountListAdapter;
 import com.example.xxxloli.zshmerchant.fragment.FragLoginPwd;
@@ -31,6 +33,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
+import com.sgrape.dialog.LoadDialog;
 import com.slowlife.lib.MD5;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
@@ -42,8 +45,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,16 +63,18 @@ public class AccountManageActivity extends BaseActivity {
     TextView txttitle;
     @BindView(R.id.pgbar)
     ProgressBar pgbar;
+    @BindView(R.id.to_et)
+    EditText toEt;
 
     private DBManagerAccount dbManagerAccount;
     private List<Account> accounts;
     private DBManagerShop dbManagerShop;
     private DBManagerUser dbManagerUser;
     private AccountListAdapter accountListAdapter;
-    private String token,phone;
+    private String token, phone;
     private Account account, switchoverEd;
-    private static final String TAG = FragLoginPwd.class.getSimpleName();
-    private String hint="\n可能会影响聊天功能\n如聊天功能异常请重新登录";
+    private String hint = "\n可能会影响聊天功能\n如聊天功能异常请重新登录";
+    private LoadDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +85,7 @@ public class AccountManageActivity extends BaseActivity {
         dbManagerShop = DBManagerShop.getInstance(this);
         dbManagerUser = DBManagerUser.getInstance(this);
         accounts = dbManagerAccount.queryAccountList();
-        phone=dbManagerUser.queryById((long) 2333).get(0).getPhone();
+        phone = dbManagerUser.queryById((long) 2333).get(0).getPhone();
 /**
  *         //开启信鸽日志输出
  */
@@ -96,7 +99,7 @@ public class AccountManageActivity extends BaseActivity {
             public void onSuccess(Object data, int flag) {
                 token = data.toString();
                 Log.d("TPush", "注册成功，设备token为：" + data);
-
+                toEt.setText(token);
             }
 
             @Override
@@ -116,16 +119,18 @@ public class AccountManageActivity extends BaseActivity {
 
     private void initView() {
         if (accounts == null) return;
-        accountListAdapter = new AccountListAdapter(this, accounts,phone);
+        accountListAdapter = new AccountListAdapter(this, accounts, phone);
         accountList.setAdapter(accountListAdapter);
         accountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!accounts.get(position).getPhone() .equals(phone)) {
+                if (!accounts.get(position).getPhone().equals(phone)) {
                     if (accounts.get(position).getPwd() == null) {
                         switchover();
                         return;
                     }
+                    dialog = new LoadDialog(AccountManageActivity.this);
+                    dialog.show();
                     Map<String, Object> map = new HashMap<>();
                     JSONObject user = new JSONObject();
                     try {
@@ -177,9 +182,9 @@ public class AccountManageActivity extends BaseActivity {
                 break;
             case R.id.add_registerLL:
                 Intent intent = new Intent();
-                intent.putExtra("add",true);
-                intent.setClass(this,FirstActivity.class);
-                startActivity( intent);
+                intent.putExtra("add", true);
+                intent.setClass(this, FirstActivity.class);
+                startActivity(intent);
                 break;
             case R.id.log_out:
                 isLogOut();
@@ -224,7 +229,7 @@ public class AccountManageActivity extends BaseActivity {
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         if (json.getInt("statusCode") == 200) {
             OrderHandleFragment.stopTimer();
-            Log.e("LOGIN","丢了个雷姆"+json);
+            Log.e("LOGIN", "丢了个雷姆" + json);
 
             dbManagerShop.deleteById((long) 2333);
             dbManagerUser.deleteById((long) 2333);
@@ -234,7 +239,7 @@ public class AccountManageActivity extends BaseActivity {
             shop.setWritId((long) 2333);
             dbManagerUser.insertUser(user);
             dbManagerShop.insertShop(shop);
-            loginEase(user.getId(),user.getId());
+            loginEase(user.getId(), user.getId());
             //OpenIM 开始登录
 //            String userid = shop.getShopkeeperId();
 //            LoginSampleHelper loginHelper=LoginSampleHelper.getInstance();
@@ -267,18 +272,18 @@ public class AccountManageActivity extends BaseActivity {
 //                    }
 //                }
 //            });
-            Timer timer=new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    finish();
-                }
-            },1000);
+//            Timer timer=new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    finish();
+//                }
+//            },1000);
         }
     }
 
     private void loginEase(String userName, String password) {
-        EMClient.getInstance().login(userName,password,new EMCallBack() {//回调
+        EMClient.getInstance().login(userName, password, new EMCallBack() {//回调
             @Override
             public void onSuccess() {
                 EMClient.getInstance().groupManager().loadAllGroups();
@@ -287,10 +292,13 @@ public class AccountManageActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtil.showToast(AccountManageActivity.this,"登录成功");
+                        ToastUtil.showToast(AccountManageActivity.this, "登录成功");
+                        dialog.dismiss();
+                        finish();
                     }
                 });
             }
+
             @Override
             public void onProgress(int progress, String status) {
             }
@@ -308,44 +316,46 @@ public class AccountManageActivity extends BaseActivity {
                                 break;
                             // 网络异常 2
                             case EMError.NETWORK_ERROR:
-                                Toast.makeText(AccountManageActivity.this, "网络错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "网络错误 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 无效的用户名 101
                             case EMError.INVALID_USER_NAME:
-                                Toast.makeText(AccountManageActivity.this, "无效的用户名 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "无效的用户名 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 无效的密码 102
                             case EMError.INVALID_PASSWORD:
-                                Toast.makeText(AccountManageActivity.this, "无效的密码 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "无效的密码 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 用户认证失败，用户名或密码错误 202
                             case EMError.USER_AUTHENTICATION_FAILED:
-                                Toast.makeText(AccountManageActivity.this, "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 用户不存在 204
                             case EMError.USER_NOT_FOUND:
-                                Toast.makeText(AccountManageActivity.this, "用户不存在 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "用户不存在 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 无法访问到服务器 300
                             case EMError.SERVER_NOT_REACHABLE:
-                                Toast.makeText(AccountManageActivity.this, "无法访问到服务器 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "无法访问到服务器 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 等待服务器响应超时 301
                             case EMError.SERVER_TIMEOUT:
-                                Toast.makeText(AccountManageActivity.this, "等待服务器响应超时 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "等待服务器响应超时 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 服务器繁忙 302
                             case EMError.SERVER_BUSY:
-                                Toast.makeText(AccountManageActivity.this, "服务器繁忙 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "服务器繁忙 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             // 未知 Server 异常 303 一般断网会出现这个错误
                             case EMError.SERVER_UNKNOWN_ERROR:
-                                Toast.makeText(AccountManageActivity.this, "未知的服务器异常 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "未知的服务器异常 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                             default:
-                                Toast.makeText(AccountManageActivity.this, "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AccountManageActivity.this, "ml_sign_in_failed code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
                                 break;
                         }
+                        dialog.dismiss();
+                        finish();
                     }
                 });
             }

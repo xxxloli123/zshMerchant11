@@ -12,20 +12,31 @@
         android:orientation="vertical">
 
 
-
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="确认添加"
             android:textColor="@color/text_color"
             android:textSize="14sp" />
 
+        <TextView
+            android:visibility="gone"
+            android:layout_marginTop="6dp"
+            android:id="@+id/message_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="确认添加"
+            android:textColor="@color/red1"
+            android:textSize="14sp" />
+
         <View
+            android:layout_marginTop="22dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/line_color" />

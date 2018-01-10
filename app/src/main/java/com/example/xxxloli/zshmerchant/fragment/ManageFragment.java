@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.base.AppInfo;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
 import com.squareup.picasso.Picasso;
@@ -115,6 +117,7 @@ public class ManageFragment extends BaseFragment {
         params.put("shopId", shop.getId());
         params.put("startDate", year + "-" + (++month) + "-" + day);
         params.put("endDate", year + "-" + month + "-" + day);
+        Log.d("GET_Data",""+params);
         newCall(Config.Url.getUrl(Config.GET_Data), params);
     }
 
@@ -266,9 +269,11 @@ public class ManageFragment extends BaseFragment {
                 todayOrder = rootView.findViewById(R.id.today_order);
                 todayMoney = rootView.findViewById(R.id.today_money);
                 if (json.getInt("statusCode") == 200) {
+                    Log.d("GET_Data","json "+json);
                     todayOrder.setText(json.getString("ordercount"));
-                    if (json.getString("actualcost").equals("null"))
-                        todayMoney.setText("0");
+                    if (json.getString("actualcost")==null)
+                        ToastUtil.showToast(getContext(),"getString(\"actualcost\")+null");
+//                        todayMoney.setText("0");
                     else todayMoney.setText(json.getString("actualcost"));
                 }
                 break;

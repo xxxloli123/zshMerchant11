@@ -81,16 +81,18 @@ public class BillAdapter extends BaseAdapter implements OkHttpCallback.Impl, Vie
             holder = (ViewHolder) view.getTag();
         }
         holder.name.setText(billCommodities.get(i).getGoodsName());
-        holder.specificationTv.setText(billCommodities.get(i).getStandardName() + "　 " +
-                billCommodities.get(i).getProductcategory());
-        holder.quantityText.setText("x" + billCommodities.get(i).getGoodsnum()+"(份数)");
+        if (billCommodities.get(i).getProductcategory()!=null)
+        holder.specificationTv.setText(billCommodities.get(i).getProductcategory() + "　 " +
+                billCommodities.get(i).getStandardName());
+        else holder.specificationTv.setText("");
+        holder.quantityText.setText( billCommodities.get(i).getGoodsnum()+"份");
         holder.priceText.setText(billCommodities.get(i).getGoodsPrice() + "");
         if (billCommodities.get(i).getGoodsrealweight()>0)
-            holder.weightTv.setText(billCommodities.get(i).getGoodsrealweight() + " 克"+"(重量)");
+            holder.weightTv.setText("重量  "+billCommodities.get(i).getGoodsrealweight() );
         else {
             double quantity= billCommodities.get(i).getGoodsnum();
             double weight= billCommodities.get(i).getGoodsweight();
-            holder.weightTv.setText((quantity *weight) + " 克"+"(重量)");
+            holder.weightTv.setText("重量  "+(quantity *weight) );
         }
         holder.weightTv.setOnClickListener(this);
         holder.weightTv.setTag(R.id.billCommodityId, billCommodities.get(i).getId());
@@ -107,7 +109,6 @@ public class BillAdapter extends BaseAdapter implements OkHttpCallback.Impl, Vie
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
-
         ToastUtil.showToast(context, json.getString("message"));
     }
 
