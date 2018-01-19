@@ -25,6 +25,7 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
+import com.example.xxxloli.zshmerchant.onepush.HelloOnePushReceiver;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.MyListView;
 import com.google.gson.Gson;
@@ -140,8 +141,10 @@ public class AccountManageActivity extends BaseActivity {
                         user.put("type", "Shopkeeper");
                         user.put("phoneType", "Android");
                         user.put("token", token);
+                        user.put("gttoken", HelloOnePushReceiver.getGtToken());
                         map.put("userStr", user);
                         newCall(Config.Url.getUrl(Config.LOGIN), map);
+                        Log.e("LOGIN",map+"");
                     } catch (JSONException e) {
                         Toast.makeText(AccountManageActivity.this, "解析数据失败", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
@@ -239,7 +242,11 @@ public class AccountManageActivity extends BaseActivity {
             shop.setWritId((long) 2333);
             dbManagerUser.insertUser(user);
             dbManagerShop.insertShop(shop);
-            loginEase(user.getId(), user.getId());
+            EMClient.getInstance().logout(true);
+
+            loginEase(user.getId(),user.getId());
+            EMClient.getInstance().chatManager().loadAllConversations();
+            EMClient.getInstance().groupManager().loadAllGroups();
             //OpenIM 开始登录
 //            String userid = shop.getShopkeeperId();
 //            LoginSampleHelper loginHelper=LoginSampleHelper.getInstance();
@@ -361,7 +368,6 @@ public class AccountManageActivity extends BaseActivity {
             }
         });
     }
-
 //    private void init2(String userId, String appKey){
 //        //初始化imkit
 //        LoginSampleHelper.getInstance().initIMKit(userId, appKey);

@@ -164,6 +164,7 @@ public class EditCommodityActivity extends BaseActivity {
         weightEt.setText(commodity.getWeight());
         firstText.setText(commodity.getGenericClassName());
         if (commodity.getStatus().equals("Normal")) putawayORsoldOutBt.setText("下架");
+        dialog = new LoadDialog(this);
     }
 
     @Override
@@ -406,7 +407,6 @@ public class EditCommodityActivity extends BaseActivity {
             Toast.makeText(this, "请选择分类", Toast.LENGTH_SHORT).show();
             return;
         }
-        dialog = new LoadDialog(this);
         dialog.show();
 //        修改商品基本属性::productStr[id:商品id;shopClassId 商家分类ID, shopClassName 商家分类名称,
 //          productName商品名称, shopsort 排序号, details 商品描述,singlePrice 单价	];

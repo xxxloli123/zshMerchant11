@@ -164,17 +164,16 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
     public void fail(Object tag, int code, JSONObject json) throws JSONException {
         super.fail(tag, code, json);
 //        Toast.makeText(getContext(), json.getString("message") + "code" + code, Toast.LENGTH_SHORT).show();
+        assert ptrFrameLayout != null;
         ptrFrameLayout=rootView.findViewById(R.id.ptr_frame_layout);
         ptrFrameLayout.refreshComplete();
     }
 
     private void initView() {
-        final PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
-        header.setLastUpdateTimeKey("丢了个雷姆");
+         PtrClassicDefaultHeader header = new PtrClassicDefaultHeader(getActivity());
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
         final PtrClassicDefaultFooter footer = new PtrClassicDefaultFooter(getActivity());
-        footer.setLastUpdateTimeKey("丢了个雷姆");
         ptrFrameLayout.setFooterView(footer);
         ptrFrameLayout.addPtrUIHandler(footer);
         ptrFrameLayout.setLastUpdateTimeRelateObject(this);
@@ -450,6 +449,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 map.put("userId", shop.getShopkeeperId());
                 map.put("cause", "");
                 newCall(Config.Url.getUrl(Config.Receive_Reject), map);
+                PrintOrder(orderEntity);
                 //List移除某Item
                 orders.remove(orderEntity);
                 orderListAdapter1.notifyDataSetChanged();
@@ -520,6 +520,7 @@ public class FragOrderList extends BaseFragment implements OrderListAdapter1.Cal
                 if (ptrFrameLayout!=null) ptrFrameLayout.refreshComplete();
                 if (page == 1 && !orders.isEmpty()) orders.clear();
                 JSONArray arr = json.getJSONObject("ordersInfo").getJSONArray("aaData");
+                if (arr.length()==0)return;
                 Log.e("GET_HandleOrder", "丢了个雷姆" + arr.get(0));
                 Gson gson = new Gson();
                 for (int i = 0; i < arr.length(); i++) {

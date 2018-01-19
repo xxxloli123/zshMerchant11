@@ -21,4 +21,9 @@ public class ToastUtil {
         }
     }
 
+    public static void showToast2(Context context, String message) {
+        if (null != context && !TextUtils.isEmpty(message)) {
+            CustomToast.makeText(context, message, 2000).show();
+        }
+    }
 }

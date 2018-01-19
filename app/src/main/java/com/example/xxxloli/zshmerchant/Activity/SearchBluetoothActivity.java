@@ -215,7 +215,6 @@ public class SearchBluetoothActivity extends BluetoothActivity implements Adapte
                         try {
                             BtUtil.cancelDiscovery(bluetoothAdapter);
 
-
                             if (bluetoothDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
                                 connectBlt(bluetoothDevice);
                             } else {

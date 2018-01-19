@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.peng.library:one-push-core-1.2.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/2df6965383b3b8aae82b78e17dd1dc482e980f1f/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/2df6965383b3b8aae82b78e17dd1dc482e980f1f/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.peng.library/one-push-core/1.2.3/7319f0a3dcf0740f888f53363f8e83b63879048d/one-push-core-1.2.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

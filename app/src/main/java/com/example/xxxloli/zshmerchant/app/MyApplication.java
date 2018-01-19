@@ -8,11 +8,13 @@ import android.os.Process;
 import android.util.Log;
 
 import com.example.xxxloli.zshmerchant.BuildConfig;
+import com.example.xxxloli.zshmerchant.KDIntentService;
 import com.example.xxxloli.zshmerchant.util.RomUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
+import com.igexin.sdk.PushManager;
 import com.peng.one.push.OnePush;
 import com.slowlife.xgpush.XgReceiver;
 import com.tencent.android.tpush.XGNotifaction;
@@ -30,10 +32,9 @@ public class MyApplication extends Application {
     // 此TAG在adb logcat中检索自己所需要的信息， 只需在命令行终端输入 adb logcat | grep
     private static final String TAG = MyApplication.class.getSimpleName();
     public static Context mContext;
-    //云旺OpenIM的DEMO用到的Application上下文实例
-    private static Context sContext;
+
     public static Context getContext(){
-        return sContext;
+        return mContext;
     }
 
     // 记录是否已经初始化
@@ -51,7 +52,7 @@ public class MyApplication extends Application {
         // 初始化环信SDK
         initEasemob();
 //        startXm();
-//        startOnePush();
+        startOnePush();
 
         if (isMainProcess()) {
             // 为保证弹出通知前一定调用本方法，需要在application的onCreate注册
@@ -83,6 +84,7 @@ public class MyApplication extends Application {
 //            return;
 //        }
 //        initYWSDK(this);
+
     }
 
 //    private void startXm() {
@@ -115,26 +117,24 @@ public class MyApplication extends Application {
     //获取当前进程名称
     private void startOnePush() {
         String currentProcessName = getCurrentProcessName();
-        //只在主进程中注册(注意：umeng推送，除了在主进程中注册，还需要在channel中注册)
-        if (BuildConfig.APPLICATION_ID.equals(currentProcessName) || BuildConfig.APPLICATION_ID.concat(":channel").equals(currentProcessName)) {
-            //platformCode和platformName就是在<meta/>标签中，对应的"平台标识码"和平台名称
+        //初始化的时候，回调该方法，可以根据platformCode和当前系统的类型，进行注册
+//返回true，则使用该平台的推送，否者就不使用
+//只在主进程中注册(注意：umeng推送，除了在主进程中注册，还需要在channel中注册)
+        if (BuildConfig.APPLICATION_ID.equals(currentProcessName) || BuildConfig.APPLICATION_ID.concat(":channel")
+                .equals(currentProcessName)) {
             OnePush.init(this, ((platformCode, platformName) -> {
-                boolean result = false;
-                if (RomUtils.isMiuiRom()) {
-                    result=  platformCode == 101;
-                } //RomUtils.isHuaweiRom()
-                else
-                    if (RomUtils.isHuaweiRom()) {
-//                    result= platformCode == 107;
-                    result=true;
-                } else if(RomUtils.isFlymeRom()){
-                    result = platformCode == 103;
-                } else {
-                    result= platformCode == 106;
-                }
-                Log.i(TAG, "Register-> code: "+platformCode+" name: "+platformName+" result: "+result);
-                return result;
-//                return platformCode == 101;
+                //platformCode和platformName就是在<meta/>标签中，对应的"平台标识码"和平台名称
+//                if (RomUtils.isMiuiRom()) {
+//                    return false;
+//
+//                } else if (RomUtils.isHuaweiRom()) {
+//                    return false;
+//                } else if (RomUtils.isFlymeRom()) {
+//                    return false;
+//                }else {
+//                    return true;
+//                }
+                return true;
             }));
             OnePush.register();
         }
@@ -193,9 +193,6 @@ public class MyApplication extends Application {
         return false;
     }
 
-    /**
-     *
-     */
     private void initEasemob() {
         EMOptions options = new EMOptions();
 // 默认添加好友时，是不需要验证的，改成需要验证

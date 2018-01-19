@@ -88,7 +88,6 @@ public class CommunityAdapter extends BaseAdapter implements View.OnClickListene
         return view;
     }
 
-
     static class ViewHolder {
         @BindView(R.id.classify_name)
         TextView classifyName;

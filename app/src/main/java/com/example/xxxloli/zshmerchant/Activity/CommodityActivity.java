@@ -158,7 +158,7 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
                 classifyE=classifies.get(0);
                 initClassify2(classifyE.getId());
                 classifyAdapter = new ClassifyAdapter(CommodityActivity.this, classifies);
-                classify.setAdapter(classifyAdapter);
+                if (classify!=null)classify.setAdapter(classifyAdapter);
                 break;
             case Config.GET_Classify_2:
                 JSONArray arr2 = json.getJSONArray("listclass");
@@ -290,7 +290,6 @@ public class CommodityActivity extends BaseActivity implements CommodityAdapter.
 
     /**
      * 查询符合的手机号码
-     *
      * @param str
      */
     private static String checkCellphone(String str) {

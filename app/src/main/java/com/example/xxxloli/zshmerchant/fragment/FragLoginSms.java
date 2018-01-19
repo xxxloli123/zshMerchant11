@@ -18,6 +18,7 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
+import com.example.xxxloli.zshmerchant.onepush.HelloOnePushReceiver;
 import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.TimeButton;
@@ -179,6 +180,7 @@ public class FragLoginSms extends BaseFragment {
             userJson.put("type", "Shopkeeper");
             userJson.put("phoneType", "Android");
             userJson.put("token", token);
+            userJson.put("gttoken", HelloOnePushReceiver.getGtToken());
             JSONObject smsJson = new JSONObject();
             smsJson.put("phone", phone);
             smsJson.put("code", code);
@@ -187,6 +189,7 @@ public class FragLoginSms extends BaseFragment {
             map.put("userStr", userJson);
             map.put("smsStr", smsJson);
             newCall(Config.Url.getUrl(Config.LOGIN), map);
+            Log.e("LOGIN",map+"");
         } catch (JSONException e) {
             Toast.makeText(getContext(), "解析数据失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -205,33 +208,28 @@ public class FragLoginSms extends BaseFragment {
                     User user = new Gson().fromJson(json.getString("user"), User.class);
                     user.setWritId((long) 2333);
                     dbManagerShop=DBManagerShop.getInstance(getActivity());
+                    if (dbManagerShop.queryById((long) 2333).size()!=0){
+                        dbManagerShop.deleteById((long) 2333);
+                    }
+                    Log.e("LOGIN","丢了个雷姆"+json);
+                    if (!dbManagerUser.queryById((long) 2333).isEmpty())dbManagerUser.deleteById((long) 2333);
                     Shop shop = new Gson().fromJson(json.getString("shop"), Shop.class);
                     shop.setWritId((long) 2333);
                     dbManagerUser.insertUser(user);
                     dbManagerShop.insertShop(shop);
 
                     dbManagerAccount = DBManagerAccount.getInstance(getActivity());
-                    Account account=new Account();
-                    if (!dbManagerAccount.queryById((long) 2333).isEmpty()) {
-                        account=dbManagerAccount.queryById((long) 2333).get(0);
-                        account.setWritId(null);
-                        dbManagerAccount.insertAccount(account);
-                        dbManagerAccount.deleteById((long) 2333);
-                    }
-
-                    if (dbManagerAccount.queryByPhone(phone)==null) {
+                    if (dbManagerAccount.queryByPhone(phone).isEmpty()) {
+                        EMClient.getInstance().logout(true);
+                        Account account=new Account();
                         account.setHead(shop.getShopImage());
-                        account.setName(shop.getShopkeeperName());
+                        account.setName(shop.getShopName());
                         account.setPhone(phone);
-                        account.setWritId((long) 2333);
                         dbManagerAccount.insertAccount(account);
                     }else {
-                        account=dbManagerAccount.queryByPhone(phone).get(0);
-                        account.setName(shop.getShopkeeperName());
-                        account.setHead(shop.getShopImage());
-                        dbManagerAccount.deleteById(account.getWritId());
-                        account.setWritId((long) 2333);
-                        dbManagerAccount.insertAccount(account);
+                        Account account=dbManagerAccount.queryByPhone(phone).get(0);
+                        account.setPwd(null);
+                        dbManagerAccount.updateUser(account);
                     }
 //                    //OpenIM 开始登录
 //                    String userid = shop.getShopkeeperId();
@@ -272,19 +270,11 @@ public class FragLoginSms extends BaseFragment {
                     loginEase(user.getId(),user.getId());
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();
-
-                    Timer timer=new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                            if (getActivity() != null) getActivity().finish();
-                        }
-                    },1500);
                 }
                 break;
         }
     }
+
     private void loginEase(String userName, String password) {
         EMClient.getInstance().login(userName,password,new EMCallBack() {//回调
             @Override
@@ -296,6 +286,7 @@ public class FragLoginSms extends BaseFragment {
                     @Override
                     public void run() {
                         ToastUtil.showToast(getContext(),"登录成功");
+                        start();
                     }
                 });
 
@@ -355,10 +346,15 @@ public class FragLoginSms extends BaseFragment {
                                 Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
                                 break;
                         }
+                        start();
                     }
                 });
             }
         });
     }
 
+    private void start() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
+        if (getActivity() != null) getActivity().finish();
+    }
 }

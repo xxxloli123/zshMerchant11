@@ -41,7 +41,6 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
     }
 
     /**
@@ -122,8 +121,9 @@ public class OrderListAdapter1 extends BaseAdapter implements View.OnClickListen
             holder.reject.setText("打印订单");
             holder.deliveryTv.setText((orderEntities.get(i).getShopTransport().equals("no"))?"惠递配送":"商家配送");
             holder.infoLl.setVisibility(View.VISIBLE);
-            if (orderEntities.get(i).getDeliveryStatesExplain() != null)
-                holder.infoTv.setText(orderEntities.get(i).getDeliveryStatesExplain() + "");
+                holder.infoTv.setText(orderEntities.get(i).getStatus_value()+""+
+                        ((orderEntities.get(i).getDeliveryStatesExplain() ==null)?
+                                "":orderEntities.get(i).getDeliveryStatesExplain()));
         }
         String phone = (orderEntities.get(i).getReceiverPhone() != null) ? "" + orderEntities.get(i).getReceiverPhone() : " ";
         holder.namePhone.setText(((orderEntities.get(i).getReceiverName() != null) ?

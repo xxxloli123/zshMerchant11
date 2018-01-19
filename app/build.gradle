@@ -25,9 +25,15 @@ android {
         applicationId "com.example.xxxloli.zshmerchant"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 4
-        versionName '1.5'
+        versionCode 7
+        versionName '2.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                GETUI_APP_ID : "fH9vSTceFn5MRoyU3et8B3",
+                GETUI_APP_KEY : "AVF1CoYrgd62UQl6UZwwa",
+                GETUI_APP_SECRET : "6WRYJURWDR9WiL2CIQOPrA"
+        ]
+
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         ndk {
             //根据需要 自行选择添加的对应cpu类型的.so库。
@@ -49,6 +55,7 @@ android {
     productFlavors {
     }
     compileOptions {
+        //compile 汇编
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }

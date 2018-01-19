@@ -146,12 +146,13 @@
     <orderEntry type="library" exported="" name="com.android.support:transition-26.0.0-alpha1" level="project" />
     <orderEntry type="library" exported="" name="com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.4.0@jar" level="project" />
     <orderEntry type="library" exported="" name="de.greenrobot:eventbus:2.2.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.peng.library:one-push-core-1.2.3" level="project" />
     <orderEntry type="library" exported="" name="com.android.support:animated-vector-drawable-26.1.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="com.android.support.test.espresso:espresso-idling-resource-2.2.2" level="project" />
-    <orderEntry type="library" exported="" name="com.peng.library:one-push-core-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="com.squareup.picasso:picasso:2.5.2@jar" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javax.annotation:javax.annotation-api:1.2@jar" level="project" />
     <orderEntry type="library" exported="" name="com.nostra13.universalimageloader:universal-image-loader:1.9.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="com.peng.library:one-push-getui-1.2.1" level="project" />
     <orderEntry type="library" exported="" name="__local_jars__:E.\android\dome\zshMerchant11\app\libs\AMap_Location_V3.6.0_20170918.jar:unspecified@jar" level="project" />
     <orderEntry type="module" module-name="zxing" exported="" />
     <orderEntry type="module" module-name="easeui" exported="" />

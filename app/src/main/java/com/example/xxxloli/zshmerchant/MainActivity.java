@@ -25,6 +25,7 @@ import com.example.xxxloli.zshmerchant.fragment.ShopFragment;
 import com.example.xxxloli.zshmerchant.util.CacheActivity;
 import com.example.xxxloli.zshmerchant.util.InstallUtils;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
+import com.igexin.sdk.PushManager;
 import com.interfaceconfig.Config;
 
 import org.json.JSONException;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             button((Button) v);
-
         }
     };
 
@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         update(getVersionCode(this));
         init(savedInstanceState);
+//        PushManager.getInstance().initialize(this.getApplicationContext(), KDPushService.class);
+//        // 注册 intentService 后 PushDemoReceiver 无效, sdk 会使用 DemoIntentService 传递数据,
+//        // AndroidManifest 对应保留一个即可(如果注册 DemoIntentService, 可以去掉 PushDemoReceiver, 如果注册了
+//        // IntentService, 必须在 AndroidManifest 中声明)
+//        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), KDIntentService.class);
     }
 
     public static int getVersionCode(Context context) {
@@ -137,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void upData2() {
         Toast.makeText(this, "检测到新的版本，自动为您下载。。。", Toast.LENGTH_SHORT).show();
-        new InstallUtils(this, Config.Url.getUrl("/slowlife/share/appdownload?type=android"), "惠递",
+        new InstallUtils(this, Config.Url.getUrl("/slowlife/share/appdownload?type=android_zsh_shop"), "掌升活(商家端)",
                 new InstallUtils.DownloadCallBack() {
                     @Override
                     public void onStart() {

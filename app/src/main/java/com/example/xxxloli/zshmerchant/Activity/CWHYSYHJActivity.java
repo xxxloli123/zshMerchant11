@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -232,6 +233,7 @@ public class CWHYSYHJActivity extends BaseActivity {
         if (!isEmpty(YHQMoneyTV.getText()) && !YHQMoneyTV.getText().equals("设置优惠券金额")) {
             text.setText(YHQMoneyTV.getText());
         }
+        text.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -356,7 +358,7 @@ public class CWHYSYHJActivity extends BaseActivity {
             public void onDateSet(DatePicker arg0, final int year, int month, int day) {
                 //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
                 startYear = year;
-                startMonth = month;
+                startMonth = ++month;
                 startDay = day;
                 String m=(startMonth<10)? "0"+startMonth:""+startMonth;
                 String d=(startDay<10)? "0"+startDay:""+startDay;

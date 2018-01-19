@@ -37,7 +37,7 @@ public class SettingActivity extends AppCompatActivity {
 
     @OnClick({R.id.back_rl, R.id.my_accountLL, R.id.notificationLL, R.id.helpLL, R.id.printerLL, R.id.complainLL})
     public void onViewClicked(View view) {
-        Intent intent=null;
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.back_rl:
                 finish();
@@ -63,5 +63,10 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ComplainActivity.class));
                 break;
         }
+    }
+
+    @OnClick(R.id.shopping_ll)
+    public void onViewClicked() {
+        startActivity(new Intent(this, ShoppingCrardActivity.class));
     }
 }

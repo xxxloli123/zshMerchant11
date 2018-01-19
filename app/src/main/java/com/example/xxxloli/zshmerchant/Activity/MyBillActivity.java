@@ -147,9 +147,7 @@ public class MyBillActivity extends BaseActivity {
         map1.put("shopId", shop.getId());
         map1.put("startPage", ++page);
         map1.put("pageSize", "20");
-        String month = (initMonth < 10) ? "0" + initMonth : initMonth + "";
-        String day = (initDay < 10) ? "0" + initDay : initDay + "";
-        map1.put("time", initYear + "-" + month + "-" + day);
+        map1.put("time", selectDataTv.getText());
         newCall(Config.Url.getUrl(Config.GET_Bills), map1);
     }
 
@@ -177,6 +175,7 @@ public class MyBillActivity extends BaseActivity {
                     weixinBt.setText("已绑定微信");
                     weixinBt.setClickable(false);
                 }
+                if (arr.length() == 0) return;
                 if (checkBills == null) checkBills = new ArrayList<>();
                 if (page == 1 && !checkBills.isEmpty()) checkBills.clear();
                 Gson gson = new Gson();
@@ -326,7 +325,10 @@ public class MyBillActivity extends BaseActivity {
         initYear = cal.get(Calendar.YEAR);       //获取年月日时分秒
         initMonth = cal.get(Calendar.MONTH) + 1;   //获取到的月份是从0开始计数
         initDay = cal.get(Calendar.DAY_OF_MONTH);
-        selectDataTv.setText(initYear + "." + (initMonth) + "." + initDay);
+        String iM=(initMonth<10)? "0"+initMonth:""+initMonth;
+        String iD=(initDay<10)? "0"+initDay:""+initDay;
+        String dateString = (initYear + "-" + iM + "-" + iD);
+        selectDataTv.setText(dateString);
         initView();
     }
 
@@ -336,7 +338,7 @@ public class MyBillActivity extends BaseActivity {
             public void onDateSet(DatePicker arg0, final int year, int month, int day) {
                 //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
                 initYear = year;
-                initMonth = month;
+                initMonth = ++month;
                 initDay = day;
                 page = 0;
 

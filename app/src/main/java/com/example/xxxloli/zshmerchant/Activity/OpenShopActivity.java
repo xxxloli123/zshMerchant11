@@ -162,7 +162,6 @@ public class OpenShopActivity extends BaseActivity implements
         return R.layout.activity_open_shop;
     }
 
-
     private void getAmapLocation() {
         mlocationClient = new AMapLocationClient(this);
         //初始化定位参数

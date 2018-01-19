@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -253,6 +254,7 @@ public class MZActivity extends BaseActivity {
         if (!isEmpty(manTV.getText()) && !manTV.getText().equals("设置满多少元")) {
             text.setText(manTV.getText());
         }
+        text.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -729,6 +730,7 @@ public class ShopInfoActivity extends BaseActivity {
         TextView save = view.findViewById(R.id.save);
         final EditText text = view.findViewById(R.id.edit);
         text.setText(shop.getPackingprice()+"");
+        text.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

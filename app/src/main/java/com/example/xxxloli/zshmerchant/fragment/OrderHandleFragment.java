@@ -33,6 +33,7 @@ import com.example.xxxloli.zshmerchant.print.PrintUtil;
 import com.example.xxxloli.zshmerchant.printutil.PrintOrderDataMaker;
 import com.example.xxxloli.zshmerchant.printutil.PrinterWriter;
 import com.example.xxxloli.zshmerchant.printutil.PrinterWriter58mm;
+import com.example.xxxloli.zshmerchant.util.SoundUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.PagerSlidingTabStrip;
 import com.example.xxxloli.zshmerchant.view.ShSwitchView;
@@ -73,9 +74,10 @@ public class OrderHandleFragment extends BaseFragment {
     ViewPager pager;
     Unbinder unbinder;
 
-    private static Timer timer;
+    private static Timer timer,timer1;
     private DBManagerShop dbManagerShop;
     private Shop shop;
+    private ArrayList<OrderEntity> orders;
     /**
      * bluetooth adapter
      */
@@ -95,6 +97,23 @@ public class OrderHandleFragment extends BaseFragment {
         pager.setAdapter(new OrdersHandleFragmentAdapter(getActivity().getSupportFragmentManager(), list));
         tabs.setViewPager(pager);
         pager.setCurrentItem(0);
+        startNoise();
+    }
+
+    private void startNoise() {
+        timer1=new Timer();
+        timer1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Map<String, Object> map = new HashMap<>();
+                map.put("shopId", shop.getId());
+                map.put("userId", shop.getShopkeeperId());
+                map.put("startPage", "1");
+                map.put("pageSize", "15");
+                map.put("lineOrderType", "All");
+                newCall(Config.Url.getUrl(Config.GET_HandleOrder), map);
+            }
+        },0,1000*60*3);
     }
 
     @Override
@@ -102,9 +121,9 @@ public class OrderHandleFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        initPagers();
         dbManagerShop = DBManagerShop.getInstance(getActivity());
         shop = dbManagerShop.queryById((long) 2333).get(0);
+        initPagers();
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!TextUtils.isEmpty(AppInfo.btAddress)){
             printerImg.setImageResource(R.drawable.printer4);
@@ -216,7 +235,7 @@ public class OrderHandleFragment extends BaseFragment {
                         }
                 }
             }
-        break;
+            break;
             case Config.EDIT_SHOP_INFO:
                 Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
                 if (json.getString("statusCode").equals("200")){
@@ -233,6 +252,12 @@ public class OrderHandleFragment extends BaseFragment {
                 }
                 Log.e("EDIT_SHOP_INFO", "丢了个雷姆" + json);
 //                    startActivity(new Intent(ShopInfoActivity.this, LoginActivity.class));
+                break;
+            case Config.GET_HandleOrder:
+                JSONArray arr = json.getJSONObject("ordersInfo").getJSONArray("aaData");
+                if (arr.length()!=0){
+                    SoundUtils.playSoundByMedia(getContext(), R.raw.a);
+                }
                 break;
         }
     }

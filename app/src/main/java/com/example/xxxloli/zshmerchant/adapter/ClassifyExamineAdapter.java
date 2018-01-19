@@ -34,7 +34,6 @@ public class ClassifyExamineAdapter extends BaseAdapter implements View.OnClickL
 
     /**
      * 自定义接口，用于回调按钮点击事件到Activity
-     *
      * @author Ivan Xu
      *         2014-11-26
      */

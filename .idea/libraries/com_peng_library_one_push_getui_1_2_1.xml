@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="com.peng.library:one-push-getui-1.2.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/483d6c8eb8df46a721494afea6f01f78c81c88b8/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/483d6c8eb8df46a721494afea6f01f78c81c88b8/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/483d6c8eb8df46a721494afea6f01f78c81c88b8/output/jars/libs/GetuiSDK2.11.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.peng.library/one-push-getui/1.2.1/f3d46b10ab27fd8211044856c61327c2a98f346d/one-push-getui-1.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

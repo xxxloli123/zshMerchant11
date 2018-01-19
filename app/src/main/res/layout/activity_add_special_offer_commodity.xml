@@ -329,7 +329,7 @@
                     android:textColor="@color/text_color" />
 
                 <EditText
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     android:id="@+id/original_priceET"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -381,7 +381,7 @@
                     android:textColor="@color/text_color" />
 
                 <EditText
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     android:id="@+id/special_offerET"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

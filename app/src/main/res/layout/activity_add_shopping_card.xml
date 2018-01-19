@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.xxxloli.zshmerchant.Activity.AddShoppingCardActivity">
+
+
+    <!--头部-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/blue">
+
+        <RelativeLayout
+            android:id="@+id/back_rl"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/finish" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="创建购物卡"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="购物卡名称"
+        android:textColor="@color/text_color"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/name_et"
+        android:paddingLeft="6dp"
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:hint=""
+        android:layout_margin="10dp"
+        android:background="@drawable/background_bgall_white_edit"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:text="购物卡数量"
+        android:textColor="@color/text_color"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/quantity_et"
+        android:paddingLeft="6dp"
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:hint=""
+        android:layout_margin="10dp"
+        android:background="@drawable/background_bgall_white_edit"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:text="单张金额"
+        android:textColor="@color/text_color"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:inputType="number|numberDecimal"
+        android:id="@+id/money_et"
+        android:paddingLeft="6dp"
+        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:hint=""
+        android:layout_margin="10dp"
+        android:background="@drawable/background_bgall_white_edit"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="10dp"
+        android:text="购物卡有效时间"
+        android:textColor="@color/text_color"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/start_data_tv"
+            android:gravity="center"
+            android:text="设置开始日期"
+            android:textSize="14sp"
+            android:textColor="@color/blue"
+            android:background="@drawable/background_bgall_white_edit"
+            android:layout_width="100dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:text="至"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            android:layout_marginLeft="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/end_data_tv"
+            android:gravity="center"
+            android:text="设置结束日期"
+            android:textSize="14sp"
+            android:textColor="@color/blue"
+            android:background="@drawable/background_bgall_white_edit"
+            android:layout_width="100dp"
+            android:layout_height="30dp" />
+
+        <!--<TextView-->
+        <!--android:layout_marginLeft="6dp"-->
+        <!--android:id="@+id/hint_TV"-->
+        <!--android:gravity="center"-->
+        <!--android:text="请设置正确的日期"-->
+        <!--android:textSize="10sp"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="30dp" />-->
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_bt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corners"
+        android:text="创建"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
+</LinearLayout>

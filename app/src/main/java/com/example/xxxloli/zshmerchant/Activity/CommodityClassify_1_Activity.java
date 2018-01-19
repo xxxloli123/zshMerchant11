@@ -203,6 +203,5 @@ public class CommodityClassify_1_Activity extends BaseActivity implements Classi
                 addOrEditClassify(true, (Integer) v.getTag());
                 break;
         }
-
     }
 }

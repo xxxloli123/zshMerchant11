@@ -1,7 +1,7 @@
 package com.interfaceconfig;
 
 public interface Config {
-    String LOCAL_HOST = "http://192.168.0.104:8080/";
+    String LOCAL_HOST = "http://192.168.0.106:8080/";
     String HOST = "http://www.zsh7.com/";
     // 登录
     String LOGIN = "slowlife/appuser/userlogin";
@@ -262,9 +262,30 @@ public interface Config {
     String Edit_OrderQuantity = "slowlife/appshop/shopmodifygoodsnum";
 
     /**
-        上传商品图片
+     店铺添加购物卡
+     */
+    String  AddShoppingCard = "slowlife/appshop/shopcreateshoppingcard";
+
+    /**
+     店铺获取自己的所有购物卡
+     */
+    String  GetShoppingCard = "slowlife/appshop/pagequeryshoppingcardofshop";
+
+    /**
+     描述：商家删除未激活的购物卡,
+     */
+    String  DeleteShoppingCard = "slowlife/appshop/shopdelshoppingcard ";
+
+    /**
+     描述：获取密码 发送短信到创建者电话手机,
+     */
+    String  GetShoppingCardPwd = "slowlife/appshop/shopgetcardpassword  ";
+
+    /**
+     上传商品图片
      */
     String Upload_Imgs = "slowlife/appshop/shopuntreatedpicture";
+
 
     String platformException = "slowlife/appshop/shopopinion";
     String getPlatformException = "slowlife/appshop/shopqueryopinion";

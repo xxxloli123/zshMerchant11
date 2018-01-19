@@ -24,6 +24,7 @@ import com.example.xxxloli.zshmerchant.greendao.DBManagerShop;
 import com.example.xxxloli.zshmerchant.greendao.DBManagerUser;
 import com.example.xxxloli.zshmerchant.greendao.Shop;
 import com.example.xxxloli.zshmerchant.greendao.User;
+import com.example.xxxloli.zshmerchant.onepush.HelloOnePushReceiver;
 import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.ShSwitchView;
@@ -171,9 +172,10 @@ public class FragLoginPwd extends BaseFragment {
             user.put("type", "Shopkeeper");
             user.put("phoneType", "Android");
             user.put("token", token);
+            user.put("gttoken", HelloOnePushReceiver.getGtToken());
             map.put("userStr", user);
             newCall(Config.Url.getUrl(Config.LOGIN), map);
-            Log.e("token","丢了个雷姆"+token);
+            Log.e("LOGIN",map+"");
         } catch (JSONException e) {
             Toast.makeText(getContext(), "解析数据失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -209,6 +211,7 @@ public class FragLoginPwd extends BaseFragment {
                     }else {
                         Account account=dbManagerAccount.queryByPhone(phone).get(0);
                         if (!account.getPwd().equals(pwd))account.setPwd(pwd);
+                        dbManagerAccount.updateUser(account);
                     }
                     EMClient.getInstance().logout(true);
 
@@ -249,7 +252,6 @@ public class FragLoginPwd extends BaseFragment {
 //                            }
 //                        }
 //                    });
-                    start();
                 }
                 break;
         }
@@ -334,7 +336,6 @@ public class FragLoginPwd extends BaseFragment {
                         start();
                     }
                 });
-
             }
         });
     }

@@ -271,9 +271,8 @@ public class ManageFragment extends BaseFragment {
                 if (json.getInt("statusCode") == 200) {
                     Log.d("GET_Data","json "+json);
                     todayOrder.setText(json.getString("ordercount"));
-                    if (json.getString("actualcost")==null)
-                        ToastUtil.showToast(getContext(),"getString(\"actualcost\")+null");
-//                        todayMoney.setText("0");
+                    if (json.getString("actualcost").equals("null"))
+                        todayMoney.setText("0");
                     else todayMoney.setText(json.getString("actualcost"));
                 }
                 break;

@@ -52,7 +52,8 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
     protected void init() {
         shop= GreenDaoHelp.GetShop(this);
         classifies=new ArrayList<>();
-        if (shop.getShopTransportArea()!=null)shopTransportArea=shop.getShopTransportArea().split(",");
+//        if (shop.getShopTransportArea()!=null)
+            shopTransportArea=shop.getShopTransportArea().split(",");
         Log.e("shopTransportArea","丢了个雷姆"+ Arrays.toString(shopTransportArea));
         for (String aShopTransportArea : shopTransportArea) {
             Classify classify = new Classify();
@@ -138,6 +139,7 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
         Button sure = view1.findViewById(R.id.sure_bt);
         Button cancel = view1.findViewById(R.id.cancel_bt);
         title.setText("确认删除吗");
+        ToastUtil.showToast(this,""+v.getTag());
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,7 +155,8 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
                     Log.e("EDIT_SHOP_INFO","丢了个雷姆"+params);
                     newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
                     shop.setShopTransportArea(shop.getShopTransportArea().replace(","+
-                            shopTransportArea[(int) v.getTag()],""));
+                            classifies.get((Integer) v.getTag()).getProductClassName(),""));
+                    Log.e("ShopTransportArea",shop.getShopTransportArea());
                     classifies.remove((int) v.getTag());
                     communityAdapter.refresh(classifies);
                 } catch (JSONException e) {

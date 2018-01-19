@@ -84,11 +84,13 @@ public class PrintOrderDataMaker implements PrintDataMaker {
             printer.printLineFeed();
             printer.print("联系方式：" + orderEntity.getReceiverPhone());
             printer.printLineFeed();
+            printer.print("地址：" + orderEntity.getEndHouseNumber());
+            printer.printLineFeed();
             printer.printLine();
             printer.printLineFeed();
 
             printer.setAlignLeft();
-            printer.print("备注：" + "记得留位置");
+            printer.print("备注：" + orderEntity.getComment());
             printer.printLineFeed();
             printer.printLine();
 

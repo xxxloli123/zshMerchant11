@@ -46,8 +46,8 @@ public class RomUtils {
      */
     public static boolean isHuaweiRom() {
         String manufacturer = Build.MANUFACTURER;
-//        return !TextUtils.isEmpty(manufacturer) && manufacturer.contains("HUAWEI");
-        return true;
+        return !TextUtils.isEmpty(manufacturer) && manufacturer.contains("HUAWEI");
+//        return true;
     }
 
     /**

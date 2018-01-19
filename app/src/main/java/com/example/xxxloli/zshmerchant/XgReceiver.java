@@ -70,7 +70,7 @@ public class XgReceiver extends XGPushBaseReceiver {
     @Override
     public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
         System.out.println(xgPushShowedResult);
-        ToastUtil.showToast(context,xgPushShowedResult+"");
+//        ToastUtil.showToast(context,xgPushShowedResult+"");
     }
 
     public static interface PushCallback {
