@@ -137,7 +137,6 @@ public class MyBillActivity extends BaseActivity {
                 }, 1500);
             }
         });
-
         getDate();
     }
 

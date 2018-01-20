@@ -86,7 +86,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/shopping_ll"
         android:background="@color/white1"
         android:orientation="horizontal"
@@ -291,6 +290,5 @@
             android:layout_marginRight="15dp"
             android:background="@drawable/right"/>
     </LinearLayout>
-
 
 </LinearLayout>

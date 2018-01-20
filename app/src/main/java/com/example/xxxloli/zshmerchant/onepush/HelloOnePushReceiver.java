@@ -6,18 +6,30 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.xxxloli.zshmerchant.MainActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.app.MyApplication;
+import com.example.xxxloli.zshmerchant.greendao.DaoUtil;
+import com.example.xxxloli.zshmerchant.http.OkHttpCallback;
+import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
+import com.example.xxxloli.zshmerchant.util.OkHttp;
 import com.example.xxxloli.zshmerchant.util.SoundUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
+import com.interfaceconfig.Config;
 import com.peng.one.push.OnePush;
 import com.peng.one.push.entity.OnePushCommand;
 import com.peng.one.push.entity.OnePushMsg;
 import com.peng.one.push.receiver.BaseOnePushReceiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.umeng.socialize.utils.ContextUtil.getPackageName;
@@ -81,8 +93,30 @@ public class HelloOnePushReceiver extends BaseOnePushReceiver {
             OnePush.register();
         }
         if (onePushCommand.getResultCode() == OnePushCommand.RESULT_OK){
-            ToastUtil.showToast(context,"getToken");
             gtToken=onePushCommand.getToken();
+            if (DaoUtil.isSaveShop(context)&&DaoUtil.isSaveShop(context)){
+                Map<String, Object> params = new HashMap<>();
+//            [userId, token, gttoken]
+                params.put("userId", GreenDaoHelp.GetShop(context).getShopkeeperId());
+                params.put("token", "");
+                params.put("gttoken", gtToken);
+                OkHttp.Call(Config.Url.getUrl(Config.UpdateToken), params, new OkHttpCallback.Impl() {
+                    @Override
+                    public void onSuccess(Object tag, JSONObject json) throws JSONException {
+                        ToastUtil.showToast(context,"更新gtToken");
+                    }
+
+                    @Override
+                    public void fail(Object tag, int code, JSONObject json) throws JSONException {
+                    }
+
+                    @NonNull
+                    @Override
+                    public Context getContext() {
+                        return context;
+                    }
+                });
+            }
         }
         Log.e("onCommandResult",onePushCommand.getResultCode() == OnePushCommand.RESULT_OK ? "成功"+onePushCommand.getToken() :
                 "code: "+onePushCommand.getResultCode()+" msg:失败");

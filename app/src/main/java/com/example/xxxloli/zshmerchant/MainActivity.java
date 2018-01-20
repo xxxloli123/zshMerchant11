@@ -17,13 +17,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.xxxloli.zshmerchant.Activity.AccountManageActivity;
 import com.example.xxxloli.zshmerchant.fragment.ConversationListFragment;
 import com.example.xxxloli.zshmerchant.fragment.ManageFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderHandleFragment;
 import com.example.xxxloli.zshmerchant.fragment.OrderInquireFragment;
 import com.example.xxxloli.zshmerchant.fragment.ShopFragment;
 import com.example.xxxloli.zshmerchant.util.CacheActivity;
+import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
 import com.example.xxxloli.zshmerchant.util.InstallUtils;
+import com.example.xxxloli.zshmerchant.util.ToastUtil;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.igexin.sdk.PushManager;
 import com.interfaceconfig.Config;
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private ManageFragment manageFragment;
 //    private ShopFragment shopFragment;
     private ConversationListFragment shopFragment;
+    private String hint = "\n可能会影响聊天功能\n如聊天功能异常请重新登录";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 //        // IntentService, 必须在 AndroidManifest 中声明)
 //        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), KDIntentService.class);
     }
+
+
 
     public static int getVersionCode(Context context) {
         try {

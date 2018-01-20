@@ -1,7 +1,7 @@
 package com.interfaceconfig;
 
 public interface Config {
-    String LOCAL_HOST = "http://192.168.0.106:8080/";
+    String LOCAL_HOST = "http://192.168.0.104:8080/";
     String HOST = "http://www.zsh7.com/";
     // 登录
     String LOGIN = "slowlife/appuser/userlogin";
@@ -56,7 +56,7 @@ public interface Config {
     String GET_Evaluate = "slowlife/appshop/shopgetevaluate";
 
     /**
-     * app店铺 管理统计
+     * app 店铺 管理统计
      */
     String GET_Data = "slowlife/appshop/shopmanagecount";
 
@@ -275,6 +275,16 @@ public interface Config {
      描述：商家删除未激活的购物卡,
      */
     String  DeleteShoppingCard = "slowlife/appshop/shopdelshoppingcard ";
+
+    /**
+     商家获取商家信息
+     */
+    String  GetShopInfo = "slowlife/appshop/shopmessage";
+
+    /**
+     更新用户推送 token gttoken
+     */
+    String  UpdateToken = "slowlife/share/updatetoken";
 
     /**
      描述：获取密码 发送短信到创建者电话手机,

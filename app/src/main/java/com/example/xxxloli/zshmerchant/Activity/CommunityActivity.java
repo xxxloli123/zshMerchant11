@@ -18,6 +18,7 @@ import com.example.xxxloli.zshmerchant.objectmodel.Classify;
 import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.MyListView;
+import com.google.gson.Gson;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseActivity;
 
@@ -50,24 +51,33 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
 
     @Override
     protected void init() {
-        shop= GreenDaoHelp.GetShop(this);
-        classifies=new ArrayList<>();
-//        if (shop.getShopTransportArea()!=null)
-            shopTransportArea=shop.getShopTransportArea().split(",");
-        Log.e("shopTransportArea","丢了个雷姆"+ Arrays.toString(shopTransportArea));
-        for (String aShopTransportArea : shopTransportArea) {
-            Classify classify = new Classify();
-            classify.setProductClassName(aShopTransportArea);
-            classifies.add(classify);
-        }
-        communityAdapter=new CommunityAdapter(this,classifies,this);
-        communityList.setAdapter(communityAdapter);
+        Map<String, Object> params = new HashMap<>();
+        params.put("shopId", GreenDaoHelp.GetShop(this).getId());
+        newCall(Config.Url.getUrl(Config.GetShopInfo), params);
     }
 
     @Override
     public void onSuccess(Object tag, JSONObject json) throws JSONException {
         ToastUtil.showToast(this,json.getString("message"));
-        GreenDaoHelp.UpdateShop(shop);
+        if (tag.equals(Config.GetShopInfo)){
+            Log.e("GetShopInfo",json+"");
+            shop = new Gson().fromJson(json.getString("shop"), Shop.class);
+            classifies=new ArrayList<>();
+            if (shop.getShopTransportArea()==null)return;
+            shopTransportArea=shop.getShopTransportArea().split(",");
+            Log.e("shopTransportArea","丢了个雷姆"+ Arrays.toString(shopTransportArea));
+            for (String aShopTransportArea : shopTransportArea) {
+                Classify classify = new Classify();
+                classify.setProductClassName(aShopTransportArea);
+                classifies.add(classify);
+            }
+            if (communityAdapter!=null){
+                communityAdapter.refresh(classifies);
+                return;
+            }
+            communityAdapter=new CommunityAdapter(this,classifies,this);
+            communityList.setAdapter(communityAdapter);
+        }
     }
 
     @OnClick({R.id.back_rl, R.id.add_tv})
@@ -91,8 +101,8 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
         classify_name.setHint("请输入小区名");
         final EditText number_ET = view.findViewById(R.id.number_ET);
         number_ET.setVisibility(View.GONE);
-            TextView title=view.findViewById(R.id.title);
-            title.setText("添加小区");
+        TextView title=view.findViewById(R.id.title);
+        title.setText("添加小区");
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,10 +117,8 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
 
                     params.put("shopStr", shopStr);
                     params.put("userId", shop.getShopkeeperId());
-                    Log.e("EDIT_SHOP_INFO","丢了个雷姆"+params);
                     newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
-                    shop.setShopTransportArea((classifies.isEmpty())?classify_name.getText().toString():
-                            shop.getShopTransportArea()+","+classify_name.getText().toString());
+                    Log.e("EDIT_SHOP_INFO","丢了个雷姆"+params);
                     Classify classify=new Classify();
                     classify.setProductClassName(classify_name.getText().toString());
                     classifies.add(classify);
@@ -139,7 +147,6 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
         Button sure = view1.findViewById(R.id.sure_bt);
         Button cancel = view1.findViewById(R.id.cancel_bt);
         title.setText("确认删除吗");
-        ToastUtil.showToast(this,""+v.getTag());
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,15 +155,12 @@ public class CommunityActivity extends BaseActivity implements CommunityAdapter.
                 try {
                     shopStr.put("id", shop.getId());
                     shopStr.put("shopTransportArea", classifies.get((Integer) v.getTag())
-                            .toString()+",del");
+                            .getProductClassName() +",del");
 
                     params.put("shopStr", shopStr);
                     params.put("userId", shop.getShopkeeperId());
-                    Log.e("EDIT_SHOP_INFO","丢了个雷姆"+params);
                     newCall(Config.Url.getUrl(Config.EDIT_SHOP_INFO), params);
-                    shop.setShopTransportArea(shop.getShopTransportArea().replace(","+
-                            classifies.get((Integer) v.getTag()).getProductClassName(),""));
-                    Log.e("ShopTransportArea",shop.getShopTransportArea());
+                    Log.e("EDIT_SHOP_INFO2",params+"");
                     classifies.remove((int) v.getTag());
                     communityAdapter.refresh(classifies);
                 } catch (JSONException e) {
