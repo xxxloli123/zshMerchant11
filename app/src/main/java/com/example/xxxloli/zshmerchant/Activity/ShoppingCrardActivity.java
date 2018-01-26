@@ -102,6 +102,9 @@ public class ShoppingCrardActivity extends BaseActivity implements ShoppingCardA
         ptrFrameLayout.setPtrHandler(new PtrHandler2() {
             @Override
             public boolean checkCanDoLoadMore(PtrFrameLayout frame, View content, View footer) {
+                if (PtrDefaultHandler2.checkContentCanBePulledUp(frame, content, footer))
+                    fillingV.setVisibility(View.VISIBLE);
+                else fillingV.setVisibility(View.GONE);
                 return PtrDefaultHandler2.checkContentCanBePulledUp(frame, content, footer);
             }
 
@@ -113,7 +116,6 @@ public class ShoppingCrardActivity extends BaseActivity implements ShoppingCardA
                         loadData();
                     }
                 }, 1500);
-
             }
 
             @Override
@@ -183,6 +185,12 @@ public class ShoppingCrardActivity extends BaseActivity implements ShoppingCardA
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadData();
+    }
+
+    @Override
     public void click(View v) {
         switch (v.getId()) {
             case R.id.delete_bt:
@@ -221,5 +229,4 @@ public class ShoppingCrardActivity extends BaseActivity implements ShoppingCardA
                 break;
         }
     }
-
 }

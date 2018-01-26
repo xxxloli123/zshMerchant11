@@ -49,15 +49,14 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <in.srain.cube.views.ptr.PtrClassicFrameLayout
             xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ptr_frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             cube_ptr:ptr_duration_to_close_either="1000"
             cube_ptr:ptr_keep_header_when_refresh="true"
             cube_ptr:ptr_pull_to_fresh="false"
@@ -84,8 +83,6 @@
                         android:listSelector="@null"
                         android:scrollbars="none" />
 
-
-
                 </LinearLayout>
 
             </ScrollView>
@@ -106,7 +103,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:background="@drawable/hint_no_solid_bgall"
             android:drawableLeft="@drawable/add2"
             android:paddingBottom="3dp"
@@ -118,39 +114,4 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-            <!--<in.srain.cube.views.ptr.PtrFrameLayout-->
-                <!--android:id="@+id/ptr_frame_layout"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<ScrollView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content">-->
-
-                    <!--<RelativeLayout-->
-                        <!--android:orientation="vertical"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content">-->
-
-                        <!--<com.example.xxxloli.zshmerchant.view.MyListView-->
-                            <!--android:padding="6dp"-->
-                            <!--android:divider="@null"-->
-                            <!--android:horizontalSpacing="8dp"-->
-                            <!--android:id="@+id/shopping_card_list"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content">-->
-
-                        <!--</com.example.xxxloli.zshmerchant.view.MyListView>-->
-
-
-
-                    <!--</RelativeLayout>-->
-
-                <!--</ScrollView>-->
-
-            <!--</in.srain.cube.views.ptr.PtrFrameLayout>-->
-    </View>
 </LinearLayout>

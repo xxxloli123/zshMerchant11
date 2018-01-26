@@ -29,7 +29,12 @@ import com.example.xxxloli.zshmerchant.util.InstallUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.DemoModel;
+import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.igexin.sdk.PushManager;
 import com.interfaceconfig.Config;
@@ -38,6 +43,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,9 +113,127 @@ public class MainActivity extends AppCompatActivity {
 //        // AndroidManifest 对应保留一个即可(如果注册 DemoIntentService, 可以去掉 PushDemoReceiver, 如果注册了
 //        // IntentService, 必须在 AndroidManifest 中声明)
 //        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), KDIntentService.class);
+        initEM();
     }
 
+    private void initEM() {
+        loginEase(GreenDaoHelp.GetShop(this).getShopkeeperId(),GreenDaoHelp.GetShop(this).getShopkeeperId());
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                EMClient.getInstance().chatManager().addMessageListener(messageListener);
+            }
+        },1000);
+    }
 
+    EMMessageListener messageListener=new EMMessageListener() {
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            EaseUI.getInstance().getNotifier().onNewMesg(list);
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageRead(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageRecalled(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage emMessage, Object o) {
+
+        }
+    };
+
+    private void loginEase(String userName, String password) {
+        EMClient.getInstance().login(userName, password, new EMCallBack() {//回调
+            @Override
+            public void onSuccess() {
+                EMClient.getInstance().groupManager().loadAllGroups();
+                EMClient.getInstance().chatManager().loadAllConversations();
+                Log.d("main", "登录聊天服务器成功！");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtil.showToast(MainActivity.this, "登录成功");
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(final int i, final String s) {
+                Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (i) {
+                            //用户已登录 200
+                            case EMError.USER_ALREADY_LOGIN:
+                                Toast.makeText(MainActivity.this, "用户已登录", Toast.LENGTH_LONG).show();
+                                break;
+                            // 网络异常 2
+                            case EMError.NETWORK_ERROR:
+                                Toast.makeText(MainActivity.this, "网络错误 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无效的用户名 101
+                            case EMError.INVALID_USER_NAME:
+                                Toast.makeText(MainActivity.this, "无效的用户名 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无效的密码 102
+                            case EMError.INVALID_PASSWORD:
+                                Toast.makeText(MainActivity.this, "无效的密码 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 用户认证失败，用户名或密码错误 202
+                            case EMError.USER_AUTHENTICATION_FAILED:
+                                Toast.makeText(MainActivity.this, "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 用户不存在 204
+                            case EMError.USER_NOT_FOUND:
+                                Toast.makeText(MainActivity.this, "用户不存在 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 无法访问到服务器 300
+                            case EMError.SERVER_NOT_REACHABLE:
+                                Toast.makeText(MainActivity.this, "无法访问到服务器 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 等待服务器响应超时 301
+                            case EMError.SERVER_TIMEOUT:
+                                Toast.makeText(MainActivity.this, "等待服务器响应超时 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 服务器繁忙 302
+                            case EMError.SERVER_BUSY:
+                                Toast.makeText(MainActivity.this, "服务器繁忙 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            // 未知 Server 异常 303 一般断网会出现这个错误
+                            case EMError.SERVER_UNKNOWN_ERROR:
+                                Toast.makeText(MainActivity.this, "未知的服务器异常 code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                Toast.makeText(MainActivity.this, "ml_sign_in_failed code: " + i + ", message:" + s + hint, Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     public static int getVersionCode(Context context) {
         try {

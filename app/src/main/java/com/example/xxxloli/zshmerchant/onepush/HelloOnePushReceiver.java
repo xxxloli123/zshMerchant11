@@ -19,6 +19,10 @@ import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
 import com.example.xxxloli.zshmerchant.util.OkHttp;
 import com.example.xxxloli.zshmerchant.util.SoundUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.EaseUI;
 import com.interfaceconfig.Config;
 import com.peng.one.push.OnePush;
 import com.peng.one.push.entity.OnePushCommand;
@@ -29,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -121,4 +126,5 @@ public class HelloOnePushReceiver extends BaseOnePushReceiver {
         Log.e("onCommandResult",onePushCommand.getResultCode() == OnePushCommand.RESULT_OK ? "成功"+onePushCommand.getToken() :
                 "code: "+onePushCommand.getResultCode()+" msg:失败");
     }
+
 }

@@ -167,5 +167,4 @@ public class ConversationListFragment extends EaseConversationListFragment {
             }
         });
     }
-
 }

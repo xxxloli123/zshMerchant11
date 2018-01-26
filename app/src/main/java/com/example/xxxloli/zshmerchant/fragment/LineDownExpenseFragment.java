@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,6 +181,7 @@ public class LineDownExpenseFragment extends BaseFragment implements LineDownExp
         map.put("startPage", ++page);
         map.put("pageSize", "20");
         newCall(Config.Url.getUrl(Config.GET_LineOrder), map);
+        Log.e("GET_LineOrder",""+map);
     }
 
     @Override
