@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="com.example.xxxloli.zshmerchant.MainActivity">
 
-
     <FrameLayout
         android:id="@+id/menus_frame"
         android:layout_width="match_parent"
@@ -16,6 +15,23 @@
         android:background="@color/white">
 
     </FrameLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="33dp">
+
+        <EditText
+            android:id="@+id/id_et"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:onClick="start"
+            android:layout_width="66dp"
+            android:layout_height="33dp" />
+    </LinearLayout>
 
     <View
         android:id="@+id/view"

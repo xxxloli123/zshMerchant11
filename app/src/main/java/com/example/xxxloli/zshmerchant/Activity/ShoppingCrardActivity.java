@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +46,14 @@ public class ShoppingCrardActivity extends BaseActivity implements ShoppingCardA
     TextView noDataTv;
     @BindView(R.id.shopping_card_list)
     MyListView shoppingCardList;
-    @BindView(R.id.ptr_frame_layout)
-    PtrClassicFrameLayout ptrFrameLayout;
     @BindView(R.id.filling_v)
     View fillingV;
+    @BindView(R.id.back_rl)
+    RelativeLayout backRl;
+    @BindView(R.id.ptr_frame_layout)
+    PtrClassicFrameLayout ptrFrameLayout;
+    @BindView(R.id.add)
+    TextView add;
 
     private Shop shop = GreenDaoHelp.GetShop(this);
     private int page = 0;
@@ -229,4 +233,5 @@ public class ShoppingCrardActivity extends BaseActivity implements ShoppingCardA
                 break;
         }
     }
+
 }

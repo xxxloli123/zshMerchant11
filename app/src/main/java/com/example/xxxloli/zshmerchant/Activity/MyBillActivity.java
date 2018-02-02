@@ -46,6 +46,7 @@ import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicDefaultFooter;
 import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrDefaultHandler2;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler2;
 import okhttp3.Call;
@@ -65,16 +66,16 @@ public class MyBillActivity extends BaseActivity {
     Button weixinBt;
     @BindView(R.id.alipay_Bt)
     Button alipayBt;
-    @BindView(R.id.bill_list)
-    ListView billList;
     @BindView(R.id.select_data_Tv)
     TextView selectDataTv;
     @BindView(R.id.no_order)
     LinearLayout noOrder;
-    @BindView(R.id.ptr_frame_layout)
-    PtrFrameLayout ptrFrameLayout;
     @BindView(R.id.select_data_LL)
     LinearLayout selectDataLL;
+    @BindView(R.id.ptr_frame_layout)
+    PtrFrameLayout ptrFrameLayout;
+    @BindView(R.id.bill_list)
+    ListView billList;
 
     private DBManagerShop dbManagerShop;
     private Shop shop;
@@ -108,7 +109,7 @@ public class MyBillActivity extends BaseActivity {
         ptrFrameLayout.setPtrHandler(new PtrHandler2() {
             @Override
             public boolean checkCanDoLoadMore(PtrFrameLayout frame, View content, View footer) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, footer);
+                return PtrDefaultHandler2.checkContentCanBePulledUp(frame, content, footer);
             }
 
             @Override
@@ -166,11 +167,11 @@ public class MyBillActivity extends BaseActivity {
                 Log.e("GET_Bills", "丢了个雷姆" + json);
                 JSONArray arr = json.getJSONObject("accountInfo").getJSONArray("aaData");
                 ptrFrameLayout.refreshComplete();
-                if (json.getString("alipayBinding").equals("yes")){
+                if (json.getString("alipayBinding").equals("yes")) {
                     alipayBt.setText("已绑定支付宝");
                     alipayBt.setClickable(false);
                 }
-                if (json.getString("weixinBingding").equals("yes")){
+                if (json.getString("weixinBingding").equals("yes")) {
                     weixinBt.setText("已绑定微信");
                     weixinBt.setClickable(false);
                 }
@@ -178,9 +179,13 @@ public class MyBillActivity extends BaseActivity {
                 if (checkBills == null) checkBills = new ArrayList<>();
                 if (page == 1 && !checkBills.isEmpty()) checkBills.clear();
                 Gson gson = new Gson();
+//                CheckBill checkBill = gson.fromJson(arr.getString(0), CheckBill.class);
                 for (int i = 0; i < arr.length(); i++) {
                     checkBills.add(gson.fromJson(arr.getString(i), CheckBill.class));
                 }
+//                for (int i = 0; i < 11; i++) {
+//                    checkBills.add(checkBill);
+//                }
                 if (checkBills.isEmpty()) noOrder.setVisibility(View.VISIBLE);
                 else noOrder.setVisibility(View.GONE);
                 if (checkBillAdapter != null) {
@@ -324,8 +329,8 @@ public class MyBillActivity extends BaseActivity {
         initYear = cal.get(Calendar.YEAR);       //获取年月日时分秒
         initMonth = cal.get(Calendar.MONTH) + 1;   //获取到的月份是从0开始计数
         initDay = cal.get(Calendar.DAY_OF_MONTH);
-        String iM=(initMonth<10)? "0"+initMonth:""+initMonth;
-        String iD=(initDay<10)? "0"+initDay:""+initDay;
+        String iM = (initMonth < 10) ? "0" + initMonth : "" + initMonth;
+        String iD = (initDay < 10) ? "0" + initDay : "" + initDay;
         String dateString = (initYear + "-" + iM + "-" + iD);
         selectDataTv.setText(dateString);
         initView();
@@ -341,8 +346,8 @@ public class MyBillActivity extends BaseActivity {
                 initDay = day;
                 page = 0;
 
-                String iM=(initMonth<10)? "0"+initMonth:""+initMonth;
-                String iD=(initDay<10)? "0"+initDay:""+initDay;
+                String iM = (initMonth < 10) ? "0" + initMonth : "" + initMonth;
+                String iD = (initDay < 10) ? "0" + initDay : "" + initDay;
                 String dateString = (year + "-" + iM + "-" + iD);
                 if (!selectDataTv.getText().toString().equals(dateString)) {
                     page = 0;

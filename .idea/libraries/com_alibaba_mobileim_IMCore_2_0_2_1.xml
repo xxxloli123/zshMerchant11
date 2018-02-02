@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="com.alibaba.mobileim:IMCore-2.0.2.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/e5eb8d2932e0b51834c9c33334ab5f783a8ba7cf/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/e5eb8d2932e0b51834c9c33334ab5f783a8ba7cf/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

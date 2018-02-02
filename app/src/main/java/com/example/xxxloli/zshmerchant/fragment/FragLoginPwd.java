@@ -29,10 +29,6 @@ import com.example.xxxloli.zshmerchant.util.Common;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.example.xxxloli.zshmerchant.view.ShSwitchView;
 import com.google.gson.Gson;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.exceptions.HyphenateException;
 import com.interfaceconfig.Config;
 import com.sgrape.BaseFragment;
 import com.sgrape.dialog.LoadDialog;
@@ -201,7 +197,6 @@ public class FragLoginPwd extends BaseFragment {
                     dbManagerShop.insertShop(shop);
 
                     if (dbManagerAccount.queryByPhone(phone).isEmpty()) {
-                        EMClient.getInstance().logout(true);
                         Account account=new Account();
                         account.setHead(shop.getShopImage());
                         account.setName(shop.getShopName());
@@ -213,11 +208,7 @@ public class FragLoginPwd extends BaseFragment {
                         if (!account.getPwd().equals(pwd))account.setPwd(pwd);
                         dbManagerAccount.updateUser(account);
                     }
-                    EMClient.getInstance().logout(true);
-
-                    loginEase(user.getId(),user.getId());
-                    EMClient.getInstance().chatManager().loadAllConversations();
-                    EMClient.getInstance().groupManager().loadAllGroups();
+                    start();
 //                    //OpenIM 开始登录
 //                    String userid = shop.getShopkeeperId();
 //                    String password = shop.getShopkeeperId();
@@ -262,83 +253,86 @@ public class FragLoginPwd extends BaseFragment {
         if (getActivity() != null) getActivity().finish();
     }
 
-    private void loginEase(String userName, String password) {
-        EMClient.getInstance().login(userName,password,new EMCallBack() {//回调
-            @Override
-            public void onSuccess() {
-                EMClient.getInstance().groupManager().loadAllGroups();
-                EMClient.getInstance().chatManager().loadAllConversations();
-                Log.d("main", "登录聊天服务器成功！");
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtil.showToast(getContext(), "登录成功");
-                        dialog.dismiss();
-                        start();
-                    }
-                });
-            }
-            @Override
-            public void onProgress(int progress, String status) {
-            }
-            @Override
-            public void onError(final int i, final String s) {
-                Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        switch (i) {
-                            //用户已登录 200
-                            case EMError.USER_ALREADY_LOGIN:
-                                Toast.makeText(getActivity(), "用户已登录", Toast.LENGTH_LONG).show();
-                                break;
-                            // 网络异常 2
-                            case EMError.NETWORK_ERROR:
-                                Toast.makeText(getActivity(), "网络错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 无效的用户名 101
-                            case EMError.INVALID_USER_NAME:
-                                Toast.makeText(getActivity(), "无效的用户名 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 无效的密码 102
-                            case EMError.INVALID_PASSWORD:
-                                Toast.makeText(getActivity(), "无效的密码 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 用户认证失败，用户名或密码错误 202
-                            case EMError.USER_AUTHENTICATION_FAILED:
-                                Toast.makeText(getActivity(), "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 用户不存在 204
-                            case EMError.USER_NOT_FOUND:
-                                Toast.makeText(getActivity(), "用户不存在 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 无法访问到服务器 300
-                            case EMError.SERVER_NOT_REACHABLE:
-                                Toast.makeText(getActivity(), "无法访问到服务器 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 等待服务器响应超时 301
-                            case EMError.SERVER_TIMEOUT:
-                                Toast.makeText(getActivity(), "等待服务器响应超时 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 服务器繁忙 302
-                            case EMError.SERVER_BUSY:
-                                Toast.makeText(getActivity(), "服务器繁忙 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            // 未知 Server 异常 303 一般断网会出现这个错误
-                            case EMError.SERVER_UNKNOWN_ERROR:
-                                Toast.makeText(getActivity(), "未知的服务器异常 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                            default:
-                                Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
-                                break;
-                        }
-                        dialog.dismiss();
-                        start();
-                    }
-                });
-            }
-        });
-    }
+//    private void loginEase(String userName, String password) {
+//        EMClient.getInstance().logout(true);
+//        EMClient.getInstance().login(userName,password,new EMCallBack() {//回调
+//            @Override
+//            public void onSuccess() {
+//                EMClient.getInstance().groupManager().loadAllGroups();
+//                EMClient.getInstance().chatManager().loadAllConversations();
+//                Log.d("main", "登录聊天服务器成功！");
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtil.showToast(getContext(), "登录成功");
+//                        dialog.dismiss();
+//                        start();
+//                    }
+//                });
+//            }
+//            @Override
+//            public void onProgress(int progress, String status) {
+//            }
+//            @Override
+//            public void onError(final int i, final String s) {
+//                Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        switch (i) {
+//                            //用户已登录 200
+//                            case EMError.USER_ALREADY_LOGIN:
+//                                Toast.makeText(getActivity(), "用户已登录", Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 网络异常 2
+//                            case EMError.NETWORK_ERROR:
+//                                Toast.makeText(getActivity(), "网络错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 无效的用户名 101
+//                            case EMError.INVALID_USER_NAME:
+//                                Toast.makeText(getActivity(), "无效的用户名 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 无效的密码 102
+//                            case EMError.INVALID_PASSWORD:
+//                                Toast.makeText(getActivity(), "无效的密码 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 用户认证失败，用户名或密码错误 202
+//                            case EMError.USER_AUTHENTICATION_FAILED:
+//                                Toast.makeText(getActivity(), "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 用户不存在 204
+//                            case EMError.USER_NOT_FOUND:
+//                                Toast.makeText(getActivity(), "用户不存在 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 无法访问到服务器 300
+//                            case EMError.SERVER_NOT_REACHABLE:
+//                                Toast.makeText(getActivity(), "无法访问到服务器 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 等待服务器响应超时 301
+//                            case EMError.SERVER_TIMEOUT:
+//                                Toast.makeText(getActivity(), "等待服务器响应超时 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 服务器繁忙 302
+//                            case EMError.SERVER_BUSY:
+//                                Toast.makeText(getActivity(), "服务器繁忙 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            // 未知 Server 异常 303 一般断网会出现这个错误
+//                            case EMError.SERVER_UNKNOWN_ERROR:
+//                                Toast.makeText(getActivity(), "未知的服务器异常 code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                            default:
+//                                Toast.makeText(getActivity(), "ml_sign_in_failed code: " + i + ", message:" + s+hint, Toast.LENGTH_LONG).show();
+//                                break;
+//                        }
+//                        dialog.dismiss();
+//                        start();
+//                    }
+//                });
+//            }
+//        });
+//        EMClient.getInstance().chatManager().loadAllConversations();
+//        EMClient.getInstance().groupManager().loadAllGroups();
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

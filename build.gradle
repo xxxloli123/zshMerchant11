@@ -20,7 +20,6 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "https://raw.githubusercontent.com/HyphenateInc/Hyphenate-SDK-Android/master/repository" }
         jcenter()
         maven {
             url 'https://maven.google.com/'
@@ -30,6 +29,7 @@ allprojects {
         maven {
             url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/"
         }
+        maven { url 'http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/' }
     }
 }
 

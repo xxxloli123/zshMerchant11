@@ -13,16 +13,13 @@ import android.util.Log;
 import com.example.xxxloli.zshmerchant.MainActivity;
 import com.example.xxxloli.zshmerchant.R;
 import com.example.xxxloli.zshmerchant.app.MyApplication;
+import com.example.xxxloli.zshmerchant.chat.SmgYWHelp;
 import com.example.xxxloli.zshmerchant.greendao.DaoUtil;
 import com.example.xxxloli.zshmerchant.http.OkHttpCallback;
 import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
 import com.example.xxxloli.zshmerchant.util.OkHttp;
 import com.example.xxxloli.zshmerchant.util.SoundUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.easeui.EaseUI;
 import com.interfaceconfig.Config;
 import com.peng.one.push.OnePush;
 import com.peng.one.push.entity.OnePushCommand;
@@ -121,6 +118,9 @@ public class HelloOnePushReceiver extends BaseOnePushReceiver {
                         return context;
                     }
                 });
+                SmgYWHelp.initYWIMKit(GreenDaoHelp.GetShop(context).getShopkeeperId());
+                SmgYWHelp.loginYW(GreenDaoHelp.GetShop(context).getShopkeeperId(), context);
+                SmgYWHelp.getYWIMKit().setEnableNotification(true);
             }
         }
         Log.e("onCommandResult",onePushCommand.getResultCode() == OnePushCommand.RESULT_OK ? "成功"+onePushCommand.getToken() :

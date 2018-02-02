@@ -1,4 +1,4 @@
-package com.example.xxxloli.zshmerchant.fragment;
+package com.hyphenate.easeui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xxxloli.zshmerchant.Activity.ChatActivity;
-import com.example.xxxloli.zshmerchant.R;
-import com.example.xxxloli.zshmerchant.util.GreenDaoHelp;
-import com.example.xxxloli.zshmerchant.util.ToastUtil;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
@@ -24,9 +20,6 @@ import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.util.NetUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class ConversationListFragment extends EaseConversationListFragment {
 

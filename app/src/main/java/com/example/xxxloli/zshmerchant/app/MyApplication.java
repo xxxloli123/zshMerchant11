@@ -7,13 +7,12 @@ import android.content.pm.PackageManager;
 import android.os.Process;
 import android.util.Log;
 
+import com.alibaba.mobileim.YWAPI;
+import com.alibaba.wxlib.util.SysUtil;
 import com.example.xxxloli.zshmerchant.BuildConfig;
 import com.example.xxxloli.zshmerchant.KDIntentService;
 import com.example.xxxloli.zshmerchant.util.RomUtils;
 import com.example.xxxloli.zshmerchant.util.ToastUtil;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMOptions;
-import com.hyphenate.easeui.EaseUI;
 import com.igexin.sdk.PushManager;
 import com.peng.one.push.OnePush;
 import com.slowlife.xgpush.XgReceiver;
@@ -50,9 +49,10 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext=this;
         // 初始化环信SDK
-        initEasemob();
+//        initEasemob();
 //        startXm();
         startOnePush();
+        initYW();
 
         if (isMainProcess()) {
             // 为保证弹出通知前一定调用本方法，需要在application的onCreate注册
@@ -85,6 +85,20 @@ public class MyApplication extends Application {
 //        }
 //        initYWSDK(this);
 
+    }
+
+    private void initYW() {
+        final String APP_KEY = "24663801";
+        //必须首先执行这部分代码, 如果在":TCMSSevice"进程中，无需进行云旺（OpenIM）和app业务的初始化，以节省内存;
+        SysUtil.setApplication(this);
+        if(SysUtil.isTCMSServiceProcess(this)){
+            return;
+        }
+        //第一个参数是Application Context
+        //这里的APP_KEY即应用创建时申请的APP_KEY，同时初始化必须是在主进程中
+        if(SysUtil.isMainProcess()){
+            YWAPI.init(this, APP_KEY);
+        }
     }
 
 //    private void startXm() {
@@ -193,25 +207,25 @@ public class MyApplication extends Application {
         return false;
     }
 
-    private void initEasemob() {
-        EMOptions options = new EMOptions();
-// 默认添加好友时，是不需要验证的，改成需要验证
-        options.setAcceptInvitationAlways(false);
-// 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
-//        options.setAutoTransferMessageAttachments(true);
-// 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
-//        options.setAutoDownloadThumbnail(true);
-        // 设置小米推送 appID 和 appKey
-//        options.setMipushConfig(APP_ID, APP_KEY);
-//...
-//初始化
-        EaseUI.getInstance().init(this, options);
-        EMClient.getInstance().init(this, options);
-        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        EMClient.getInstance().setDebugMode(true);
-        // 设置通话过程中对方如果离线是否发送离线推送通知，默认 false
-        EMClient.getInstance().callManager().getCallOptions().setIsSendPushIfOffline(true);
-    }
+//    private void initEasemob() {
+//        EMOptions options = new EMOptions();
+//// 默认添加好友时，是不需要验证的，改成需要验证
+//        options.setAcceptInvitationAlways(false);
+//// 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
+////        options.setAutoTransferMessageAttachments(true);
+//// 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
+////        options.setAutoDownloadThumbnail(true);
+//        // 设置小米推送 appID 和 appKey
+////        options.setMipushConfig(APP_ID, APP_KEY);
+////...
+////初始化
+//        EaseUI.getInstance().init(this, options);
+//        EMClient.getInstance().init(this, options);
+//        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+//        EMClient.getInstance().setDebugMode(true);
+//        // 设置通话过程中对方如果离线是否发送离线推送通知，默认 false
+//        EMClient.getInstance().callManager().getCallOptions().setIsSendPushIfOffline(true);
+//    }
 
 //
 //    public static void initYWSDK(Application application){
