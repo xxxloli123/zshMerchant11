@@ -29,13 +29,14 @@
                     android:layout_height="25dp" />
 
                 <TextView
+                    android:layout_marginBottom="6dp"
                     android:id="@+id/name_TV"
-                    android:textSize="13sp"
+                    android:textSize="13dp"
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color"
                     android:text="香蕉君永不迟到"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp" />
+                    android:layout_width="133dp"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -219,11 +220,12 @@
                 android:layout_height="120dp" />
 
             <TextView
+                android:gravity="center"
                 android:textColor="@color/text_color"
                 android:id="@+id/commodity_name"
                 android:layout_gravity="center"
                 android:text="秋名山"
-                android:layout_width="wrap_content"
+                android:layout_width="99dp"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

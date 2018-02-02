@@ -143,7 +143,6 @@ public class AlreadyParticipationFragmet extends BaseFragment implements Activit
                 break;
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();
